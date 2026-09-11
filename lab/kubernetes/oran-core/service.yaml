@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oran-core
+  namespace: openran-lab
+  labels:
+    app: oran-core
+spec:
+  selector:
+    app: oran-core
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080

@@ -1,0 +1,15 @@
+# ConfigMap com a identidade/metadados da NF (consumida via envFrom no Deployment).
+# A CONFIGURAÇÃO OPERACIONAL (cell_id, plmn_id etc.) fica no /config em runtime da NF,
+# demonstrada via Experimento 2 (docs/provisioning-flow.md) — este ConfigMap é a
+# "configuração de implantação" (identidade), não a configuração de domínio da NF.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oran-cu-identity
+  namespace: openran-lab
+  labels:
+    app: oran-cu
+data:
+  NF_NAME: "oran-cu"
+  NF_TYPE: "O-CU"
+  NF_VERSION: "v1"

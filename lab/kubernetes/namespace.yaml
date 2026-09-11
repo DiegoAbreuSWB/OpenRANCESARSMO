@@ -1,0 +1,8 @@
+# Namespace dedicado às CNFs simuladas do laboratório (Parte 2).
+# Mantido separado do demo-nf (ns default) do laboratório Nephio/O2IMS anterior.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openran-lab
+  labels:
+    app.kubernetes.io/part-of: openran-nephio-lab

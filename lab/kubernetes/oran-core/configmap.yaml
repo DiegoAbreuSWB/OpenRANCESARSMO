@@ -1,0 +1,14 @@
+# ConfigMap com a identidade/metadados da NF (consumida via envFrom no Deployment).
+# A CONFIGURAÇÃO OPERACIONAL (amf_name, served_plmn etc.) fica no /config em runtime da NF —
+# este ConfigMap é a "configuração de implantação" (identidade), não a config de domínio.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oran-core-identity
+  namespace: openran-lab
+  labels:
+    app: oran-core
+data:
+  NF_NAME: "oran-core"
+  NF_TYPE: "5GC-AMF-sim"
+  NF_VERSION: "v1"
