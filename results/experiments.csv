@@ -1,0 +1,7 @@
+operation,duration_seconds,status,timestamp,detail
+provision-all-cnfs,20.4,success,2026-09-11T01:38:32-03:00,"3 NFs (oran-cu, oran-du, oran-core) via kpt live apply"
+config-update-oran-du-cell_id,0.713,success,2026-09-11T01:38:39-03:00,"cell_id: 1 -> 2 via PUT /config"
+scale-oran-cu-1to2,5.7,success,2026-09-11T01:38:50-03:00,"réplicas: 1 -> 2"
+recover-oran-du,3.9,success,2026-09-11T01:39:00-03:00,"pod antigo=oran-du-7d44959c84-cnsx4 pod novo=oran-du-7d44959c84-sf26s (reconciliacao K8s, nao healing O-RAN)"
+upgrade-oran-cu-v1-v2,15.0,success,2026-09-11T01:39:22-03:00,"revision 1 -> 2"
+terminate-oran-core,10.8,success,2026-09-11T01:39:40-03:00,"removido do pacote Porch + kpt live apply (prune)"

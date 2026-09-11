@@ -1,0 +1,5 @@
+ANTES:
+{"nf_name":"oran-du","config_version":1,"config":{"plmn_id":"00101","cell_id":1,"tx_power_dbm":20,"du_id":1}}
+
+DEPOIS:
+{"status":"updated","nf_name":"oran-du","config_version":2,"config":{"plmn_id":"00101","cell_id":2,"tx_power_dbm":20,"du_id":1}}

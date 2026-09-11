@@ -12,4 +12,4 @@ metadata:
 data:
   NF_NAME: "oran-cu"
   NF_TYPE: "O-CU"
-  NF_VERSION: "v1"
+  NF_VERSION: "v2"

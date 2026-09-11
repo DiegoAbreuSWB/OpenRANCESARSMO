@@ -1,0 +1,66 @@
+== 1) publica/atualiza o pacote no Porch (repo=openran-cnfs pkg=openran-nfs) ==
+   revisão mais recente: openran-cnfs.openran-nfs.v1 — criando uma NOVA revisão a partir dela (rpkg copy)
+openran-cnfs.openran-nfs.v1789101175 created
+openran-cnfs.openran-nfs.v1789101175 pushed
+openran-cnfs.openran-nfs.v1789101175 proposed
+openran-cnfs.openran-nfs.v1789101175 approved
+NAME                                   PACKAGE       WORKSPACENAME   REVISION   LATEST   LIFECYCLE   REPOSITORY
+openran-cnfs.openran-nfs.v1789101175   openran-nfs   v1789101175     2          true     Published   openran-cnfs
+
+== 2) puxa o conteúdo PUBLICADO (fonte de verdade = Porch/Gitea, não o disco local) ==
+
+== 3) reconcilia no o-cloud-1 via kpt live apply (ResourceGroup = inventário declarativo) ==
+initializing "resourcegroup.yaml" data (namespace: default)...success
+inventory update started
+inventory update finished
+apply phase started
+namespace/openran-lab apply successful
+apply phase finished
+reconcile phase started
+namespace/openran-lab reconcile successful
+reconcile phase finished
+apply phase started
+configmap/oran-core-identity apply successful
+configmap/oran-cu-identity apply successful
+configmap/oran-du-identity apply successful
+service/oran-core apply successful
+service/oran-cu apply successful
+service/oran-du apply successful
+deployment.apps/oran-core apply successful
+deployment.apps/oran-cu apply successful
+deployment.apps/oran-du apply successful
+apply phase finished
+reconcile phase started
+configmap/oran-core-identity reconcile successful
+configmap/oran-cu-identity reconcile successful
+configmap/oran-du-identity reconcile successful
+service/oran-core reconcile successful
+service/oran-cu reconcile successful
+service/oran-du reconcile successful
+deployment.apps/oran-core reconcile successful
+deployment.apps/oran-cu reconcile successful
+deployment.apps/oran-du reconcile successful
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 10 attempted, 10 successful, 0 skipped, 0 failed
+reconcile result: 10 attempted, 10 successful, 0 skipped, 0 failed, 0 timed out
+
+== 4) validação ==
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES         SELECTOR
+deployment.apps/oran-core   1/1     1            1           11s   oran-core    oran-core:v1   app=oran-core
+deployment.apps/oran-cu     1/1     1            1           11s   oran-cu      oran-cu:v1     app=oran-cu
+deployment.apps/oran-du     1/1     1            1           11s   oran-du      oran-du:v1     app=oran-du
+
+NAME                             READY   STATUS    RESTARTS   AGE   IP             NODE                               NOMINATED NODE   READINESS GATES
+pod/oran-core-7dfbc47d97-qvf2d   1/1     Running   0          11s   192.168.1.16   o-cloud-1-md-0-ddvzl-glj9m-gwk9f   <none>           <none>
+pod/oran-cu-6798cd7dc5-76zd4     1/1     Running   0          11s   192.168.1.17   o-cloud-1-md-0-ddvzl-glj9m-gwk9f   <none>           <none>
+pod/oran-du-7d44959c84-chjs6     1/1     Running   0          11s   192.168.1.18   o-cloud-1-md-0-ddvzl-glj9m-gwk9f   <none>           <none>
+
+NAME                TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE   SELECTOR
+service/oran-core   ClusterIP   10.141.6.24      <none>        8080/TCP   11s   app=oran-core
+service/oran-cu     ClusterIP   10.135.158.12    <none>        8080/TCP   11s   app=oran-cu
+service/oran-du     ClusterIP   10.134.187.181   <none>        8080/TCP   11s   app=oran-du
+oran-cu -> 200 {"status":"ok","nf_name":"oran-cu","nf_type":"O-CU","nf_version":"v1","uptime_seconds":5.9}
+oran-du -> 200 {"status":"ok","nf_name":"oran-du","nf_type":"O-DU","nf_version":"v1","uptime_seconds":6.8}
+oran-core -> 200 {"status":"ok","nf_name":"oran-core","nf_type":"5GC-AMF-sim","nf_version":"v1","uptime_seconds":7.8}

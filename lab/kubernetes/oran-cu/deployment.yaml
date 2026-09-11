@@ -17,6 +17,8 @@ spec:
       labels:
         app: oran-cu
         nf-type: O-CU
+      annotations:
+        openran-lab/nf-version: "v1"
     spec:
       securityContext:
         runAsNonRoot: true
