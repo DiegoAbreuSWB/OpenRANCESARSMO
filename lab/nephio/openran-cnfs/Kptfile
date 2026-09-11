@@ -1,0 +1,10 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata:
+  name: openran-cnfs
+info:
+  description: >
+    Pacote kpt com as 3 CNFs simuladas do laboratorio (oran-cu, oran-du, oran-core).
+    Publicado no Porch (repositorio 'openran-cnfs') e aplicado no workload cluster
+    'o-cloud-1' via 'kpt live apply' - demonstra o fluxo Intent/Package/Repository/
+    Reconciliation do Nephio para deployment de Network Functions (Fase 12).

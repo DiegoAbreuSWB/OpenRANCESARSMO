@@ -1,0 +1,61 @@
+== ETAPA 3 :: passo=status :: 2026-09-11T01:09:59-03:00 ==
+kpt Version: 1.0.0  |  VM uptime: up 3 hours, 45 minutes
+--- todos os pods ---
+NAMESPACE                           NAME                                                            READY   STATUS    RESTARTS       AGE
+backend-system                      resource-backend-controller-64d8b4c6b5-r6sqm                    2/2     Running   11 (10h ago)   15h
+capd-system                         capd-controller-manager-59dccf49db-gpc65                        1/1     Running   7 (10h ago)    15h
+capi-kubeadm-bootstrap-system       capi-kubeadm-bootstrap-controller-manager-594ff68d7d-zsw6m      1/1     Running   10 (10h ago)   16h
+capi-kubeadm-control-plane-system   capi-kubeadm-control-plane-controller-manager-c96754b79-5j44z   1/1     Running   10 (10h ago)   16h
+capi-system                         capi-controller-manager-6db8bc468c-ctdjk                        1/1     Running   8 (10h ago)    16h
+cert-manager                        cert-manager-58f8dcbb68-t72wp                                   1/1     Running   6 (10h ago)    16h
+cert-manager                        cert-manager-cainjector-7588b6f5cc-d8v6g                        1/1     Running   7 (10h ago)    16h
+cert-manager                        cert-manager-webhook-768c67c955-mcnqf                           1/1     Running   7 (10h ago)    16h
+config-management-monitoring        otel-collector-59b694c4b6-6vrvw                                 1/1     Running   6 (10h ago)    16h
+config-management-system            config-management-operator-b4dddd77c-mwkgm                      1/1     Running   9 (10h ago)    16h
+config-management-system            reconciler-manager-69966f987b-88tpc                             2/2     Running   14 (10h ago)   16h
+config-management-system            root-reconciler-mgmt-f9fc86b8-4qbxj                             3/3     Running   17 (10h ago)   11h
+focom-operator-system               focom-operator-controller-manager-f6b85465c-6vj99               1/1     Running   6 (10h ago)    15h
+gitea                               gitea-0                                                         1/1     Running   3 (10h ago)    16h
+gitea                               gitea-memcached-6696456559-hp4x7                                1/1     Running   6 (10h ago)    16h
+gitea                               gitea-postgresql-0                                              1/1     Running   6 (10h ago)    16h
+kube-system                         coredns-668d6bf9bc-9sx2h                                        1/1     Running   9 (10h ago)    32h
+kube-system                         coredns-668d6bf9bc-gvwn5                                        1/1     Running   9 (10h ago)    32h
+kube-system                         etcd-nephio-mgmt-control-plane                                  1/1     Running   8 (10h ago)    10h
+kube-system                         kindnet-qlnkz                                                   1/1     Running   9 (10h ago)    32h
+kube-system                         kube-apiserver-nephio-mgmt-control-plane                        1/1     Running   8 (10h ago)    10h
+kube-system                         kube-controller-manager-nephio-mgmt-control-plane               1/1     Running   10 (10h ago)   32h
+kube-system                         kube-proxy-xjxvf                                                1/1     Running   10 (10h ago)   32h
+kube-system                         kube-scheduler-nephio-mgmt-control-plane                        1/1     Running   10 (10h ago)   32h
+local-path-storage                  local-path-provisioner-58cc7856b6-2zxkj                         1/1     Running   9 (10h ago)    32h
+metallb-system                      controller-66586998d-zpc85                                      1/1     Running   8 (10h ago)    15h
+metallb-system                      speaker-76jwr                                                   1/1     Running   8 (10h ago)    15h
+nephio-system                       nephio-controller-84d8bcb5f8-tpgnm                              2/2     Running   10 (10h ago)   15h
+nephio-system                       token-controller-56b5df8d59-wbfmk                               2/2     Running   12 (10h ago)   16h
+o2ims                               o2ims-operator-64874cd9d8-q77f5                                 1/1     Running   6 (10h ago)    15h
+porch-system                        function-runner-7ff554ddd8-9rhfd                                1/1     Running   6 (10h ago)    16h
+porch-system                        function-runner-7ff554ddd8-lmfmd                                1/1     Running   6 (10h ago)    16h
+porch-system                        porch-controllers-555fc8947f-89z79                              1/1     Running   6 (10h ago)    16h
+porch-system                        porch-server-6747cc875f-mtpsb                                   1/1     Running   9 (10h ago)    16h
+resource-group-system               resource-group-controller-manager-77788c86d8-rjqf8              2/2     Running   12 (10h ago)   16h
+--- pods problemáticos ---
+No resources found
+--- CRDs ---
+76
+--- pacotes kpt baixados ---
+cert-manager
+cluster-capi
+cluster-capi-infrastructure-docker
+cluster-capi-kind-docker-templates
+configsync
+focom-operator
+gitea
+metallb
+metallb-sandbox-config
+nephio-operator
+o2ims
+porch
+repo-mgmt
+repo-mgmt-staging
+resource-backend
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/nephio-install/20260911-010959_etapa3_status.txt

@@ -1,0 +1,55 @@
+== ETAPA 3 :: passo=configsync :: 2026-09-11T01:09:43-03:00 ==
+kpt Version: 1.0.0  |  VM uptime: up 3 hours, 45 minutes
+[skip get] /home/diegoabreu/nephio-install/configsync já existe
+    upstream:
+        ref: v6
+    upstreamLock:
+        ref: v6
+        commit: 3b548f1cdd239101f79e3e49797bd59a39dad161
+[kpt live apply] configsync (reconcile-timeout=5m)
+installing inventory ResourceGroup CRD.
+inventory update started
+inventory update finished
+apply phase started
+namespace/config-management-monitoring apply successful
+namespace/config-management-system apply successful
+customresourcedefinition.apiextensions.k8s.io/configmanagements.configmanagement.gke.io apply successful
+customresourcedefinition.apiextensions.k8s.io/rootsyncs.configsync.gke.io apply skipped: inventory policy prevented actuation (strategy: Apply, status: Empty, policy: MustMatch)
+clusterrole.rbac.authorization.k8s.io/config-management-operator apply successful
+clusterrolebinding.rbac.authorization.k8s.io/config-management-operator apply successful
+apply phase finished
+reconcile phase started
+namespace/config-management-monitoring reconcile successful
+namespace/config-management-system reconcile successful
+customresourcedefinition.apiextensions.k8s.io/configmanagements.configmanagement.gke.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/rootsyncs.configsync.gke.io reconcile skipped
+clusterrole.rbac.authorization.k8s.io/config-management-operator reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/config-management-operator reconcile successful
+reconcile phase finished
+apply phase started
+serviceaccount/config-management-operator apply successful
+deployment.apps/config-management-operator apply successful
+configmanagement.configmanagement.gke.io/config-management apply successful
+apply phase finished
+reconcile phase started
+serviceaccount/config-management-operator reconcile successful
+deployment.apps/config-management-operator reconcile successful
+configmanagement.configmanagement.gke.io/config-management reconcile successful
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 9 attempted, 8 successful, 1 skipped, 0 failed
+reconcile result: 9 attempted, 8 successful, 1 skipped, 0 failed, 0 timed out
+--- ns/config-management-system ---
+NAME                                         READY   STATUS    RESTARTS       AGE   IP            NODE                        NOMINATED NODE   READINESS GATES
+config-management-operator-b4dddd77c-mwkgm   1/1     Running   9 (10h ago)    16h   10.244.0.16   nephio-mgmt-control-plane   <none>           <none>
+reconciler-manager-69966f987b-88tpc          2/2     Running   14 (10h ago)   16h   10.244.0.17   nephio-mgmt-control-plane   <none>           <none>
+root-reconciler-mgmt-f9fc86b8-4qbxj          3/3     Running   17 (10h ago)   11h   10.244.0.29   nephio-mgmt-control-plane   <none>           <none>
+--- ns/config-management-monitoring ---
+NAME                              READY   STATUS    RESTARTS      AGE   IP            NODE                        NOMINATED NODE   READINESS GATES
+otel-collector-59b694c4b6-6vrvw   1/1     Running   6 (10h ago)   16h   10.244.0.22   nephio-mgmt-control-plane   <none>           <none>
+--- ns/resource-group-system ---
+NAME                                                 READY   STATUS    RESTARTS       AGE   IP            NODE                        NOMINATED NODE   READINESS GATES
+resource-group-controller-manager-77788c86d8-rjqf8   2/2     Running   12 (10h ago)   16h   10.244.0.14   nephio-mgmt-control-plane   <none>           <none>
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/nephio-install/20260911-010943_etapa3_configsync.txt

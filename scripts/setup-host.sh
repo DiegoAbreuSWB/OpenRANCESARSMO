@@ -18,6 +18,7 @@ KIND_VERSION="${KIND_VERSION:-v0.27.0}"
 KUBECTL_VERSION="${KUBECTL_VERSION:-v1.32.3}"  # casa com o cluster K8s 1.32 do Nephio R6
 HELM_VERSION="${HELM_VERSION:-v3.19.0}"        # linha 3.x por compat. de charts; ver nota no doc
 KPT_VERSION="${KPT_VERSION:-v1.0.0}"
+PORCHCTL_VERSION="${PORCHCTL_VERSION:-v1.5.6}"  # casa com o Porch v1.5.6 do Nephio R6 (Fase 12)
 
 log() { printf '\n\033[1;36m== %s\033[0m\n' "$*"; }
 
@@ -101,6 +102,16 @@ do_tools() {
     chmod +x /usr/local/bin/kpt
   fi
   kpt version
+
+  log "tools: porchctl ${PORCHCTL_VERSION}"
+  if ! command -v porchctl >/dev/null 2>&1; then
+    tmp="$(mktemp -d)"
+    curl -fsSL "https://github.com/kptdev/porch/releases/download/${PORCHCTL_VERSION}/porchctl_${PORCHCTL_VERSION#v}_linux_amd64.tar.gz" \
+      | tar -xz -C "$tmp"
+    install -m 0755 "$tmp/porchctl" /usr/local/bin/porchctl
+    rm -rf "$tmp"
+  fi
+  porchctl version
 
   echo "tools OK"
 }

@@ -1,0 +1,125 @@
+== ETAPA 3 :: passo=nephio-operator :: 2026-09-11T01:09:41-03:00 ==
+kpt Version: 1.0.0  |  VM uptime: up 3 hours, 45 minutes
+[skip get] /home/diegoabreu/nephio-install/nephio-operator já existe
+    upstream:
+        ref: v6
+    upstreamLock:
+        ref: v6
+        commit: 3b548f1cdd239101f79e3e49797bd59a39dad161
+[kpt live apply] nephio-operator (reconcile-timeout=8m)
+installing inventory ResourceGroup CRD.
+inventory update started
+inventory update finished
+apply phase started
+namespace/nephio-system apply successful
+customresourcedefinition.apiextensions.k8s.io/amfdeployments.workload.nephio.org apply successful
+customresourcedefinition.apiextensions.k8s.io/capacities.req.nephio.org apply successful
+customresourcedefinition.apiextensions.k8s.io/clustercontexts.infra.nephio.org apply successful
+customresourcedefinition.apiextensions.k8s.io/datanetworknames.req.nephio.org apply successful
+customresourcedefinition.apiextensions.k8s.io/datanetworks.req.nephio.org apply successful
+customresourcedefinition.apiextensions.k8s.io/interfaces.req.nephio.org apply successful
+customresourcedefinition.apiextensions.k8s.io/networkconfigs.infra.nephio.org apply successful
+customresourcedefinition.apiextensions.k8s.io/networks.config.nephio.org apply successful
+customresourcedefinition.apiextensions.k8s.io/networks.infra.nephio.org apply successful
+customresourcedefinition.apiextensions.k8s.io/repositories.infra.nephio.org apply successful
+customresourcedefinition.apiextensions.k8s.io/smfdeployments.workload.nephio.org apply successful
+customresourcedefinition.apiextensions.k8s.io/tokens.infra.nephio.org apply successful
+customresourcedefinition.apiextensions.k8s.io/upfdeployments.workload.nephio.org apply successful
+customresourcedefinition.apiextensions.k8s.io/workloadclusters.infra.nephio.org apply successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-approval-role apply successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-bootstrap-role apply successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-controller-role apply successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-network-role apply successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-porch-role apply successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-repository-role apply successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-token-role apply successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-approval-role-binding apply successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-bootstrap-role-binding apply successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-controller-role-binding apply successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-network-role-binding apply successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-porch-role-binding apply successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-repository-role-binding apply successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-token-role-binding apply successful
+apply phase finished
+reconcile phase started
+namespace/nephio-system reconcile successful
+customresourcedefinition.apiextensions.k8s.io/amfdeployments.workload.nephio.org reconcile successful
+customresourcedefinition.apiextensions.k8s.io/capacities.req.nephio.org reconcile successful
+customresourcedefinition.apiextensions.k8s.io/clustercontexts.infra.nephio.org reconcile successful
+customresourcedefinition.apiextensions.k8s.io/datanetworknames.req.nephio.org reconcile successful
+customresourcedefinition.apiextensions.k8s.io/datanetworks.req.nephio.org reconcile successful
+customresourcedefinition.apiextensions.k8s.io/interfaces.req.nephio.org reconcile successful
+customresourcedefinition.apiextensions.k8s.io/networkconfigs.infra.nephio.org reconcile successful
+customresourcedefinition.apiextensions.k8s.io/networks.config.nephio.org reconcile successful
+customresourcedefinition.apiextensions.k8s.io/networks.infra.nephio.org reconcile successful
+customresourcedefinition.apiextensions.k8s.io/repositories.infra.nephio.org reconcile successful
+customresourcedefinition.apiextensions.k8s.io/smfdeployments.workload.nephio.org reconcile successful
+customresourcedefinition.apiextensions.k8s.io/tokens.infra.nephio.org reconcile successful
+customresourcedefinition.apiextensions.k8s.io/upfdeployments.workload.nephio.org reconcile successful
+customresourcedefinition.apiextensions.k8s.io/workloadclusters.infra.nephio.org reconcile successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-approval-role reconcile successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-bootstrap-role reconcile successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-controller-role reconcile successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-network-role reconcile successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-porch-role reconcile successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-repository-role reconcile successful
+clusterrole.rbac.authorization.k8s.io/nephio-controller-token-role reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-approval-role-binding reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-bootstrap-role-binding reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-controller-role-binding reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-network-role-binding reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-porch-role-binding reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-repository-role-binding reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/nephio-controller-token-role-binding reconcile successful
+reconcile phase finished
+apply phase started
+serviceaccount/nephio-controller apply successful
+role.rbac.authorization.k8s.io/nephio-controller-leader-election-role apply successful
+rolebinding.rbac.authorization.k8s.io/nephio-controller-leader-election-role-binding apply successful
+deployment.apps/nephio-controller apply successful
+deployment.apps/token-controller apply successful
+apply phase finished
+reconcile phase started
+serviceaccount/nephio-controller reconcile successful
+role.rbac.authorization.k8s.io/nephio-controller-leader-election-role reconcile successful
+rolebinding.rbac.authorization.k8s.io/nephio-controller-leader-election-role-binding reconcile successful
+deployment.apps/nephio-controller reconcile successful
+deployment.apps/token-controller reconcile successful
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 34 attempted, 34 successful, 0 skipped, 0 failed
+reconcile result: 34 attempted, 34 successful, 0 skipped, 0 failed, 0 timed out
+--- ns/nephio-system ---
+NAME                                 READY   STATUS    RESTARTS       AGE   IP            NODE                        NOMINATED NODE   READINESS GATES
+nephio-controller-84d8bcb5f8-tpgnm   2/2     Running   10 (10h ago)   15h   10.244.0.26   nephio-mgmt-control-plane   <none>           <none>
+token-controller-56b5df8d59-wbfmk    2/2     Running   12 (10h ago)   16h   10.244.0.18   nephio-mgmt-control-plane   <none>           <none>
+amfdeployments.workload.nephio.org                           2026-09-10T11:50:21Z
+capacities.req.nephio.org                                    2026-09-10T11:50:21Z
+clustercontexts.infra.nephio.org                             2026-09-10T11:50:21Z
+datanetworknames.req.nephio.org                              2026-09-10T11:50:21Z
+datanetworks.req.nephio.org                                  2026-09-10T11:50:21Z
+endpoints.inv.nephio.org                                     2026-09-10T12:23:33Z
+focomprovisioningrequests.focom.nephio.org                   2026-09-10T12:19:59Z
+interfaces.req.nephio.org                                    2026-09-10T11:50:21Z
+ipclaims.ipam.resource.nephio.org                            2026-09-10T12:23:33Z
+ipprefixes.ipam.resource.nephio.org                          2026-09-10T12:23:33Z
+links.inv.nephio.org                                         2026-09-10T12:23:33Z
+networkconfigs.infra.nephio.org                              2026-09-10T11:50:22Z
+networkinstances.ipam.resource.nephio.org                    2026-09-10T12:23:33Z
+networks.config.nephio.org                                   2026-09-10T11:50:22Z
+networks.infra.nephio.org                                    2026-09-10T11:50:22Z
+nodes.inv.nephio.org                                         2026-09-10T12:23:33Z
+oclouds.focom.nephio.org                                     2026-09-10T12:19:59Z
+rawtopologies.topo.nephio.org                                2026-09-10T12:23:33Z
+repositories.infra.nephio.org                                2026-09-10T11:50:22Z
+smfdeployments.workload.nephio.org                           2026-09-10T11:50:22Z
+targets.inv.nephio.org                                       2026-09-10T12:23:33Z
+tokens.infra.nephio.org                                      2026-09-10T11:50:22Z
+upfdeployments.workload.nephio.org                           2026-09-10T11:50:22Z
+vlanclaims.vlan.resource.nephio.org                          2026-09-10T12:23:33Z
+vlanindices.vlan.resource.nephio.org                         2026-09-10T12:23:34Z
+vlans.vlan.resource.nephio.org                               2026-09-10T12:23:34Z
+workloadclusters.infra.nephio.org                            2026-09-10T11:50:22Z
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/nephio-install/20260911-010941_etapa3_nephio-operator.txt

@@ -1,0 +1,134 @@
+== ETAPA 3 :: passo=cert-manager :: 2026-09-11T01:09:36-03:00 ==
+kpt Version: 1.0.0  |  VM uptime: up 3 hours, 45 minutes
+[skip get] /home/diegoabreu/nephio-install/cert-manager já existe
+    upstream:
+        ref: v6
+    upstreamLock:
+        ref: v6
+        commit: 3b548f1cdd239101f79e3e49797bd59a39dad161
+[kpt live apply] cert-manager (reconcile-timeout=5m)
+installing inventory ResourceGroup CRD.
+inventory update started
+inventory update finished
+apply phase started
+namespace/cert-manager apply successful
+customresourcedefinition.apiextensions.k8s.io/certificaterequests.cert-manager.io apply successful
+customresourcedefinition.apiextensions.k8s.io/certificates.cert-manager.io apply successful
+customresourcedefinition.apiextensions.k8s.io/challenges.acme.cert-manager.io apply successful
+customresourcedefinition.apiextensions.k8s.io/clusterissuers.cert-manager.io apply successful
+customresourcedefinition.apiextensions.k8s.io/issuers.cert-manager.io apply successful
+customresourcedefinition.apiextensions.k8s.io/orders.acme.cert-manager.io apply successful
+mutatingwebhookconfiguration.admissionregistration.k8s.io/cert-manager-webhook apply successful
+role.rbac.authorization.k8s.io/cert-manager-cainjector:leaderelection apply successful
+role.rbac.authorization.k8s.io/cert-manager:leaderelection apply successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-cainjector apply successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-cluster-view apply successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-approve:cert-manager-io apply successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-certificates apply successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-certificatesigningrequests apply successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-challenges apply successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-clusterissuers apply successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-ingress-shim apply successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-issuers apply successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-orders apply successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-edit apply successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-view apply successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-webhook:subjectaccessreviews apply successful
+rolebinding.rbac.authorization.k8s.io/cert-manager-cainjector:leaderelection apply successful
+rolebinding.rbac.authorization.k8s.io/cert-manager:leaderelection apply successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-cainjector apply successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-approve:cert-manager-io apply successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-certificates apply successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-certificatesigningrequests apply successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-challenges apply successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-clusterissuers apply successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-ingress-shim apply successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-issuers apply successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-orders apply successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-webhook:subjectaccessreviews apply successful
+validatingwebhookconfiguration.admissionregistration.k8s.io/cert-manager-webhook apply successful
+apply phase finished
+reconcile phase started
+namespace/cert-manager reconcile successful
+customresourcedefinition.apiextensions.k8s.io/certificaterequests.cert-manager.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/certificates.cert-manager.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/challenges.acme.cert-manager.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/clusterissuers.cert-manager.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/issuers.cert-manager.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/orders.acme.cert-manager.io reconcile successful
+mutatingwebhookconfiguration.admissionregistration.k8s.io/cert-manager-webhook reconcile successful
+role.rbac.authorization.k8s.io/cert-manager-cainjector:leaderelection reconcile successful
+role.rbac.authorization.k8s.io/cert-manager:leaderelection reconcile successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-cainjector reconcile successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-cluster-view reconcile successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-approve:cert-manager-io reconcile successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-certificates reconcile successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-certificatesigningrequests reconcile successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-challenges reconcile successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-clusterissuers reconcile successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-ingress-shim reconcile successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-issuers reconcile successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-controller-orders reconcile successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-edit reconcile successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-view reconcile successful
+clusterrole.rbac.authorization.k8s.io/cert-manager-webhook:subjectaccessreviews reconcile successful
+rolebinding.rbac.authorization.k8s.io/cert-manager-cainjector:leaderelection reconcile successful
+rolebinding.rbac.authorization.k8s.io/cert-manager:leaderelection reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-cainjector reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-approve:cert-manager-io reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-certificates reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-certificatesigningrequests reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-challenges reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-clusterissuers reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-ingress-shim reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-issuers reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-controller-orders reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/cert-manager-webhook:subjectaccessreviews reconcile successful
+validatingwebhookconfiguration.admissionregistration.k8s.io/cert-manager-webhook reconcile successful
+reconcile phase finished
+apply phase started
+serviceaccount/cert-manager apply successful
+serviceaccount/cert-manager-cainjector apply successful
+serviceaccount/cert-manager-webhook apply successful
+role.rbac.authorization.k8s.io/cert-manager-webhook:dynamic-serving apply successful
+rolebinding.rbac.authorization.k8s.io/cert-manager-webhook:dynamic-serving apply successful
+configmap/cert-manager apply successful
+configmap/cert-manager-webhook apply successful
+service/cert-manager apply successful
+service/cert-manager-webhook apply successful
+deployment.apps/cert-manager apply successful
+deployment.apps/cert-manager-cainjector apply successful
+deployment.apps/cert-manager-webhook apply successful
+apply phase finished
+reconcile phase started
+serviceaccount/cert-manager reconcile successful
+serviceaccount/cert-manager-cainjector reconcile successful
+serviceaccount/cert-manager-webhook reconcile successful
+role.rbac.authorization.k8s.io/cert-manager-webhook:dynamic-serving reconcile successful
+rolebinding.rbac.authorization.k8s.io/cert-manager-webhook:dynamic-serving reconcile successful
+configmap/cert-manager reconcile successful
+configmap/cert-manager-webhook reconcile successful
+service/cert-manager reconcile successful
+service/cert-manager-webhook reconcile successful
+deployment.apps/cert-manager reconcile successful
+deployment.apps/cert-manager-cainjector reconcile successful
+deployment.apps/cert-manager-webhook reconcile successful
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 48 attempted, 48 successful, 0 skipped, 0 failed
+reconcile result: 48 attempted, 48 successful, 0 skipped, 0 failed, 0 timed out
+--- ns/cert-manager ---
+NAME                                       READY   STATUS    RESTARTS      AGE   IP            NODE                        NOMINATED NODE   READINESS GATES
+cert-manager-58f8dcbb68-t72wp              1/1     Running   6 (10h ago)   16h   10.244.0.4    nephio-mgmt-control-plane   <none>           <none>
+cert-manager-cainjector-7588b6f5cc-d8v6g   1/1     Running   7 (10h ago)   16h   10.244.0.13   nephio-mgmt-control-plane   <none>           <none>
+cert-manager-webhook-768c67c955-mcnqf      1/1     Running   7 (10h ago)   16h   10.244.0.8    nephio-mgmt-control-plane   <none>           <none>
+--- CRDs cert-manager ---
+certificaterequests.cert-manager.io                          2026-09-10T11:45:06Z
+certificates.cert-manager.io                                 2026-09-10T11:45:06Z
+challenges.acme.cert-manager.io                              2026-09-10T11:45:06Z
+clusterissuers.cert-manager.io                               2026-09-10T11:45:06Z
+issuers.cert-manager.io                                      2026-09-10T11:45:06Z
+orders.acme.cert-manager.io                                  2026-09-10T11:45:06Z
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/nephio-install/20260911-010936_etapa3_cert-manager.txt

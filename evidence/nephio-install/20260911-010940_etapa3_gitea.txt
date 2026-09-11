@@ -1,0 +1,62 @@
+== ETAPA 3 :: passo=gitea :: 2026-09-11T01:09:40-03:00 ==
+kpt Version: 1.0.0  |  VM uptime: up 3 hours, 45 minutes
+[skip get] /home/diegoabreu/nephio-install/gitea já existe
+    upstream:
+        ref: v6
+    upstreamLock:
+        ref: v6
+        commit: 3b548f1cdd239101f79e3e49797bd59a39dad161
+[kpt live apply] gitea (reconcile-timeout=8m)
+installing inventory ResourceGroup CRD.
+inventory update started
+inventory update finished
+apply phase started
+namespace/gitea apply successful
+apply phase finished
+reconcile phase started
+namespace/gitea reconcile successful
+reconcile phase finished
+apply phase started
+secret/git-user-secret apply successful
+secret/gitea apply successful
+secret/gitea-init apply successful
+secret/gitea-inline-config apply successful
+secret/gitea-postgresql apply successful
+service/gitea apply successful
+service/gitea-memcached apply successful
+service/gitea-postgresql apply successful
+service/gitea-postgresql-hl apply successful
+deployment.apps/gitea-memcached apply successful
+statefulset.apps/gitea apply successful
+statefulset.apps/gitea-postgresql apply successful
+apply phase finished
+reconcile phase started
+secret/git-user-secret reconcile successful
+secret/gitea reconcile successful
+secret/gitea-init reconcile successful
+secret/gitea-inline-config reconcile successful
+secret/gitea-postgresql reconcile successful
+service/gitea reconcile successful
+service/gitea-memcached reconcile successful
+service/gitea-postgresql reconcile successful
+service/gitea-postgresql-hl reconcile successful
+deployment.apps/gitea-memcached reconcile successful
+statefulset.apps/gitea reconcile successful
+statefulset.apps/gitea-postgresql reconcile successful
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 13 attempted, 13 successful, 0 skipped, 0 failed
+reconcile result: 13 attempted, 13 successful, 0 skipped, 0 failed, 0 timed out
+--- ns/gitea ---
+NAME                               READY   STATUS    RESTARTS      AGE   IP            NODE                        NOMINATED NODE   READINESS GATES
+gitea-0                            1/1     Running   3 (10h ago)   16h   10.244.0.20   nephio-mgmt-control-plane   <none>           <none>
+gitea-memcached-6696456559-hp4x7   1/1     Running   6 (10h ago)   16h   10.244.0.9    nephio-mgmt-control-plane   <none>           <none>
+gitea-postgresql-0                 1/1     Running   6 (10h ago)   16h   10.244.0.10   nephio-mgmt-control-plane   <none>           <none>
+NAME                  TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)                       AGE
+gitea                 LoadBalancer   10.96.125.4    172.18.0.200   22:30282/TCP,3000:31425/TCP   16h
+gitea-memcached       ClusterIP      10.96.175.29   <none>         11211/TCP                     16h
+gitea-postgresql      ClusterIP      10.96.96.217   <none>         5432/TCP                      16h
+gitea-postgresql-hl   ClusterIP      None           <none>         5432/TCP                      16h
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/nephio-install/20260911-010940_etapa3_gitea.txt

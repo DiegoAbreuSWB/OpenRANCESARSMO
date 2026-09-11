@@ -3,6 +3,7 @@
 # Uso: bash scripts/06-porch-repos.sh <passo>
 #   catalog   -> registra catalog-infra-capi (read-only) e valida
 #   mgmt      -> cria repos deployment mgmt + mgmt-staging (Gitea) via pacote kpt
+#   openran   -> cria o repo deployment 'openran-cnfs' (Fase 12 - CNFs via Porch)
 #   rootsync  -> RootSync do ConfigSync apontando para o repo mgmt
 #   status    -> mostra Repository / PackageRevision / RootSync
 set -uo pipefail
@@ -29,6 +30,19 @@ wait_repo_ready(){
   return 1
 }
 
+register_deployment_repo(){
+  local name="$1"
+  local d="$WORK/repo-$name"
+  if [ ! -d "$d" ]; then
+    ( cd "$WORK" && kpt pkg get "$CAT/distros/sandbox/repository@$VER" "repo-$name" )
+  fi
+  local pc="$d/package-context.yaml"
+  sed -i "s/name: example-repo/name: $name/;  s/clusterName: example-cluster-name/clusterName: $name/" "$pc"
+  echo "-- package-context de repo-$name --"; cat "$pc"
+  ( cd "$d" && kpt fn render 2>&1 | tail -n 5 && (kpt live init 2>/dev/null || true) \
+    && kpt live apply --reconcile-timeout=3m --output=events 2>&1 | grep -vE 'reconcile pending|in progress' | tail -n 25 )
+}
+
 case "$step" in
   catalog)
     kubectl apply -f "$ROOT/manifests/porch-repo-catalog-infra-capi.yaml"
@@ -38,23 +52,18 @@ case "$step" in
     kubectl get packagerevisions -n default 2>/dev/null | grep -E 'nephio-workload-cluster|cluster-capi-kind' || echo "  (nenhuma ainda — pode levar ~1 min)"
     ;;
   mgmt)
-    for name in mgmt mgmt-staging; do
-      d="$WORK/repo-$name"
-      if [ ! -d "$d" ]; then
-        ( cd "$WORK" && kpt pkg get "$CAT/distros/sandbox/repository@$VER" "repo-$name" )
-      fi
-      # define o nome do repo no package-context (só os valores de exemplo em data:)
-      pc="$d/package-context.yaml"
-      sed -i "s/name: example-repo/name: $name/;  s/clusterName: example-cluster-name/clusterName: $name/" "$pc"
-      echo "-- package-context de repo-$name --"; cat "$pc"
-      ( cd "$d" && kpt fn render 2>&1 | tail -n 5 && (kpt live init 2>/dev/null || true) \
-        && kpt live apply --reconcile-timeout=3m --output=events 2>&1 | grep -vE 'reconcile pending|in progress' | tail -n 25 )
-    done
+    for name in mgmt mgmt-staging; do register_deployment_repo "$name"; done
     echo; echo "-- infra.nephio.org Repository + Token --"
     kubectl get repositories.infra.nephio.org,tokens.infra.nephio.org -A
     echo; echo "-- aguardando repos Porch mgmt / mgmt-staging --"
     wait_repo_ready mgmt || echo "[!] mgmt não ficou Ready"
     wait_repo_ready mgmt-staging || echo "[!] mgmt-staging não ficou Ready"
+    kubectl get repository -A
+    ;;
+  openran)
+    register_deployment_repo "openran-cnfs"
+    echo; echo "-- aguardando repo Porch openran-cnfs --"
+    wait_repo_ready openran-cnfs || echo "[!] openran-cnfs não ficou Ready"
     kubectl get repository -A
     ;;
   rootsync)
