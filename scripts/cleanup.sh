@@ -23,8 +23,9 @@ echo " CLEANUP do laboratório SMO/Nephio"
 echo " Serão considerados para remoção SOMENTE:"
 echo "   - clusters kind:  nephio-mgmt  e  o-cloud-1"
 echo "   - containers docker cujo nome começa com 'o-cloud-1' ou 'nephio-mgmt'"
+echo "   - namespace 'openran-lab' (CNFs oran-cu/du/core) e o repo Porch 'openran-cnfs'"
 echo "   - pasta ~/nephio-install (pacotes kpt baixados)"
-echo "   - /tmp/o-cloud-1.kubeconfig"
+echo "   - /tmp/o-cloud-1.kubeconfig, /tmp/openran-cnfs-*"
 echo "   - contextos kube: kind-nephio-mgmt, o-cloud-1"
 echo " NÃO serão tocados: outros clusters kind, imagens, volumes, .wslconfig,"
 echo "   Docker/WSL, nem os arquivos deste repositório (docs/evidence/scripts)."
@@ -40,6 +41,18 @@ echo
 # 1) demo-nf (best effort, o cluster pode já não existir)
 if confirm "Remover o Deployment/Service demo-nf do o-cloud-1?"; then
   kubectl --context o-cloud-1 delete -f "$(dirname "$0")/../manifests/demo-nf.yaml" --ignore-not-found 2>/dev/null || true
+fi
+
+# 1b) CNFs simuladas (oran-cu/du/core) - só a carga, mantém o o-cloud-1 de pé
+if confirm "Remover as CNFs (namespace 'openran-lab') e o repo Porch 'openran-cnfs'?"; then
+  kubectl --context o-cloud-1 delete namespace openran-lab --ignore-not-found 2>/dev/null || true
+  kubectl --context kind-nephio-mgmt -n default delete repository openran-cnfs --ignore-not-found 2>/dev/null || true
+  kubectl --context kind-nephio-mgmt -n default delete repositories.infra.nephio.org openran-cnfs --ignore-not-found 2>/dev/null || true
+  kubectl --context kind-nephio-mgmt -n default get packagerevisions.porch.kpt.dev -o name 2>/dev/null | grep openran-cnfs | while read -r pr; do
+    kubectl --context kind-nephio-mgmt -n default patch "$pr" --type=merge -p '{"spec":{"lifecycle":"DeletionProposed"}}' 2>/dev/null || true
+    kubectl --context kind-nephio-mgmt -n default delete "$pr" --ignore-not-found 2>/dev/null || true
+  done
+  rm -rf /tmp/openran-cnfs-delivery /tmp/openran-nfs-work /tmp/openran-nfs-pull "$HOME/nephio-install/repo-openran-cnfs" 2>/dev/null || true
 fi
 
 # 2) ProvisioningRequest + objetos Nephio do o-cloud-1
@@ -77,8 +90,8 @@ if confirm "Limpar contextos kube 'kind-nephio-mgmt' e 'o-cloud-1' do ~/.kube/co
 fi
 
 # 7) imagens (opcional, desligado por padrão)
-if [ "$KEEP_IMAGES" = 0 ] && confirm "APAGAR imagens Docker do lab (kindest/node, kindest/haproxy, nephio/*, cni-plugins)? Isto afeta SÓ estas tags."; then
-  docker images --format '{{.Repository}}:{{.Tag}}' | grep -E 'kindest/(node|haproxy)|^nephio/|kube-rbac-proxy' | while read -r img; do
+if [ "$KEEP_IMAGES" = 0 ] && confirm "APAGAR imagens Docker do lab (kindest/node, kindest/haproxy, nephio/*, oran-cu/du/core, cni-plugins)? Isto afeta SÓ estas tags."; then
+  docker images --format '{{.Repository}}:{{.Tag}}' | grep -E 'kindest/(node|haproxy)|^nephio/|kube-rbac-proxy|^oran-(cu|du|core):' | while read -r img; do
     echo "   docker rmi $img"; docker rmi "$img" >/dev/null 2>&1 || true
   done
 fi
