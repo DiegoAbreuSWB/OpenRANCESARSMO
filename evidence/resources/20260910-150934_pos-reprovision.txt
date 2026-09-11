@@ -1,0 +1,50 @@
+===================================================================
+ RESOURCE SNAPSHOT  |  label=pos-reprovision  |  2026-09-10T15:09:34-03:00
+ host: Linux 6.18.33.2-microsoft-standard-WSL2 x86_64  |  kernel WSL2
+===================================================================
+
+----- free -h -----
+               total        used        free      shared  buff/cache   available
+Mem:           9.7Gi       3.7Gi       121Mi       208Mi       6.2Gi       6.0Gi
+Swap:          4.0Gi       304Ki       4.0Gi
+
+----- /proc/loadavg -----
+2.07 2.91 2.63 3/1819 141983
+
+----- top 8 processos por RSS -----
+    PID COMMAND           RSS (rss KiB)
+2234     kube-apiserver                727.9 MiB
+135153   kube-apiserver                280.2 MiB
+16936    gitea                         166.1 MiB
+56042    quisp                         164.2 MiB
+8639     otelcontribcol                153.0 MiB
+10369    otelcontribcol                145.1 MiB
+11808    otelcontribcol                144.2 MiB
+11179    otelcontribcol                144.1 MiB
+
+----- docker stats --no-stream -----
+NAME                               CPU %     MEM USAGE / LIMIT     MEM %
+o-cloud-1-md-0-ddvzl-glj9m-gwk9f   17.88%    297.7MiB / 9.713GiB   2.99%
+o-cloud-1-2x5cz-xdbnr              37.95%    723.9MiB / 9.713GiB   7.28%
+o-cloud-1-lb                       0.23%     17.72MiB / 9.713GiB   0.18%
+nephio-mgmt-control-plane          100.92%   3.003GiB / 9.713GiB   30.92%
+
+  (containers: 4 rodando / 4 total)
+
+----- kind clusters -----
+nephio-mgmt
+o-cloud-1
+
+----- kubectl top nodes -----
+  (metrics-server ausente ou sem contexto - pulado, sem instalar nada)
+
+----- kubectl top pods -A -----
+  (metrics-server ausente ou sem contexto - pulado)
+
+----- resumo pods por contexto (se houver) -----
+  ctx=kind-nephio-mgmt pods=36 running/completed=36
+  ctx=o-cloud-1 pods=14 running/completed=14
+
+===================================================================
+ fim do snapshot
+===================================================================

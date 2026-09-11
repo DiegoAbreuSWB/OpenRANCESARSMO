@@ -1,0 +1,45 @@
+# ETAPA 7 - Intent / ProvisioningRequest da interface O-RAN O2 IMS.
+#
+# apiVersion : o2ims.provisioning.oran.org/v1alpha1   (descoberto na ETAPA 4)
+# kind       : ProvisioningRequest                     (cluster-scoped)
+# metadata.name = "o-cloud-1" = provisioningItemId (id único que o SMO usa p/ referenciar
+#                                                    tudo o que esta request provisionar)
+#
+# spec (campos obrigatórios: templateName, templateVersion, templateParameters):
+#   templateName      -> pacote kpt no repo Porch 'catalog-infra-capi' (env UPSTREAM_PKG_REPO
+#                        do o2ims-operator). 'nephio-workload-cluster' está publicado em
+#                        revisões main / v2.0.0 / v3.0.0 (confirmado: kubectl get packagerevisions).
+#   templateVersion   -> workspaceName da PackageRevision a clonar.
+#                        USAR 'main': as tags v2.0.0/v3.0.0 referenciam KRM functions em
+#                        gcr.io/kpt-fn/* (registry que o Google DESATIVOU -> render falha com
+#                        "DENIED: Unauthenticated request"). O branch 'main' já migrou para
+#                        ghcr.io/kptdev/krm-functions-catalog/*.
+#   templateParameters:
+#     clusterName        -> nome do workload cluster / O-Cloud a criar (OBRIGATÓRIO p/ o operador).
+#     clusterProvisioner -> só 'capi' é tratado pelo o2ims-operator.
+#     labels             -> OMITIDO de propósito: quando presente, o o2ims-operator injeta no
+#                           PackageVariant o mutator "gcr.io/kpt-fn/set-labels:v0.2.0" (ref
+#                           HARDCODED no código do operador, controllers/provisioning_request_controller.py),
+#                           e esse registry (gcr.io/kpt-fn) foi desativado pelo Google -> render falha.
+#
+# RESULTADO ESPERADO (cadeia da ETAPA 4):
+#   1. o2ims-operator valida e cria PackageVariant "o-cloud-1"
+#        upstream=catalog-infra-capi/nephio-workload-cluster@v3.0.0  downstream=mgmt/o-cloud-1
+#   2. Porch + nephio-controller renderizam e publicam PackageRevision no repo git 'mgmt'
+#   3. RootSync(mgmt) aplica de volta no cluster -> nasce um CAPI Cluster "o-cloud-1" (class=docker)
+#   4. CAPI + CAPD criam containers Docker (kubeadm) = workload cluster
+#   5. o2ims-operator vê Cluster.status.phase==Provisioned
+#        -> status.provisioningStatus.provisioningState: progressing -> fulfilled
+#        -> status.provisionedResourceSet.oCloudNodeClusterId = <uuid>
+apiVersion: o2ims.provisioning.oran.org/v1alpha1
+kind: ProvisioningRequest
+metadata:
+  name: o-cloud-1
+spec:
+  name: o-cloud-1-academico
+  description: "Provisiona o workload cluster o-cloud-1 (representacao academica de um O-Cloud)."
+  templateName: nephio-workload-cluster
+  templateVersion: main
+  templateParameters:
+    clusterName: o-cloud-1
+    clusterProvisioner: capi

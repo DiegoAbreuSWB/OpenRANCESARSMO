@@ -1,0 +1,20 @@
+# RootSync (Config Sync) que aplica NO management cluster tudo o que o Porch publicar
+# no repo git "mgmt" (Gitea). É o elo 4→5 do fluxo O2 IMS: quando o o2ims-operator
+# cria um PackageVariant com downstream.repo=mgmt, a PackageRevision publicada aqui
+# é sincronizada de volta para o cluster (gerando o CAPI Cluster).
+#
+# Shape idêntico ao renderizado por catalog@v6 nephio/optional/rootsync (data.name=mgmt).
+apiVersion: configsync.gke.io/v1beta1
+kind: RootSync
+metadata:
+  name: mgmt
+  namespace: config-management-system
+spec:
+  sourceFormat: unstructured
+  git:
+    repo: http://172.18.0.200:3000/nephio/mgmt.git
+    branch: main
+    auth: token
+    secretRef:
+      name: mgmt-access-token-configsync   # criado pelo pacote distros/sandbox/repository (ETAPA 6b)
+    period: 15s

@@ -1,0 +1,55 @@
+== recover/verify nephio-mgmt :: 2026-09-09T16:42:36-03:00 ==
+VM uptime: up 0 minutes
+[ok] docker pronto (1s)
+estado do container do nó: exited
+[fix] docker start nephio-mgmt-control-plane
+nephio-mgmt-control-plane
+[ok] apiserver readyz (4s)
+node/nephio-mgmt-control-plane condition met
+deployment "coredns" successfully rolled out
+
+== nodes ==
+NAME                        STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION                      CONTAINER-RUNTIME
+nephio-mgmt-control-plane   Ready    control-plane   18m   v1.32.0   172.18.0.2    <none>        Debian GNU/Linux 12 (bookworm)   6.18.33.2-microsoft-standard-WSL2   containerd://1.7.24
+
+== pods -A ==
+NAMESPACE            NAME                                                READY   STATUS    RESTARTS     AGE
+kube-system          coredns-668d6bf9bc-9sx2h                            0/1     Running   3 (7s ago)   17m
+kube-system          coredns-668d6bf9bc-gvwn5                            0/1     Running   3 (7s ago)   17m
+kube-system          etcd-nephio-mgmt-control-plane                      0/1     Running   3 (7s ago)   18m
+kube-system          kindnet-qlnkz                                       0/1     Unknown   2            17m
+kube-system          kube-apiserver-nephio-mgmt-control-plane            0/1     Running   3 (7s ago)   18m
+kube-system          kube-controller-manager-nephio-mgmt-control-plane   0/1     Running   3 (7s ago)   18m
+kube-system          kube-proxy-xjxvf                                    1/1     Running   3 (7s ago)   17m
+kube-system          kube-scheduler-nephio-mgmt-control-plane            0/1     Running   3 (7s ago)   18m
+local-path-storage   local-path-provisioner-58cc7856b6-xddvc             1/1     Running   4 (7s ago)   17m
+
+== pods problemáticos ==
+No resources found
+
+== deploy/ds/sts -A ==
+NAMESPACE            NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system          deployment.apps/coredns                  2/2     2            2           18m
+local-path-storage   deployment.apps/local-path-provisioner   1/1     1            1           18m
+
+NAMESPACE     NAME                        DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kube-system   daemonset.apps/kindnet      1         1         1       1            1           kubernetes.io/os=linux   18m
+kube-system   daemonset.apps/kube-proxy   1         1         1       1            1           kubernetes.io/os=linux   18m
+
+== nº de CRDs ==
+0
+
+== contextos ==
+CURRENT   NAME               CLUSTER            AUTHINFO           NAMESPACE
+*         kind-nephio-mgmt   kind-nephio-mgmt   kind-nephio-mgmt   
+
+== docker ps ==
+NAMES                       IMAGE                  STATUS
+nephio-mgmt-control-plane   kindest/node:v1.32.0   Up 9 seconds
+
+== free -h ==
+               total        used        free      shared  buff/cache   available
+Mem:           9.7Gi       1.0Gi       7.1Gi        13Mi       1.8Gi       8.7Gi
+Swap:          4.0Gi          0B       4.0Gi
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/nephio-install/20260909-164236_mgmt-recover-verify.txt

@@ -1,0 +1,63 @@
+== ETAPA 1 :: 2026-09-09T16:24:10-03:00 ==
+kind:    kind version 0.27.0
+kubectl: v1.32.3
+[create] kind create cluster --config /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/manifests/kind-management-cluster.yaml
+Creating cluster "nephio-mgmt" ...
+ • Ensuring node image (kindest/node:v1.32.0) 🖼  ...
+ ✓ Ensuring node image (kindest/node:v1.32.0) 🖼
+ • Preparing nodes 📦   ...
+ ✓ Preparing nodes 📦 
+ • Writing configuration 📜  ...
+ ✓ Writing configuration 📜
+ • Starting control-plane 🕹️  ...
+ ✓ Starting control-plane 🕹️
+ • Installing CNI 🔌  ...
+ ✓ Installing CNI 🔌
+ • Installing StorageClass 💾  ...
+ ✓ Installing StorageClass 💾
+Set kubectl context to "kind-nephio-mgmt"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-nephio-mgmt
+
+Thanks for using kind! 😊
+
+== kind get clusters ==
+nephio-mgmt
+
+== kubectl cluster-info --context kind-nephio-mgmt ==
+Kubernetes control plane is running at https://127.0.0.1:42965
+CoreDNS is running at https://127.0.0.1:42965/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+== kubectl get nodes ==
+NAME                        STATUS     ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION                      CONTAINER-RUNTIME
+nephio-mgmt-control-plane   NotReady   control-plane   6s    v1.32.0   172.18.0.2    <none>        Debian GNU/Linux 12 (bookworm)   6.18.33.2-microsoft-standard-WSL2   containerd://1.7.24
+
+== kubectl get pods -A ==
+NAMESPACE     NAME                                                READY   STATUS    RESTARTS   AGE
+kube-system   etcd-nephio-mgmt-control-plane                      0/1     Running   0          5s
+kube-system   kube-apiserver-nephio-mgmt-control-plane            0/1     Running   0          4s
+kube-system   kube-controller-manager-nephio-mgmt-control-plane   0/1     Running   0          4s
+kube-system   kube-scheduler-nephio-mgmt-control-plane            0/1     Running   0          5s
+
+== pods NÃO Running/!Succeeded ==
+No resources found
+
+== nós Ready? ==
+node/nephio-mgmt-control-plane condition met
+
+== versão do servidor ==
+serverVersion:
+  buildDate: "2024-12-13T19:19:34Z"
+  compiler: gc
+  gitCommit: 70d3cc986aa8221cd1dfb1121852688902d3bf53
+  gitTreeState: clean
+  gitVersion: v1.32.0
+  goVersion: go1.23.3
+  major: "1"
+  minor: "32"
+  platform: linux/amd64
+
+[ok] evidência salva em /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/nephio-install/20260909-162410_etapa1-mgmt-cluster.txt

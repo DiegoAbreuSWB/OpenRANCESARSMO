@@ -1,0 +1,27 @@
+== ETAPA 10 :: recover :: 2026-09-10T13:32:55-03:00 :: cluster=o-cloud-1 ==
+[D] RECOVERY / RECONCILIATION — deletar 1 pod manualmente
+pod alvo (antigo): demo-nf-7cbff6c797-2xw57
+NAME                       READY   STATUS    RESTARTS   AGE   IP             NODE                               NOMINATED NODE   READINESS GATES
+demo-nf-7cbff6c797-2xw57   1/1     Running   0          26s   192.168.1.11   o-cloud-1-md-0-xw88l-wz8cl-7xssj   <none>           <none>
+demo-nf-7cbff6c797-484wv   1/1     Running   0          17s   192.168.1.13   o-cloud-1-md-0-xw88l-wz8cl-7xssj   <none>           <none>
+demo-nf-7cbff6c797-plz5p   1/1     Running   0          20s   192.168.1.12   o-cloud-1-md-0-xw88l-wz8cl-7xssj   <none>           <none>
+--> kubectl delete pod demo-nf-7cbff6c797-2xw57
+pod "demo-nf-7cbff6c797-2xw57" deleted
+aguardando o Deployment reconciliar...
+Waiting for deployment "demo-nf" rollout to finish: 2 of 3 updated replicas are available...
+deployment "demo-nf" successfully rolled out
+-- depois (o pod deletado sumiu; um novo nasceu) --
+NAME                       READY   STATUS    RESTARTS   AGE   IP             NODE                               NOMINATED NODE   READINESS GATES
+demo-nf-7cbff6c797-484wv   1/1     Running   0          22s   192.168.1.13   o-cloud-1-md-0-xw88l-wz8cl-7xssj   <none>           <none>
+demo-nf-7cbff6c797-49t4h   1/1     Running   0          5s    192.168.1.14   o-cloud-1-md-0-xw88l-wz8cl-7xssj   <none>           <none>
+demo-nf-7cbff6c797-plz5p   1/1     Running   0          25s   192.168.1.12   o-cloud-1-md-0-xw88l-wz8cl-7xssj   <none>           <none>
+pod antigo 'demo-nf-7cbff6c797-2xw57' ainda existe? -> 
+eventos recentes do Deployment/ReplicaSet:
+47s         Normal   SuccessfulCreate   replicaset/demo-nf-766b7dd5cb   Created pod: demo-nf-766b7dd5cb-4bwfl
+31s         Normal   SuccessfulCreate   replicaset/demo-nf-7cbff6c797   Created pod: demo-nf-7cbff6c797-2xw57
+25s         Normal   SuccessfulCreate   replicaset/demo-nf-7cbff6c797   Created pod: demo-nf-7cbff6c797-plz5p
+22s         Normal   SuccessfulCreate   replicaset/demo-nf-7cbff6c797   Created pod: demo-nf-7cbff6c797-484wv
+5s          Normal   SuccessfulCreate   replicaset/demo-nf-7cbff6c797   Created pod: demo-nf-7cbff6c797-49t4h
+
+NOTA: isto é RECONCILIAÇÃO DECLARATIVA do Kubernetes (ReplicaSet mantém replicas=desejado).
+NÃO é 'healing' de uma NF telecom (sem estado de sessão, sem re-registro em interfaces O-RAN).

@@ -1,0 +1,43 @@
+===================================================================
+ RESOURCE SNAPSHOT  |  label=post-etapa1-mgmt  |  2026-09-09T16:25:32-03:00
+ host: Linux 6.18.33.2-microsoft-standard-WSL2 x86_64  |  kernel WSL2
+===================================================================
+
+----- free -h -----
+               total        used        free      shared  buff/cache   available
+Mem:           9.7Gi       750Mi       5.3Gi       3.5Mi       3.9Gi       9.0Gi
+Swap:          4.0Gi          0B       4.0Gi
+
+----- /proc/loadavg -----
+1.70 0.55 0.20 1/282 833
+
+----- top 8 processos por RSS -----
+    PID COMMAND           RSS (rss KiB)
+233      dockerd                        91.3 MiB
+180      containerd                     46.6 MiB
+149      snapd                          37.7 MiB
+217      unattended-upgr                31.8 MiB
+145      networkd-dispat                29.1 MiB
+43       systemd-journal                16.2 MiB
+1        systemd                        15.1 MiB
+153      wsl-pro-service                14.8 MiB
+
+----- docker stats --no-stream -----
+
+  (containers: 0 rodando / 1 total)
+
+----- kind clusters -----
+nephio-mgmt
+
+----- kubectl top nodes -----
+  (metrics-server ausente ou sem contexto - pulado, sem instalar nada)
+
+----- kubectl top pods -A -----
+  (metrics-server ausente ou sem contexto - pulado)
+
+----- resumo pods por contexto (se houver) -----
+  ctx=kind-nephio-mgmt pods=0 running/completed=0
+
+===================================================================
+ fim do snapshot
+===================================================================

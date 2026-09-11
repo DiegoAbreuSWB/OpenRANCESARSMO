@@ -1,0 +1,185 @@
+== ETAPA 3 - estado final :: 2026-09-10T09:21:10-03:00 :: VM uptime up 39 minutes ==
+
+########## TODOS OS PODS ##########
+NAMESPACE                           NAME                                                            READY   STATUS             RESTARTS      AGE   IP            NODE                        NOMINATED NODE   READINESS GATES
+capd-system                         capd-controller-manager-59dccf49db-gpc65                        1/1     Running            0             89s   10.244.0.50   nephio-mgmt-control-plane   <none>           <none>
+capi-kubeadm-bootstrap-system       capi-kubeadm-bootstrap-controller-manager-594ff68d7d-zsw6m      1/1     Running            0             11m   10.244.0.45   nephio-mgmt-control-plane   <none>           <none>
+capi-kubeadm-control-plane-system   capi-kubeadm-control-plane-controller-manager-c96754b79-5j44z   1/1     Running            0             11m   10.244.0.46   nephio-mgmt-control-plane   <none>           <none>
+capi-system                         capi-controller-manager-6db8bc468c-ctdjk                        1/1     Running            0             11m   10.244.0.47   nephio-mgmt-control-plane   <none>           <none>
+cert-manager                        cert-manager-58f8dcbb68-t72wp                                   1/1     Running            0             36m   10.244.0.6    nephio-mgmt-control-plane   <none>           <none>
+cert-manager                        cert-manager-cainjector-7588b6f5cc-d8v6g                        1/1     Running            0             36m   10.244.0.8    nephio-mgmt-control-plane   <none>           <none>
+cert-manager                        cert-manager-webhook-768c67c955-mcnqf                           1/1     Running            0             36m   10.244.0.7    nephio-mgmt-control-plane   <none>           <none>
+config-management-monitoring        otel-collector-59b694c4b6-6vrvw                                 1/1     Running            0             11m   10.244.0.48   nephio-mgmt-control-plane   <none>           <none>
+config-management-system            config-management-operator-b4dddd77c-mwkgm                      1/1     Running            0             12m   10.244.0.41   nephio-mgmt-control-plane   <none>           <none>
+config-management-system            reconciler-manager-69966f987b-88tpc                             2/2     Running            0             12m   10.244.0.43   nephio-mgmt-control-plane   <none>           <none>
+focom-operator-system               focom-operator-controller-manager-f6b85465c-6vj99               1/1     Running            0             70s   10.244.0.51   nephio-mgmt-control-plane   <none>           <none>
+gitea                               gitea-0                                                         1/1     Running            0             31m   10.244.0.35   nephio-mgmt-control-plane   <none>           <none>
+gitea                               gitea-memcached-6696456559-hp4x7                                1/1     Running            0             31m   10.244.0.32   nephio-mgmt-control-plane   <none>           <none>
+gitea                               gitea-postgresql-0                                              1/1     Running            0             31m   10.244.0.36   nephio-mgmt-control-plane   <none>           <none>
+kube-system                         coredns-668d6bf9bc-9sx2h                                        1/1     Running            3 (16h ago)   16h   10.244.0.4    nephio-mgmt-control-plane   <none>           <none>
+kube-system                         coredns-668d6bf9bc-gvwn5                                        1/1     Running            3 (16h ago)   16h   10.244.0.2    nephio-mgmt-control-plane   <none>           <none>
+kube-system                         etcd-nephio-mgmt-control-plane                                  1/1     Running            3 (16h ago)   16h   172.18.0.2    nephio-mgmt-control-plane   <none>           <none>
+kube-system                         kindnet-qlnkz                                                   1/1     Running            3 (16h ago)   16h   172.18.0.2    nephio-mgmt-control-plane   <none>           <none>
+kube-system                         kube-apiserver-nephio-mgmt-control-plane                        1/1     Running            3 (16h ago)   16h   172.18.0.2    nephio-mgmt-control-plane   <none>           <none>
+kube-system                         kube-controller-manager-nephio-mgmt-control-plane               1/1     Running            3 (16h ago)   16h   172.18.0.2    nephio-mgmt-control-plane   <none>           <none>
+kube-system                         kube-proxy-xjxvf                                                1/1     Running            3 (16h ago)   16h   172.18.0.2    nephio-mgmt-control-plane   <none>           <none>
+kube-system                         kube-scheduler-nephio-mgmt-control-plane                        1/1     Running            3 (16h ago)   16h   172.18.0.2    nephio-mgmt-control-plane   <none>           <none>
+local-path-storage                  local-path-provisioner-58cc7856b6-2zxkj                         1/1     Running            0             16h   10.244.0.5    nephio-mgmt-control-plane   <none>           <none>
+nephio-system                       nephio-controller-8f48ccd85-9tk42                               1/2     CrashLoopBackOff   4 (71s ago)   12m   10.244.0.39   nephio-mgmt-control-plane   <none>           <none>
+nephio-system                       token-controller-56b5df8d59-wbfmk                               2/2     Running            0             12m   10.244.0.40   nephio-mgmt-control-plane   <none>           <none>
+o2ims                               o2ims-operator-64874cd9d8-q77f5                                 1/1     Running            0             34s   10.244.0.52   nephio-mgmt-control-plane   <none>           <none>
+porch-system                        function-runner-7ff554ddd8-9rhfd                                1/1     Running            0             35m   10.244.0.10   nephio-mgmt-control-plane   <none>           <none>
+porch-system                        function-runner-7ff554ddd8-lmfmd                                1/1     Running            0             35m   10.244.0.9    nephio-mgmt-control-plane   <none>           <none>
+porch-system                        porch-controllers-555fc8947f-89z79                              1/1     Running            0             35m   10.244.0.11   nephio-mgmt-control-plane   <none>           <none>
+porch-system                        porch-server-6747cc875f-mtpsb                                   1/1     Running            0             35m   10.244.0.12   nephio-mgmt-control-plane   <none>           <none>
+resource-group-system               resource-group-controller-manager-77788c86d8-rjqf8              2/2     Running            0             12m   10.244.0.44   nephio-mgmt-control-plane   <none>           <none>
+
+########## PODS NAO SAUDAVEIS ##########
+No resources found
+
+########## DEPLOYMENTS / STATEFULSETS ##########
+NAMESPACE                           NAME                                                            READY   UP-TO-DATE   AVAILABLE   AGE
+capd-system                         deployment.apps/capd-controller-manager                         1/1     1            1           10m
+capi-kubeadm-bootstrap-system       deployment.apps/capi-kubeadm-bootstrap-controller-manager       1/1     1            1           11m
+capi-kubeadm-control-plane-system   deployment.apps/capi-kubeadm-control-plane-controller-manager   1/1     1            1           11m
+capi-system                         deployment.apps/capi-controller-manager                         1/1     1            1           11m
+cert-manager                        deployment.apps/cert-manager                                    1/1     1            1           36m
+cert-manager                        deployment.apps/cert-manager-cainjector                         1/1     1            1           36m
+cert-manager                        deployment.apps/cert-manager-webhook                            1/1     1            1           36m
+config-management-monitoring        deployment.apps/otel-collector                                  1/1     1            1           12m
+config-management-system            deployment.apps/config-management-operator                      1/1     1            1           12m
+config-management-system            deployment.apps/reconciler-manager                              1/1     1            1           12m
+focom-operator-system               deployment.apps/focom-operator-controller-manager               1/1     1            1           70s
+gitea                               deployment.apps/gitea-memcached                                 1/1     1            1           31m
+kube-system                         deployment.apps/coredns                                         2/2     2            2           16h
+local-path-storage                  deployment.apps/local-path-provisioner                          1/1     1            1           16h
+nephio-system                       deployment.apps/nephio-controller                               0/1     1            0           30m
+nephio-system                       deployment.apps/token-controller                                1/1     1            1           30m
+o2ims                               deployment.apps/o2ims-operator                                  1/1     1            1           34s
+porch-system                        deployment.apps/function-runner                                 2/2     2            2           35m
+porch-system                        deployment.apps/porch-controllers                               1/1     1            1           35m
+porch-system                        deployment.apps/porch-server                                    1/1     1            1           35m
+resource-group-system               deployment.apps/resource-group-controller-manager               1/1     1            1           12m
+
+NAMESPACE   NAME                                READY   AGE
+gitea       statefulset.apps/gitea              1/1     31m
+gitea       statefulset.apps/gitea-postgresql   1/1     31m
+
+########## CONTAGEM DE CRDs ##########
+58
+
+########## CRDs RELEVANTES (nephio / porch / capi / o2 / focom) ##########
+amfdeployments.workload.nephio.org                           2026-09-10T11:50:21Z
+capacities.req.nephio.org                                    2026-09-10T11:50:21Z
+clusterclasses.cluster.x-k8s.io                              2026-09-10T12:09:21Z
+clustercontexts.infra.nephio.org                             2026-09-10T11:50:21Z
+clusterresourcesetbindings.addons.cluster.x-k8s.io           2026-09-10T12:09:21Z
+clusterresourcesets.addons.cluster.x-k8s.io                  2026-09-10T12:09:21Z
+clusters.cluster.x-k8s.io                                    2026-09-10T12:09:21Z
+clusterselectors.configmanagement.gke.io                     2026-09-10T12:09:04Z
+configmanagements.configmanagement.gke.io                    2026-09-10T12:08:51Z
+datanetworknames.req.nephio.org                              2026-09-10T11:50:21Z
+datanetworks.req.nephio.org                                  2026-09-10T11:50:21Z
+dockerclusters.infrastructure.cluster.x-k8s.io               2026-09-10T12:10:17Z
+dockerclustertemplates.infrastructure.cluster.x-k8s.io       2026-09-10T12:10:18Z
+dockermachinepools.infrastructure.cluster.x-k8s.io           2026-09-10T12:10:18Z
+dockermachinepooltemplates.infrastructure.cluster.x-k8s.io   2026-09-10T12:10:18Z
+dockermachines.infrastructure.cluster.x-k8s.io               2026-09-10T12:10:18Z
+dockermachinetemplates.infrastructure.cluster.x-k8s.io       2026-09-10T12:10:18Z
+extensionconfigs.runtime.cluster.x-k8s.io                    2026-09-10T12:09:21Z
+focomprovisioningrequests.focom.nephio.org                   2026-09-10T12:19:59Z
+hierarchyconfigs.configmanagement.gke.io                     2026-09-10T12:09:04Z
+interfaces.req.nephio.org                                    2026-09-10T11:50:21Z
+ipaddressclaims.ipam.cluster.x-k8s.io                        2026-09-10T12:09:21Z
+ipaddresses.ipam.cluster.x-k8s.io                            2026-09-10T12:09:21Z
+kubeadmconfigs.bootstrap.cluster.x-k8s.io                    2026-09-10T12:09:21Z
+kubeadmconfigtemplates.bootstrap.cluster.x-k8s.io            2026-09-10T12:09:22Z
+kubeadmcontrolplanes.controlplane.cluster.x-k8s.io           2026-09-10T12:09:22Z
+kubeadmcontrolplanetemplates.controlplane.cluster.x-k8s.io   2026-09-10T12:09:22Z
+machinedeployments.cluster.x-k8s.io                          2026-09-10T12:09:23Z
+machinehealthchecks.cluster.x-k8s.io                         2026-09-10T12:09:23Z
+machinepools.cluster.x-k8s.io                                2026-09-10T12:09:23Z
+machines.cluster.x-k8s.io                                    2026-09-10T12:09:23Z
+machinesets.cluster.x-k8s.io                                 2026-09-10T12:09:24Z
+namespaceselectors.configmanagement.gke.io                   2026-09-10T12:09:04Z
+networkconfigs.infra.nephio.org                              2026-09-10T11:50:22Z
+networks.config.nephio.org                                   2026-09-10T11:50:22Z
+networks.infra.nephio.org                                    2026-09-10T11:50:22Z
+oclouds.focom.nephio.org                                     2026-09-10T12:19:59Z
+packagerevs.config.porch.kpt.dev                             2026-09-10T11:45:58Z
+packagevariants.config.porch.kpt.dev                         2026-09-10T11:45:58Z
+packagevariantsets.config.porch.kpt.dev                      2026-09-10T11:45:58Z
+provisioningrequests.o2ims.provisioning.oran.org             2026-09-10T12:20:36Z
+repositories.config.porch.kpt.dev                            2026-09-10T11:45:58Z
+repositories.infra.nephio.org                                2026-09-10T11:50:22Z
+reposyncs.configsync.gke.io                                  2026-09-10T12:09:05Z
+rootsyncs.configsync.gke.io                                  2026-09-10T12:08:51Z
+smfdeployments.workload.nephio.org                           2026-09-10T11:50:22Z
+templateinfoes.provisioning.oran.org                         2026-09-10T12:19:59Z
+tokens.infra.nephio.org                                      2026-09-10T11:50:22Z
+upfdeployments.workload.nephio.org                           2026-09-10T11:50:22Z
+workloadclusters.infra.nephio.org                            2026-09-10T11:50:22Z
+
+########## API-RESOURCES (nephio/porch/o2/focom) ##########
+amfdeployments                                   workload.nephio.org/v1alpha1              true         AMFDeployment
+capacities                                       req.nephio.org/v1alpha1                   true         Capacity
+clustercontexts                                  infra.nephio.org/v1alpha1                 true         ClusterContext
+datanetworknames                                 req.nephio.org/v1alpha1                   true         DataNetworkName
+datanetworks                                     req.nephio.org/v1alpha1                   true         DataNetwork
+focomprovisioningrequests                        focom.nephio.org/v1alpha1                 true         FocomProvisioningRequest
+interfaces                                       req.nephio.org/v1alpha1                   true         Interface
+networkconfigs                                   infra.nephio.org/v1alpha1                 true         NetworkConfig
+networks                                         config.nephio.org/v1alpha1                true         Network
+networks                                         infra.nephio.org/v1alpha1                 true         Network
+oclouds                                          focom.nephio.org/v1alpha1                 true         OCloud
+packagerevisionresources                         porch.kpt.dev/v1alpha1                    true         PackageRevisionResources
+packagerevisions                                 porch.kpt.dev/v1alpha1                    true         PackageRevision
+packagerevs                                      config.porch.kpt.dev/v1alpha1             true         PackageRev
+packages                                         porch.kpt.dev/v1alpha1                    true         PorchPackage
+packagevariants                                  config.porch.kpt.dev/v1alpha1             true         PackageVariant
+packagevariantsets                               config.porch.kpt.dev/v1alpha2             true         PackageVariantSet
+provisioningrequests                             o2ims.provisioning.oran.org/v1alpha1      false        ProvisioningRequest
+repositories                                     config.porch.kpt.dev/v1alpha1             true         Repository
+repositories                                     infra.nephio.org/v1alpha1                 true         Repository
+smfdeployments                                   workload.nephio.org/v1alpha1              true         SMFDeployment
+templateinfoes                                   provisioning.oran.org/v1alpha1            true         TemplateInfo
+tokens                                           infra.nephio.org/v1alpha1                 true         Token
+upfdeployments                                   workload.nephio.org/v1alpha1              true         UPFDeployment
+workloadclusters                                 infra.nephio.org/v1alpha1                 true         WorkloadCluster
+
+########## PACOTES KPT INSTALADOS ##########
+cert-manager
+cluster-capi
+cluster-capi-infrastructure-docker
+cluster-capi-kind-docker-templates
+configsync
+focom-operator
+gitea
+nephio-operator
+o2ims
+porch
+
+########## ResourceGroups (inventários kpt live) ##########
+NAMESPACE               NAME                 RECONCILING   STALLED   AGE
+capd-system             inventory-85298973   False         False     10m
+default                 inventory-07618862   False         False     36m
+default                 inventory-12852071   False         False     2m50s
+default                 inventory-35049911   False         False     12m
+default                 inventory-73680031   False         False     11m
+default                 inventory-78224391   False         False     35m
+focom-operator-system   inventory-59752677   False         False     73s
+gitea                   inventory-19041133   False         False     31m
+nephio-system           inventory-55431555   False         False     30m
+o2ims                   inventory-24807899   False         False     36s
+
+########## EVENTOS type!=Normal (10 mais recentes) ##########
+porch-fn-system                     4m25s       Warning   FailedToUpdateEndpoint         endpoints/enable-gcp-services-a56558d5                              Failed to update endpoint porch-fn-system/enable-gcp-services-a56558d5: Operation cannot be fulfilled on endpoints "enable-gcp-services-a56558d5": StorageError: invalid object, Code: 4, Key: /registry/services/endpoints/porch-fn-system/enable-gcp-services-a56558d5, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: d243c802-bbd5-4439-94a1-f45343533494, UID in object meta:
+porch-fn-system                     4m24s       Warning   Unhealthy                      pod/apply-replacements-85913d4e                                     Readiness probe errored: rpc error: code = NotFound desc = failed to exec in container: failed to load task: no running task found: task fa3ad984d2aa4322af15b6657aba0998bd2e566baf35c07394185ad185f9dce1 not found: not found
+porch-fn-system                     4m24s       Warning   Unhealthy                      pod/set-labels-0dfc3c8a                                             Readiness probe errored: rpc error: code = NotFound desc = failed to exec in container: failed to load task: no running task found: task 82b7892be0867cc121f4fe1589f9c372caf3a5dd730ae11ea2edd500cd4cce6c not found: not found
+porch-fn-system                     4m24s       Warning   Unhealthy                      pod/kubeconform-4a1c76b8                                            Readiness probe errored: rpc error: code = NotFound desc = failed to exec in container: failed to load task: no running task found: task 16f0a282ebf86f0c7152f18c7b5b3b1216878c2cf347685746b06b21c1d22ec9 not found: not found
+porch-fn-system                     4m24s       Warning   FailedToUpdateEndpoint         endpoints/upsert-resource-77196bdb                                  Failed to update endpoint porch-fn-system/upsert-resource-77196bdb: Operation cannot be fulfilled on endpoints "upsert-resource-77196bdb": StorageError: invalid object, Code: 4, Key: /registry/services/endpoints/porch-fn-system/upsert-resource-77196bdb, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: 5a9c1303-38e8-41ab-9a4b-11cc61ce4320, UID in object meta:
+porch-fn-system                     4m24s       Warning   Unhealthy                      pod/apply-setters-4d429572                                          Readiness probe errored: rpc error: code = Unknown desc = failed to exec in container: container is in CONTAINER_EXITED state
+porch-fn-system                     4m23s       Warning   Unhealthy                      pod/set-enforcement-action-aea09be3                                 Readiness probe errored: rpc error: code = Unknown desc = failed to exec in container: container is in CONTAINER_EXITED state
+porch-fn-system                     4m23s       Warning   Unhealthy                      pod/set-image-49c7a466                                              Readiness probe errored: rpc error: code = Unknown desc = failed to exec in container: container is in CONTAINER_EXITED state
+nephio-system                       73s         Warning   Unhealthy                      pod/nephio-controller-8f48ccd85-9tk42                               Readiness probe failed: Get "http://10.244.0.39:8081/readyz": dial tcp 10.244.0.39:8081: connect: connection refused
+nephio-system                       5s          Warning   BackOff                        pod/nephio-controller-8f48ccd85-9tk42                               Back-off restarting failed container controller in pod nephio-controller-8f48ccd85-9tk42_nephio-system(8fdd5973-42d5-4171-bad7-fa8be28156aa)

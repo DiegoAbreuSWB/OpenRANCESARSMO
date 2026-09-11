@@ -1,0 +1,48 @@
+== ETAPA 7 :: watch :: 2026-09-10T13:18:44-03:00 :: VM up 4 hours, 34 minutes ==
+#### 1. ProvisioningRequest ####
+NAME        AGE
+o-cloud-1   38s
+-- status --
+
+
+#### 2. PackageVariant (criado pelo o2ims-operator) ####
+NAMESPACE   NAME        AGE
+default     o-cloud-1   29s
+[
+  {
+    "lastTransitionTime": "2026-09-10T16:18:16Z",
+    "message": "all validation checks passed",
+    "reason": "Valid",
+    "status": "False",
+    "type": "Stalled"
+  },
+  {
+    "lastTransitionTime": "2026-09-10T16:18:21Z",
+    "message": "Internal error occurred: fn.render: pkg .:\n\tpkg.render:\n\tpipeline.run: func eval \"gcr.io/kpt-fn/apply-replacements:v0.1.1\" failed: rpc error: code = Unknown desc = unable to get the grpc client to the pod for gcr.io/kpt-fn/apply-replacements:v0.1.1: unable to get the entrypoint for gcr.io/kpt-fn/apply-replacements:v0.1.1: GET https://gcr.io/v2/token?scope=repository%3Akpt-fn%2Fapply-replacements%3Apull&service=gcr.io: DENIED: Unauthenticated request. Unauthenticated requests do not have permission \"artifactregistry.repositories.downloadArtifacts\" on resource \"projects/kpt-fn/locations/us/repositories/gcr.io\" (or it may not exist)",
+    "reason": "Error",
+    "status": "False",
+    "type": "Ready"
+  }
+]
+
+
+#### 3. PackageRevisions no repo mgmt ####
+NAME                                                           PACKAGE                              WORKSPACENAME   REVISION   LATEST   LIFECYCLE   REPOSITORY
+
+#### 4. CAPI Cluster / DockerCluster / MachineDeployment ####
+No resources found
+No resources found
+
+#### 5. Containers Docker do workload cluster ####
+NAMES                       IMAGE                  STATUS
+
+#### 6. kind clusters ####
+nephio-mgmt
+
+#### 7. eventos recentes (type!=Normal) ####
+NAMESPACE     LAST SEEN   TYPE      REASON      OBJECT                                         MESSAGE
+kube-system   39m         Warning   Unhealthy   pod/kube-apiserver-nephio-mgmt-control-plane   Readiness probe failed: HTTP probe failed with statuscode: 500
+default       24s         Info      Logging     provisioningrequest/o-cloud-1                  Provisioning request validation ongoing
+default       23s         Error     Logging     provisioningrequest/o-cloud-1                  Handler 'create_fn' failed permanently: Cluster creation permanently failed
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/o2ims/20260910-131844_etapa7_watch.txt

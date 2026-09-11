@@ -1,0 +1,23 @@
+# Nephio Management Cluster - laboratório SMO/Nephio (ETAPA 1)
+#
+# Espelha a configuração do sandbox oficial do Nephio R6
+# (test-infra @ R6: e2e/provision/playbooks/roles/bootstrap/tasks/create-mgmt.yml):
+#   - 1 nó control-plane, SEM workers  -> footprint mínimo
+#   - image kindest/node:v1.32.0        -> K8s testado pelo Nephio R6 (suporte v1.26-v1.32)
+#   - mount do docker.sock no nó        -> permite ao Cluster API Docker (CAPD),
+#                                          rodando DENTRO deste cluster, criar os
+#                                          containers do workload cluster ("O-Cloud")
+#                                          usando o Docker do host (padrão DinD-por-socket).
+#
+# Criar com:
+#   kind create cluster --name nephio-mgmt --config manifests/kind-management-cluster.yaml
+# Contexto resultante: kind-nephio-mgmt
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: nephio-mgmt
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.32.0
+    extraMounts:
+      - hostPath: /var/run/docker.sock
+        containerPath: /var/run/docker.sock

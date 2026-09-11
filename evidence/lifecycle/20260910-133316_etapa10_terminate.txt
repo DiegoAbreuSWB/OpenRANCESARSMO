@@ -1,0 +1,11 @@
+== ETAPA 10 :: terminate :: 2026-09-10T13:33:16-03:00 :: cluster=o-cloud-1 ==
+[E] TERMINATE — remover o manifesto
+deployment.apps "demo-nf" deleted
+service "demo-nf" deleted
+-- verificação de remoção --
+deployment: 
+service:    
+pods:       0 restante(s)
+No resources found in default namespace.
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/lifecycle/20260910-133316_etapa10_terminate.txt

@@ -1,0 +1,45 @@
+===================================================================
+ RESOURCE SNAPSHOT  |  label=etapa1-mgmt-healthy  |  2026-09-09T16:44:41-03:00
+ host: Linux 6.18.33.2-microsoft-standard-WSL2 x86_64  |  kernel WSL2
+===================================================================
+
+----- free -h -----
+               total        used        free      shared  buff/cache   available
+Mem:           9.7Gi       1.0Gi       7.0Gi        13Mi       1.8Gi       8.7Gi
+Swap:          4.0Gi          0B       4.0Gi
+
+----- /proc/loadavg -----
+0.32 0.21 0.09 1/517 3158
+
+----- top 8 processos por RSS -----
+    PID COMMAND           RSS (rss KiB)
+1570     kube-apiserver                240.6 MiB
+1563     kube-controller               118.2 MiB
+254      dockerd                        93.8 MiB
+1073     kubelet                        93.6 MiB
+1024     containerd                     67.9 MiB
+1548     etcd                           66.1 MiB
+1556     kube-scheduler                 64.5 MiB
+2133     kube-proxy                     56.6 MiB
+
+----- docker stats --no-stream -----
+NAME                        CPU %     MEM USAGE / LIMIT     MEM %
+nephio-mgmt-control-plane   31.92%    568.5MiB / 9.713GiB   5.72%
+
+  (containers: 1 rodando / 1 total)
+
+----- kind clusters -----
+nephio-mgmt
+
+----- kubectl top nodes -----
+  (metrics-server ausente ou sem contexto - pulado, sem instalar nada)
+
+----- kubectl top pods -A -----
+  (metrics-server ausente ou sem contexto - pulado)
+
+----- resumo pods por contexto (se houver) -----
+  ctx=kind-nephio-mgmt pods=9 running/completed=9
+
+===================================================================
+ fim do snapshot
+===================================================================

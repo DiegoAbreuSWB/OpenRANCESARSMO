@@ -1,0 +1,104 @@
+== O-CLOUD / WORKLOAD CLUSTER :: o-cloud-1 :: 2026-09-10T14:27:24-03:00 ==
+
+### QUANDO / POR QUEM foi criado ###
+E0910 14:27:31.779707    1171 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: unknown"
+E0910 14:27:31.807473    1171 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: unknown"
+E0910 14:27:31.811916    1171 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: unknown"
+E0910 14:27:31.817056    1171 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: unknown"
+E0910 14:27:31.821134    1171 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: unknown"
+Error from server (Forbidden): unknown
+disparado pelo ProvisioningRequest o-cloud-1 (O2 IMS):
+{
+  "description": "Provisiona o workload cluster o-cloud-1 (representacao academica de um O-Cloud).",
+  "name": "o-cloud-1-academico",
+  "templateName": "nephio-workload-cluster",
+  "templateParameters": {
+    "clusterName": "o-cloud-1",
+    "clusterProvisioner": "capi"
+  },
+  "templateVersion": "main"
+}
+
+{
+  "provisionedResourceSet": {
+    "oCloudInfrastructureResourceIds": [
+      "653eb6ea-d31e-40f0-803c-d3c370f46b8d"
+    ],
+    "oCloudNodeClusterId": "190a32c3-40c5-434c-888b-e8d4385857b8"
+  },
+  "provisioningStatus": {
+    "provisioningMessage": "Cluster resource created",
+    "provisioningState": "fulfilled",
+    "provisioningUpdateTime": "2026-09-10T17:03:29Z"
+  }
+}
+
+
+### COMO o Management Cluster enxerga o o-cloud-1 ###
+-- CAPI --
+NAME                                 CLUSTERCLASS   PHASE         AGE   VERSION
+cluster.cluster.x-k8s.io/o-cloud-1   docker         Provisioned   65m   v1.31.0
+
+NAME                                                                CLUSTER     INITIALIZED   API SERVER AVAILABLE   REPLICAS   READY   UPDATED   UNAVAILABLE   AGE   VERSION
+kubeadmcontrolplane.controlplane.cluster.x-k8s.io/o-cloud-1-jhflr   o-cloud-1   true          true                   1          0       1         1             65m   v1.31.0
+
+NAME                                                      CLUSTER     REPLICAS   READY   UPDATED   UNAVAILABLE   PHASE       AGE   VERSION
+machinedeployment.cluster.x-k8s.io/o-cloud-1-md-0-xw88l   o-cloud-1   1          0       1         1             ScalingUp   65m   v1.31.0
+
+NAME                                                        CLUSTER     NODENAME                           PROVIDERID                                    PHASE     AGE   VERSION
+machine.cluster.x-k8s.io/o-cloud-1-jhflr-ljvxg              o-cloud-1   o-cloud-1-jhflr-ljvxg              docker:////o-cloud-1-jhflr-ljvxg              Running   65m   v1.31.0
+machine.cluster.x-k8s.io/o-cloud-1-md-0-xw88l-wz8cl-7xssj   o-cloud-1   o-cloud-1-md-0-xw88l-wz8cl-7xssj   docker:////o-cloud-1-md-0-xw88l-wz8cl-7xssj   Running   65m   v1.31.0
+-- CAPD (infra Docker) --
+NAME                                                            CLUSTER     AGE
+dockercluster.infrastructure.cluster.x-k8s.io/o-cloud-1-fb26b   o-cloud-1   65m
+
+NAME                                                                             CLUSTER     MACHINE                            PROVIDERID                                    READY   AGE
+dockermachine.infrastructure.cluster.x-k8s.io/o-cloud-1-jhflr-ljvxg              o-cloud-1   o-cloud-1-jhflr-ljvxg              docker:////o-cloud-1-jhflr-ljvxg              true    65m
+dockermachine.infrastructure.cluster.x-k8s.io/o-cloud-1-md-0-xw88l-wz8cl-7xssj   o-cloud-1   o-cloud-1-md-0-xw88l-wz8cl-7xssj   docker:////o-cloud-1-md-0-xw88l-wz8cl-7xssj   true    65m
+-- Nephio WorkloadCluster --
+NAMESPACE   NAME        AGE
+default     o-cloud-1   65m
+-- Porch: PackageRevisions geradas para o o-cloud-1 --
+-- secret kubeconfig (gerado pelo CAPI) --
+NAME                   TYPE                      DATA   AGE
+o-cloud-1-kubeconfig   cluster.x-k8s.io/secret   1      65m
+
+### STATUS interno do o-cloud-1 ###
+The connection to the server 172.18.0.3:6443 was refused - did you specify the right host or port?
+
+The connection to the server 172.18.0.3:6443 was refused - did you specify the right host or port?
+
+### contextos kube ###
+CURRENT   NAME               CLUSTER            AUTHINFO           NAMESPACE
+*         kind-nephio-mgmt   kind-nephio-mgmt   kind-nephio-mgmt   
+          o-cloud-1          o-cloud-1          o-cloud-1-admin    
+
+### containers Docker (host) do o-cloud-1 ###
+NAMES                              IMAGE                  STATUS          PORTS
+o-cloud-1-md-0-xw88l-wz8cl-7xssj   kindest/node:v1.31.0   Up 15 seconds   
+
+### kind clusters ###
+nephio-mgmt
+o-cloud-1
+
+### eventos do Cluster o-cloud-1 (mgmt) ###
+65m         Normal   TopologyCreate        cluster/o-cloud-1               Created "DockerMachineTemplate/o-cloud-1-rcc9r"
+65m         Normal   TopologyCreate        cluster/o-cloud-1               Created "DockerCluster/o-cloud-1-fb26b"
+65m         Normal   Pending               cluster/o-cloud-1               Cluster o-cloud-1 is Pending
+65m         Normal   Provisioning          cluster/o-cloud-1               Cluster o-cloud-1 is Provisioning
+65m         Normal   TopologyUpdate        cluster/o-cloud-1               Updated "KubeadmControlPlane/o-cloud-1-jhflr"
+65m         Normal   InfrastructureReady   cluster/o-cloud-1               Cluster o-cloud-1 InfrastructureReady is now true
+65m         Normal   Provisioned           cluster/o-cloud-1               Cluster o-cloud-1 is Provisioned
+65m         Normal   Logging               provisioningrequest/o-cloud-1   Creation is processed: 1 succeeded; 0 failed.
+65m         Normal   Logging               provisioningrequest/o-cloud-1   Handler 'create_fn/create_fn.<locals>.check_c_status' succeeded.
+65m         Normal   Logging               provisioningrequest/o-cloud-1   Handler 'create_fn' succeeded.
+63m         Normal   ControlPlaneReady     cluster/o-cloud-1               Cluster o-cloud-1 ControlPlaneReady is now true
+24m         Info     Logging               provisioningrequest/o-cloud-1   Provisioning request validation ongoing
+24m         Info     Logging               provisioningrequest/o-cloud-1   Provisioning request validation done
+24m         Normal   Logging               provisioningrequest/o-cloud-1   Handler 'create_fn/create_fn.<locals>.sub_validations' succeeded.
+24m         Normal   Logging               provisioningrequest/o-cloud-1   Handler 'create_fn/create_fn.<locals>.sub_creation' succeeded.
+24m         Info     Logging               provisioningrequest/o-cloud-1   Provisioning request validation ongoing
+24m         Normal   Logging               provisioningrequest/o-cloud-1   Handler 'create_fn/create_fn.<locals>.check_c_status' succeeded.
+24m         Info     Logging               provisioningrequest/o-cloud-1   Provisioning request validation ongoing
+24m         Normal   Logging               provisioningrequest/o-cloud-1   Handler 'create_fn' succeeded.
+24m         Normal   Logging               provisioningrequest/o-cloud-1   Resuming is processed: 1 succeeded; 0 failed.

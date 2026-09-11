@@ -1,0 +1,102 @@
+== ETAPA 7 :: watch :: 2026-09-10T13:25:43-03:00 :: VM up 4 hours, 41 minutes ==
+#### 1. ProvisioningRequest ####
+NAME        AGE
+o-cloud-1   4m3s
+-- status --
+{
+  "provisionedResourceSet": {
+    "oCloudInfrastructureResourceIds": [
+      "57bc09d8-d8a6-401c-b987-32702eebda4a"
+    ],
+    "oCloudNodeClusterId": "b98f3882-3b4e-4372-99cd-48be7843aba7"
+  },
+  "provisioningStatus": {
+    "provisioningMessage": "Cluster resource created",
+    "provisioningState": "fulfilled",
+    "provisioningUpdateTime": "2026-09-10T16:22:18Z"
+  }
+}
+
+
+#### 2. PackageVariant (criado pelo o2ims-operator) ####
+NAMESPACE   NAME                                       AGE
+default     o-cloud-1                                  4m2s
+default     o-cloud-1-cloud-1-cluster                  3m48s
+default     o-cloud-1-cloud-1-configsync               3m48s
+default     o-cloud-1-cloud-1-crds                     3m48s
+default     o-cloud-1-cloud-1-kindnet                  3m48s
+default     o-cloud-1-cloud-1-local-path-provisioner   3m48s
+default     o-cloud-1-cloud-1-metallb                  3m48s
+default     o-cloud-1-cloud-1-multus                   3m48s
+default     o-cloud-1-cloud-1-repo                     3m48s
+default     o-cloud-1-cloud-1-rootsync                 3m48s
+default     o-cloud-1-cloud-1-vlanindex                3m48s
+[
+  {
+    "lastTransitionTime": "2026-09-10T16:21:41Z",
+    "message": "all validation checks passed",
+    "reason": "Valid",
+    "status": "False",
+    "type": "Stalled"
+  },
+  {
+    "lastTransitionTime": "2026-09-10T16:21:42Z",
+    "message": "successfully ensured downstream package variant",
+    "reason": "NoErrors",
+    "status": "True",
+    "type": "Ready"
+  }
+]
+
+
+#### 3. PackageRevisions no repo mgmt ####
+NAME                                                                     PACKAGE                                    WORKSPACENAME      REVISION   LATEST   LIFECYCLE   REPOSITORY
+mgmt-staging.o-cloud-1-cloud-1-kindnet.main                              o-cloud-1-cloud-1-kindnet                  main               -1         false    Published   mgmt-staging
+mgmt-staging.o-cloud-1-cloud-1-kindnet.packagevariant-1                  o-cloud-1-cloud-1-kindnet                  packagevariant-1   1          true     Published   mgmt-staging
+mgmt-staging.o-cloud-1-cloud-1-local-path-provisioner.main               o-cloud-1-cloud-1-local-path-provisioner   main               -1         false    Published   mgmt-staging
+mgmt-staging.o-cloud-1-cloud-1-local-path-provisioner.packagevariant-1   o-cloud-1-cloud-1-local-path-provisioner   packagevariant-1   1          true     Published   mgmt-staging
+mgmt-staging.o-cloud-1-cloud-1-multus.main                               o-cloud-1-cloud-1-multus                   main               -1         false    Published   mgmt-staging
+mgmt-staging.o-cloud-1-cloud-1-multus.packagevariant-1                   o-cloud-1-cloud-1-multus                   packagevariant-1   1          true     Published   mgmt-staging
+mgmt.o-cloud-1.main                                                      o-cloud-1                                  main               -1         false    Published   mgmt
+mgmt.o-cloud-1.packagevariant-1                                          o-cloud-1                                  packagevariant-1   1          true     Published   mgmt
+mgmt.o-cloud-1-cloud-1-cluster.main                                      o-cloud-1-cloud-1-cluster                  main               -1         false    Published   mgmt
+mgmt.o-cloud-1-cloud-1-cluster.packagevariant-1                          o-cloud-1-cloud-1-cluster                  packagevariant-1   1          true     Published   mgmt
+mgmt.o-cloud-1-cloud-1-vlanindex.main                                    o-cloud-1-cloud-1-vlanindex                main               -1         false    Published   mgmt
+mgmt.o-cloud-1-cloud-1-vlanindex.packagevariant-1                        o-cloud-1-cloud-1-vlanindex                packagevariant-1   1          true     Published   mgmt
+
+#### 4. CAPI Cluster / DockerCluster / MachineDeployment ####
+NAMESPACE   NAME        CLUSTERCLASS   PHASE         AGE     VERSION
+default     o-cloud-1   docker         Provisioned   3m33s   v1.31.0
+NAMESPACE   NAME                                                            CLUSTER     AGE
+default     dockercluster.infrastructure.cluster.x-k8s.io/o-cloud-1-fb26b   o-cloud-1   3m33s
+
+NAMESPACE   NAME                                                      CLUSTER     REPLICAS   READY   UPDATED   UNAVAILABLE   PHASE     AGE     VERSION
+default     machinedeployment.cluster.x-k8s.io/o-cloud-1-md-0-xw88l   o-cloud-1   1          1       1         0             Running   3m33s   v1.31.0
+
+NAMESPACE   NAME                                                        CLUSTER     NODENAME                           PROVIDERID                                    PHASE     AGE     VERSION
+default     machine.cluster.x-k8s.io/o-cloud-1-jhflr-ljvxg              o-cloud-1   o-cloud-1-jhflr-ljvxg              docker:////o-cloud-1-jhflr-ljvxg              Running   3m26s   v1.31.0
+default     machine.cluster.x-k8s.io/o-cloud-1-md-0-xw88l-wz8cl-7xssj   o-cloud-1   o-cloud-1-md-0-xw88l-wz8cl-7xssj   docker:////o-cloud-1-md-0-xw88l-wz8cl-7xssj   Running   3m32s   v1.31.0
+
+#### 5. Containers Docker do workload cluster ####
+NAMES                              IMAGE                                STATUS
+o-cloud-1-md-0-xw88l-wz8cl-7xssj   kindest/node:v1.31.0                 Up About a minute
+o-cloud-1-jhflr-ljvxg              kindest/node:v1.31.0                 Up 2 minutes
+o-cloud-1-lb                       kindest/haproxy:v20230510-486859a6   Up 3 minutes
+
+#### 6. kind clusters ####
+nephio-mgmt
+o-cloud-1
+
+#### 7. eventos recentes (type!=Normal) ####
+NAMESPACE     LAST SEEN   TYPE      REASON      OBJECT                                         MESSAGE
+kube-system   46m         Warning   Unhealthy   pod/kube-apiserver-nephio-mgmt-control-plane   Readiness probe failed: HTTP probe failed with statuscode: 500
+default       7m23s       Info      Logging     provisioningrequest/o-cloud-1                  Provisioning request validation ongoing
+default       7m22s       Error     Logging     provisioningrequest/o-cloud-1                  Handler 'create_fn' failed permanently: Cluster creation permanently failed
+default       5m30s       Info      Logging     provisioningrequest/o-cloud-1                  Provisioning request validation ongoing
+default       5m29s       Error     Logging     provisioningrequest/o-cloud-1                  Handler 'create_fn' failed permanently: Cluster creation permanently failed
+default       4m2s        Info      Logging     provisioningrequest/o-cloud-1                  Provisioning request validation ongoing
+default       4m2s        Info      Logging     provisioningrequest/o-cloud-1                  Provisioning request validation done
+default       4m1s        Info      Logging     provisioningrequest/o-cloud-1                  Provisioning request validation ongoing
+default       4m          Info      Logging     provisioningrequest/o-cloud-1                  Provisioning request validation ongoing
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/o2ims/20260910-132543_etapa7_watch.txt

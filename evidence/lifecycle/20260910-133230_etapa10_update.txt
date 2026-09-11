@@ -1,0 +1,34 @@
+== ETAPA 10 :: update :: 2026-09-10T13:32:30-03:00 :: cluster=o-cloud-1 ==
+[C] UPDATE — mudar env VERSION v1 -> v2 (dispara rollout)
+-- antes: revision / env --
+1
+[{"name":"VERSION","value":"v1"}]
+Warning: would violate PodSecurity "restricted:latest": allowPrivilegeEscalation != false (container "demo-nf" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "demo-nf" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "demo-nf" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "demo-nf" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+deployment.apps/demo-nf env updated
+Waiting for deployment "demo-nf" rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for deployment "demo-nf" rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for deployment "demo-nf" rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for deployment "demo-nf" rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for deployment "demo-nf" rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for deployment "demo-nf" rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for deployment "demo-nf" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "demo-nf" rollout to finish: 1 old replicas are pending termination...
+deployment "demo-nf" successfully rolled out
+-- depois --
+revision=2
+[{"name":"VERSION","value":"v2"}]
+-- rollout history --
+deployment.apps/demo-nf 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+
+-- ReplicaSets (o antigo fica com 0) --
+NAME                 DESIRED   CURRENT   READY   AGE    CONTAINERS   IMAGES              SELECTOR
+demo-nf-766b7dd5cb   0         0         0       111s   demo-nf      nginx:1.27-alpine   app=demo-nf,pod-template-hash=766b7dd5cb
+demo-nf-7cbff6c797   3         3         3       16s    demo-nf      nginx:1.27-alpine   app=demo-nf,pod-template-hash=7cbff6c797
+NAME                       READY   STATUS    RESTARTS   AGE   IP             NODE                               NOMINATED NODE   READINESS GATES
+demo-nf-7cbff6c797-2xw57   1/1     Running   0          16s   192.168.1.11   o-cloud-1-md-0-xw88l-wz8cl-7xssj   <none>           <none>
+demo-nf-7cbff6c797-484wv   1/1     Running   0          7s    192.168.1.13   o-cloud-1-md-0-xw88l-wz8cl-7xssj   <none>           <none>
+demo-nf-7cbff6c797-plz5p   1/1     Running   0          10s   192.168.1.12   o-cloud-1-md-0-xw88l-wz8cl-7xssj   <none>           <none>
+

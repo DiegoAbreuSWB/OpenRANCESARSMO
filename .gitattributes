@@ -1,0 +1,4 @@
+# Este repositório é executado dentro do WSL2/Linux. Forçar LF evita que o
+# autocrlf do Git no Windows quebre shebangs/heredocs dos scripts .sh.
+* text=auto eol=lf
+*.sh text eol=lf

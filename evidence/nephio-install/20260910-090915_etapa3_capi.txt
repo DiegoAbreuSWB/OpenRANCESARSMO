@@ -1,0 +1,280 @@
+== ETAPA 3 :: passo=capi :: 2026-09-10T09:09:15-03:00 ==
+kpt Version: 1.0.0  |  VM uptime: up 27 minutes
+[kpt pkg get] https://github.com/nephio-project/catalog.git/infra/capi/cluster-capi@v6 -> cluster-capi
+Package "cluster-capi":
+Fetching https://github.com/nephio-project/catalog@v6
+From https://github.com/nephio-project/catalog
+ * branch            v6         -> FETCH_HEAD
+Adding package "infra/capi/cluster-capi".
+
+Fetched 1 package(s).
+    upstream:
+        ref: v6
+    upstreamLock:
+        ref: v6
+        commit: 3b548f1cdd239101f79e3e49797bd59a39dad161
+    initializing "resourcegroup.yaml" data (namespace: default)...success
+[kpt live apply] cluster-capi (reconcile-timeout=8m)
+installing inventory ResourceGroup CRD.
+inventory update started
+inventory update finished
+apply phase started
+namespace/capi-kubeadm-bootstrap-system apply successful
+namespace/capi-kubeadm-control-plane-system apply successful
+namespace/capi-system apply successful
+customresourcedefinition.apiextensions.k8s.io/clusterclasses.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/clusterresourcesetbindings.addons.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/clusterresourcesets.addons.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/clusters.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/extensionconfigs.runtime.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/ipaddressclaims.ipam.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/ipaddresses.ipam.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/kubeadmconfigs.bootstrap.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/kubeadmconfigtemplates.bootstrap.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/kubeadmcontrolplanes.controlplane.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/kubeadmcontrolplanetemplates.controlplane.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/machinedeployments.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/machinehealthchecks.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/machinepools.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/machines.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/machinesets.cluster.x-k8s.io apply successful
+mutatingwebhookconfiguration.admissionregistration.k8s.io/capi-kubeadm-bootstrap-mutating-webhook-configuration apply successful
+mutatingwebhookconfiguration.admissionregistration.k8s.io/capi-kubeadm-control-plane-mutating-webhook-configuration apply successful
+mutatingwebhookconfiguration.admissionregistration.k8s.io/capi-mutating-webhook-configuration apply successful
+clusterrole.rbac.authorization.k8s.io/capi-aggregated-manager-role apply successful
+clusterrole.rbac.authorization.k8s.io/capi-kubeadm-bootstrap-manager-role apply successful
+clusterrole.rbac.authorization.k8s.io/capi-kubeadm-control-plane-aggregated-manager-role apply successful
+clusterrole.rbac.authorization.k8s.io/capi-kubeadm-control-plane-manager-role apply successful
+clusterrole.rbac.authorization.k8s.io/capi-manager-role apply successful
+clusterrolebinding.rbac.authorization.k8s.io/capi-kubeadm-bootstrap-manager-rolebinding apply successful
+clusterrolebinding.rbac.authorization.k8s.io/capi-kubeadm-control-plane-manager-rolebinding apply successful
+clusterrolebinding.rbac.authorization.k8s.io/capi-manager-rolebinding apply successful
+validatingwebhookconfiguration.admissionregistration.k8s.io/capi-kubeadm-bootstrap-validating-webhook-configuration apply successful
+validatingwebhookconfiguration.admissionregistration.k8s.io/capi-kubeadm-control-plane-validating-webhook-configuration apply successful
+validatingwebhookconfiguration.admissionregistration.k8s.io/capi-validating-webhook-configuration apply successful
+apply phase finished
+reconcile phase started
+namespace/capi-kubeadm-bootstrap-system reconcile successful
+namespace/capi-kubeadm-control-plane-system reconcile successful
+namespace/capi-system reconcile successful
+customresourcedefinition.apiextensions.k8s.io/clusterclasses.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/clusterresourcesetbindings.addons.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/clusterresourcesets.addons.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/clusters.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/extensionconfigs.runtime.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/ipaddressclaims.ipam.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/ipaddresses.ipam.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/kubeadmconfigs.bootstrap.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/kubeadmconfigtemplates.bootstrap.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/kubeadmcontrolplanes.controlplane.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/kubeadmcontrolplanetemplates.controlplane.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/machinedeployments.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/machinehealthchecks.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/machinepools.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/machines.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/machinesets.cluster.x-k8s.io reconcile successful
+mutatingwebhookconfiguration.admissionregistration.k8s.io/capi-kubeadm-bootstrap-mutating-webhook-configuration reconcile successful
+mutatingwebhookconfiguration.admissionregistration.k8s.io/capi-kubeadm-control-plane-mutating-webhook-configuration reconcile successful
+mutatingwebhookconfiguration.admissionregistration.k8s.io/capi-mutating-webhook-configuration reconcile successful
+clusterrole.rbac.authorization.k8s.io/capi-aggregated-manager-role reconcile successful
+clusterrole.rbac.authorization.k8s.io/capi-kubeadm-bootstrap-manager-role reconcile successful
+clusterrole.rbac.authorization.k8s.io/capi-kubeadm-control-plane-aggregated-manager-role reconcile successful
+clusterrole.rbac.authorization.k8s.io/capi-kubeadm-control-plane-manager-role reconcile successful
+clusterrole.rbac.authorization.k8s.io/capi-manager-role reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/capi-kubeadm-bootstrap-manager-rolebinding reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/capi-kubeadm-control-plane-manager-rolebinding reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/capi-manager-rolebinding reconcile successful
+validatingwebhookconfiguration.admissionregistration.k8s.io/capi-kubeadm-bootstrap-validating-webhook-configuration reconcile successful
+validatingwebhookconfiguration.admissionregistration.k8s.io/capi-kubeadm-control-plane-validating-webhook-configuration reconcile successful
+validatingwebhookconfiguration.admissionregistration.k8s.io/capi-validating-webhook-configuration reconcile successful
+reconcile phase finished
+apply phase started
+serviceaccount/capi-kubeadm-bootstrap-manager apply successful
+serviceaccount/capi-kubeadm-control-plane-manager apply successful
+serviceaccount/capi-manager apply successful
+role.rbac.authorization.k8s.io/capi-kubeadm-bootstrap-leader-election-role apply successful
+role.rbac.authorization.k8s.io/capi-kubeadm-control-plane-leader-election-role apply successful
+role.rbac.authorization.k8s.io/capi-leader-election-role apply successful
+rolebinding.rbac.authorization.k8s.io/capi-kubeadm-bootstrap-leader-election-rolebinding apply successful
+rolebinding.rbac.authorization.k8s.io/capi-kubeadm-control-plane-leader-election-rolebinding apply successful
+rolebinding.rbac.authorization.k8s.io/capi-leader-election-rolebinding apply successful
+service/capi-kubeadm-bootstrap-webhook-service apply successful
+service/capi-kubeadm-control-plane-webhook-service apply successful
+service/capi-webhook-service apply successful
+deployment.apps/capi-kubeadm-bootstrap-controller-manager apply successful
+deployment.apps/capi-kubeadm-control-plane-controller-manager apply successful
+deployment.apps/capi-controller-manager apply successful
+certificate.cert-manager.io/capi-kubeadm-bootstrap-serving-cert apply successful
+certificate.cert-manager.io/capi-kubeadm-control-plane-serving-cert apply successful
+certificate.cert-manager.io/capi-serving-cert apply successful
+issuer.cert-manager.io/capi-kubeadm-bootstrap-selfsigned-issuer apply successful
+issuer.cert-manager.io/capi-kubeadm-control-plane-selfsigned-issuer apply successful
+issuer.cert-manager.io/capi-selfsigned-issuer apply successful
+apply phase finished
+reconcile phase started
+serviceaccount/capi-kubeadm-bootstrap-manager reconcile successful
+serviceaccount/capi-kubeadm-control-plane-manager reconcile successful
+serviceaccount/capi-manager reconcile successful
+role.rbac.authorization.k8s.io/capi-kubeadm-bootstrap-leader-election-role reconcile successful
+role.rbac.authorization.k8s.io/capi-kubeadm-control-plane-leader-election-role reconcile successful
+role.rbac.authorization.k8s.io/capi-leader-election-role reconcile successful
+rolebinding.rbac.authorization.k8s.io/capi-kubeadm-bootstrap-leader-election-rolebinding reconcile successful
+rolebinding.rbac.authorization.k8s.io/capi-kubeadm-control-plane-leader-election-rolebinding reconcile successful
+rolebinding.rbac.authorization.k8s.io/capi-leader-election-rolebinding reconcile successful
+service/capi-kubeadm-bootstrap-webhook-service reconcile successful
+service/capi-kubeadm-control-plane-webhook-service reconcile successful
+service/capi-webhook-service reconcile successful
+issuer.cert-manager.io/capi-kubeadm-bootstrap-selfsigned-issuer reconcile successful
+issuer.cert-manager.io/capi-kubeadm-control-plane-selfsigned-issuer reconcile successful
+issuer.cert-manager.io/capi-selfsigned-issuer reconcile successful
+certificate.cert-manager.io/capi-kubeadm-bootstrap-serving-cert reconcile successful
+certificate.cert-manager.io/capi-kubeadm-control-plane-serving-cert reconcile successful
+certificate.cert-manager.io/capi-serving-cert reconcile successful
+deployment.apps/capi-kubeadm-bootstrap-controller-manager reconcile successful
+deployment.apps/capi-kubeadm-control-plane-controller-manager reconcile successful
+deployment.apps/capi-controller-manager reconcile successful
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 54 attempted, 54 successful, 0 skipped, 0 failed
+reconcile result: 54 attempted, 54 successful, 0 skipped, 0 failed, 0 timed out
+[kpt pkg get] https://github.com/nephio-project/catalog.git/infra/capi/cluster-capi-infrastructure-docker@v6 -> cluster-capi-infrastructure-docker
+Package "cluster-capi-infrastructure-docker":
+Fetching https://github.com/nephio-project/catalog@v6
+From https://github.com/nephio-project/catalog
+ * branch            v6         -> FETCH_HEAD
+Adding package "infra/capi/cluster-capi-infrastructure-docker".
+
+Fetched 1 package(s).
+    upstream:
+        ref: v6
+    upstreamLock:
+        ref: v6
+        commit: 3b548f1cdd239101f79e3e49797bd59a39dad161
+    initializing "resourcegroup.yaml" data (namespace: capd-system)...success
+[kpt live apply] cluster-capi-infrastructure-docker (reconcile-timeout=8m)
+installing inventory ResourceGroup CRD.
+inventory update started
+inventory update finished
+apply phase started
+namespace/capd-system apply successful
+customresourcedefinition.apiextensions.k8s.io/dockerclusters.infrastructure.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/dockerclustertemplates.infrastructure.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/dockermachinepools.infrastructure.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/dockermachinepooltemplates.infrastructure.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/dockermachines.infrastructure.cluster.x-k8s.io apply successful
+customresourcedefinition.apiextensions.k8s.io/dockermachinetemplates.infrastructure.cluster.x-k8s.io apply successful
+mutatingwebhookconfiguration.admissionregistration.k8s.io/capd-mutating-webhook-configuration apply successful
+clusterrole.rbac.authorization.k8s.io/capd-manager-role apply successful
+clusterrolebinding.rbac.authorization.k8s.io/capd-manager-rolebinding apply successful
+validatingwebhookconfiguration.admissionregistration.k8s.io/capd-validating-webhook-configuration apply successful
+apply phase finished
+reconcile phase started
+namespace/capd-system reconcile successful
+customresourcedefinition.apiextensions.k8s.io/dockerclusters.infrastructure.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/dockerclustertemplates.infrastructure.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/dockermachinepools.infrastructure.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/dockermachinepooltemplates.infrastructure.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/dockermachines.infrastructure.cluster.x-k8s.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/dockermachinetemplates.infrastructure.cluster.x-k8s.io reconcile successful
+mutatingwebhookconfiguration.admissionregistration.k8s.io/capd-mutating-webhook-configuration reconcile successful
+clusterrole.rbac.authorization.k8s.io/capd-manager-role reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/capd-manager-rolebinding reconcile successful
+validatingwebhookconfiguration.admissionregistration.k8s.io/capd-validating-webhook-configuration reconcile successful
+reconcile phase finished
+apply phase started
+serviceaccount/capd-manager apply successful
+role.rbac.authorization.k8s.io/capd-leader-election-role apply successful
+rolebinding.rbac.authorization.k8s.io/capd-leader-election-rolebinding apply successful
+service/capd-webhook-service apply successful
+deployment.apps/capd-controller-manager apply successful
+certificate.cert-manager.io/capd-serving-cert apply successful
+issuer.cert-manager.io/capd-selfsigned-issuer apply successful
+apply phase finished
+reconcile phase started
+serviceaccount/capd-manager reconcile successful
+role.rbac.authorization.k8s.io/capd-leader-election-role reconcile successful
+rolebinding.rbac.authorization.k8s.io/capd-leader-election-rolebinding reconcile successful
+service/capd-webhook-service reconcile successful
+issuer.cert-manager.io/capd-selfsigned-issuer reconcile successful
+certificate.cert-manager.io/capd-serving-cert reconcile successful
+deployment.apps/capd-controller-manager reconcile timeout
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 18 attempted, 18 successful, 0 skipped, 0 failed
+reconcile result: 18 attempted, 17 successful, 0 skipped, 0 failed, 1 timed out
+[kpt pkg get] https://github.com/nephio-project/catalog.git/infra/capi/cluster-capi-kind-docker-templates@v6 -> cluster-capi-kind-docker-templates
+Package "cluster-capi-kind-docker-templates":
+Fetching https://github.com/nephio-project/catalog@v6
+From https://github.com/nephio-project/catalog
+ * branch            v6         -> FETCH_HEAD
+Adding package "infra/capi/cluster-capi-kind-docker-templates".
+
+Fetched 1 package(s).
+    upstream:
+        ref: v6
+    upstreamLock:
+        ref: v6
+        commit: 3b548f1cdd239101f79e3e49797bd59a39dad161
+    initializing "resourcegroup.yaml" data (namespace: default)...success
+[kpt live apply] cluster-capi-kind-docker-templates (reconcile-timeout=5m)
+installing inventory ResourceGroup CRD.
+inventory update started
+inventory update finished
+apply phase started
+kubeadmconfigtemplate.bootstrap.cluster.x-k8s.io/docker-default-worker-bootstraptemplate apply successful
+clusterclass.cluster.x-k8s.io/docker apply successful
+kubeadmcontrolplanetemplate.controlplane.cluster.x-k8s.io/docker-control-plane apply successful
+dockerclustertemplate.infrastructure.cluster.x-k8s.io/docker-cluster apply failed: error when creating "docker_cluster_template.yaml": Internal error occurred: failed calling webhook "default.dockerclustertemplate.infrastructure.cluster.x-k8s.io": failed to call webhook: Post "https://capd-webhook-service.capd-system.svc:443/mutate-infrastructure-cluster-x-k8s-io-v1beta1-dockerclustertemplate?timeout=10s": dial tcp 10.96.152.212:443: connect: connection refused
+dockermachinetemplate.infrastructure.cluster.x-k8s.io/docker-control-plane apply failed: error when creating "docker_machine_template_control_plane.yaml": Internal error occurred: failed calling webhook "validation.dockermachinetemplate.infrastructure.cluster.x-k8s.io": failed to call webhook: Post "https://capd-webhook-service.capd-system.svc:443/validate-infrastructure-cluster-x-k8s-io-v1beta1-dockermachinetemplate?timeout=10s": dial tcp 10.96.152.212:443: connect: connection refused
+dockermachinetemplate.infrastructure.cluster.x-k8s.io/docker-default-worker-machinetemplate apply failed: error when creating "docker_machine_template_worker.yaml": Internal error occurred: failed calling webhook "validation.dockermachinetemplate.infrastructure.cluster.x-k8s.io": failed to call webhook: Post "https://capd-webhook-service.capd-system.svc:443/validate-infrastructure-cluster-x-k8s-io-v1beta1-dockermachinetemplate?timeout=10s": dial tcp 10.96.152.212:443: connect: connection refused
+apply phase finished
+reconcile phase started
+kubeadmconfigtemplate.bootstrap.cluster.x-k8s.io/docker-default-worker-bootstraptemplate reconcile successful
+clusterclass.cluster.x-k8s.io/docker reconcile successful
+kubeadmcontrolplanetemplate.controlplane.cluster.x-k8s.io/docker-control-plane reconcile successful
+dockerclustertemplate.infrastructure.cluster.x-k8s.io/docker-cluster reconcile skipped
+dockermachinetemplate.infrastructure.cluster.x-k8s.io/docker-control-plane reconcile skipped
+dockermachinetemplate.infrastructure.cluster.x-k8s.io/docker-default-worker-machinetemplate reconcile skipped
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 6 attempted, 3 successful, 0 skipped, 3 failed
+reconcile result: 6 attempted, 3 successful, 3 skipped, 0 failed, 0 timed out
+--- ns/capi-system ---
+NAME                                       READY   STATUS    RESTARTS   AGE     IP            NODE                        NOMINATED NODE   READINESS GATES
+capi-controller-manager-6db8bc468c-ctdjk   1/1     Running   0          8m58s   10.244.0.47   nephio-mgmt-control-plane   <none>           <none>
+--- ns/capi-kubeadm-bootstrap-system ---
+NAME                                                         READY   STATUS    RESTARTS   AGE     IP            NODE                        NOMINATED NODE   READINESS GATES
+capi-kubeadm-bootstrap-controller-manager-594ff68d7d-zsw6m   1/1     Running   0          8m58s   10.244.0.45   nephio-mgmt-control-plane   <none>           <none>
+--- ns/capi-kubeadm-control-plane-system ---
+NAME                                                            READY   STATUS    RESTARTS   AGE     IP            NODE                        NOMINATED NODE   READINESS GATES
+capi-kubeadm-control-plane-controller-manager-c96754b79-5j44z   1/1     Running   0          8m59s   10.244.0.46   nephio-mgmt-control-plane   <none>           <none>
+--- ns/capd-system ---
+NAME                                       READY   STATUS             RESTARTS       AGE    IP            NODE                        NOMINATED NODE   READINESS GATES
+capd-controller-manager-6dc48f9cdf-7g5hx   0/1     CrashLoopBackOff   6 (2m6s ago)   8m6s   10.244.0.49   nephio-mgmt-control-plane   <none>           <none>
+clusterclasses.cluster.x-k8s.io                              2026-09-10T12:09:21Z
+clusterresourcesetbindings.addons.cluster.x-k8s.io           2026-09-10T12:09:21Z
+clusterresourcesets.addons.cluster.x-k8s.io                  2026-09-10T12:09:21Z
+clusters.cluster.x-k8s.io                                    2026-09-10T12:09:21Z
+dockerclusters.infrastructure.cluster.x-k8s.io               2026-09-10T12:10:17Z
+dockerclustertemplates.infrastructure.cluster.x-k8s.io       2026-09-10T12:10:18Z
+dockermachinepools.infrastructure.cluster.x-k8s.io           2026-09-10T12:10:18Z
+dockermachinepooltemplates.infrastructure.cluster.x-k8s.io   2026-09-10T12:10:18Z
+dockermachines.infrastructure.cluster.x-k8s.io               2026-09-10T12:10:18Z
+dockermachinetemplates.infrastructure.cluster.x-k8s.io       2026-09-10T12:10:18Z
+extensionconfigs.runtime.cluster.x-k8s.io                    2026-09-10T12:09:21Z
+ipaddressclaims.ipam.cluster.x-k8s.io                        2026-09-10T12:09:21Z
+ipaddresses.ipam.cluster.x-k8s.io                            2026-09-10T12:09:21Z
+kubeadmconfigs.bootstrap.cluster.x-k8s.io                    2026-09-10T12:09:21Z
+kubeadmconfigtemplates.bootstrap.cluster.x-k8s.io            2026-09-10T12:09:22Z
+kubeadmcontrolplanes.controlplane.cluster.x-k8s.io           2026-09-10T12:09:22Z
+kubeadmcontrolplanetemplates.controlplane.cluster.x-k8s.io   2026-09-10T12:09:22Z
+machinedeployments.cluster.x-k8s.io                          2026-09-10T12:09:23Z
+machinehealthchecks.cluster.x-k8s.io                         2026-09-10T12:09:23Z
+machinepools.cluster.x-k8s.io                                2026-09-10T12:09:23Z
+machines.cluster.x-k8s.io                                    2026-09-10T12:09:23Z
+machinesets.cluster.x-k8s.io                                 2026-09-10T12:09:24Z
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/nephio-install/20260910-090915_etapa3_capi.txt

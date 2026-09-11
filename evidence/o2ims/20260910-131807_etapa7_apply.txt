@@ -1,0 +1,6 @@
+== ETAPA 7 :: apply :: 2026-09-10T13:18:07-03:00 :: VM up 4 hours, 33 minutes ==
+provisioningrequest.o2ims.provisioning.oran.org/o-cloud-1 created
+
+aplicado. use 'watch' para acompanhar.
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/o2ims/20260910-131807_etapa7_apply.txt

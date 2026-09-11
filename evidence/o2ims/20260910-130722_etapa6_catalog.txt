@@ -1,0 +1,23 @@
+== ETAPA 6 :: catalog :: 2026-09-10T13:07:22-03:00 :: VM up 4 hours, 24 minutes ==
+repository.config.porch.kpt.dev/catalog-infra-capi created
+  13:07:22 repository/catalog-infra-capi Ready=
+  13:07:28 repository/catalog-infra-capi Ready=True
+
+-- repositories --
+NAMESPACE   NAME                 TYPE   CONTENT   SYNC SCHEDULE   DEPLOYMENT   READY   ADDRESS
+default     catalog-infra-capi   git    Package                   false        True    https://github.com/nephio-project/catalog.git
+
+-- PackageRevisions de nephio-workload-cluster / cluster-capi-kind --
+catalog-infra-capi.cluster-capi-kind.main                      cluster-capi-kind                    main            -1         false    Published   catalog-infra-capi
+catalog-infra-capi.cluster-capi-kind.v2.0.0                    cluster-capi-kind                    v2.0.0          -1         false    Published   catalog-infra-capi
+catalog-infra-capi.cluster-capi-kind.v3.0.0                    cluster-capi-kind                    v3.0.0          -1         false    Published   catalog-infra-capi
+catalog-infra-capi.cluster-capi-kind-docker-templates.main     cluster-capi-kind-docker-templates   main            -1         false    Published   catalog-infra-capi
+catalog-infra-capi.cluster-capi-kind-docker-templates.v2.0.0   cluster-capi-kind-docker-templates   v2.0.0          -1         false    Published   catalog-infra-capi
+catalog-infra-capi.cluster-capi-kind-docker-templates.v3.0.0   cluster-capi-kind-docker-templates   v3.0.0          -1         false    Published   catalog-infra-capi
+catalog-infra-capi.nephio-workload-cluster.main                nephio-workload-cluster              main            -1         false    Published   catalog-infra-capi
+catalog-infra-capi.nephio-workload-cluster.v2.0.0              nephio-workload-cluster              v2.0.0          -1         false    Published   catalog-infra-capi
+catalog-infra-capi.nephio-workload-cluster.v3.0.0              nephio-workload-cluster              v3.0.0          -1         false    Published   catalog-infra-capi
+catalog-infra-capi.nephio-workload-cluster-argo.main           nephio-workload-cluster-argo         main            -1         false    Published   catalog-infra-capi
+catalog-infra-capi.nephio-workload-cluster-flux.main           nephio-workload-cluster-flux         main            -1         false    Published   catalog-infra-capi
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/o2ims/20260910-130722_etapa6_catalog.txt

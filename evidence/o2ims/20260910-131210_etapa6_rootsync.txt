@@ -1,0 +1,9 @@
+== ETAPA 6 :: rootsync :: 2026-09-10T13:12:10-03:00 :: VM up 4 hours, 28 minutes ==
+rootsync.configsync.gke.io/mgmt created
+NAMESPACE                  NAME   RENDERINGCOMMIT   RENDERINGERRORCOUNT   SOURCECOMMIT   SOURCEERRORCOUNT   SYNCCOMMIT   SYNCERRORCOUNT
+config-management-system   mgmt                                                                                          
+NAME                                         READY   STATUS              RESTARTS   AGE
+config-management-operator-b4dddd77c-mwkgm   1/1     Running             0          4h3m
+reconciler-manager-69966f987b-88tpc          2/2     Running             0          4h3m
+root-reconciler-mgmt-f9fc86b8-4qbxj          0/3     ContainerCreating   0          10s
+

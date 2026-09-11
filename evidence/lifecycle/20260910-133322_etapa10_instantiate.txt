@@ -1,0 +1,14 @@
+== ETAPA 10 :: instantiate :: 2026-09-10T13:33:22-03:00 :: cluster=o-cloud-1 ==
+[A] INSTANTIATE — aplicar demo-nf, replicas=1
+Warning: would violate PodSecurity "restricted:latest": allowPrivilegeEscalation != false (container "demo-nf" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "demo-nf" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "demo-nf" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "demo-nf" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+deployment.apps/demo-nf created
+service/demo-nf created
+Waiting for deployment "demo-nf" rollout to finish: 0 of 1 updated replicas are available...
+deployment "demo-nf" successfully rolled out
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+demo-nf   1/1     1            1           5s    demo-nf      nginx:1.27-alpine   app=demo-nf
+NAME                       READY   STATUS    RESTARTS   AGE   IP             NODE                               NOMINATED NODE   READINESS GATES
+demo-nf-766b7dd5cb-sjqck   1/1     Running   0          5s    192.168.1.15   o-cloud-1-md-0-xw88l-wz8cl-7xssj   <none>           <none>
+replicas desejadas: 1
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/lifecycle/20260910-133322_etapa10_instantiate.txt

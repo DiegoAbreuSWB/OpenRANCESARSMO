@@ -1,0 +1,129 @@
+== ETAPA 3 :: passo=porch :: 2026-09-10T08:45:54-03:00 ==
+kpt Version: 1.0.0  |  VM uptime: up 11 minutes
+[kpt pkg get] https://github.com/nephio-project/catalog.git/nephio/core/porch@v6 -> porch
+Package "porch":
+Fetching https://github.com/nephio-project/catalog@v6
+From https://github.com/nephio-project/catalog
+ * branch            v6         -> FETCH_HEAD
+Adding package "nephio/core/porch".
+
+Fetched 1 package(s).
+    upstream:
+        ref: v6
+    upstreamLock:
+        ref: v6
+        commit: 3b548f1cdd239101f79e3e49797bd59a39dad161
+    initializing "resourcegroup.yaml" data (namespace: default)...success
+[kpt live apply] porch (reconcile-timeout=8m)
+inventory update started
+inventory update finished
+apply phase started
+namespace/porch-fn-system apply successful
+namespace/porch-system apply successful
+customresourcedefinition.apiextensions.k8s.io/packagerevs.config.porch.kpt.dev apply successful
+customresourcedefinition.apiextensions.k8s.io/packagevariants.config.porch.kpt.dev apply successful
+customresourcedefinition.apiextensions.k8s.io/packagevariantsets.config.porch.kpt.dev apply successful
+customresourcedefinition.apiextensions.k8s.io/repositories.config.porch.kpt.dev apply successful
+clusterrole.rbac.authorization.k8s.io/aggregated-apiserver-clusterrole apply successful
+clusterrole.rbac.authorization.k8s.io/porch-controllers apply successful
+clusterrole.rbac.authorization.k8s.io/porch-controllers-packagevariants apply successful
+clusterrole.rbac.authorization.k8s.io/porch-controllers-packagevariantsets apply successful
+rolebinding.rbac.authorization.k8s.io/porch-auth-reader apply successful
+clusterrolebinding.rbac.authorization.k8s.io/porch-system:porch-controllers-packagevariants apply successful
+clusterrolebinding.rbac.authorization.k8s.io/porch-system:porch-controllers-packagevariantsets apply successful
+clusterrolebinding.rbac.authorization.k8s.io/porch:system:auth-delegator apply successful
+clusterrolebinding.rbac.authorization.k8s.io/sample-apiserver-clusterrolebinding apply successful
+apiservice.apiregistration.k8s.io/v1alpha1.porch.kpt.dev apply successful
+apply phase finished
+reconcile phase started
+namespace/porch-fn-system reconcile successful
+namespace/porch-system reconcile successful
+customresourcedefinition.apiextensions.k8s.io/packagerevs.config.porch.kpt.dev reconcile successful
+customresourcedefinition.apiextensions.k8s.io/packagevariants.config.porch.kpt.dev reconcile successful
+customresourcedefinition.apiextensions.k8s.io/packagevariantsets.config.porch.kpt.dev reconcile successful
+customresourcedefinition.apiextensions.k8s.io/repositories.config.porch.kpt.dev reconcile successful
+clusterrole.rbac.authorization.k8s.io/aggregated-apiserver-clusterrole reconcile successful
+clusterrole.rbac.authorization.k8s.io/porch-controllers reconcile successful
+clusterrole.rbac.authorization.k8s.io/porch-controllers-packagevariants reconcile successful
+clusterrole.rbac.authorization.k8s.io/porch-controllers-packagevariantsets reconcile successful
+rolebinding.rbac.authorization.k8s.io/porch-auth-reader reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/porch-system:porch-controllers-packagevariants reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/porch-system:porch-controllers-packagevariantsets reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/porch:system:auth-delegator reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/sample-apiserver-clusterrolebinding reconcile successful
+apiservice.apiregistration.k8s.io/v1alpha1.porch.kpt.dev reconcile successful
+reconcile phase finished
+apply phase started
+serviceaccount/porch-controllers apply successful
+serviceaccount/porch-fn-runner apply successful
+serviceaccount/porch-server apply successful
+role.rbac.authorization.k8s.io/porch-function-executor apply successful
+role.rbac.authorization.k8s.io/aggregated-apiserver-role apply successful
+rolebinding.rbac.authorization.k8s.io/porch-function-executor apply successful
+rolebinding.rbac.authorization.k8s.io/sample-apiserver-rolebinding apply successful
+configmap/pod-cache-config apply successful
+service/api apply successful
+service/function-runner apply successful
+deployment.apps/function-runner apply successful
+deployment.apps/porch-controllers apply successful
+deployment.apps/porch-server apply successful
+apply phase finished
+reconcile phase started
+serviceaccount/porch-controllers reconcile successful
+serviceaccount/porch-fn-runner reconcile successful
+serviceaccount/porch-server reconcile successful
+role.rbac.authorization.k8s.io/porch-function-executor reconcile successful
+role.rbac.authorization.k8s.io/aggregated-apiserver-role reconcile successful
+rolebinding.rbac.authorization.k8s.io/porch-function-executor reconcile successful
+rolebinding.rbac.authorization.k8s.io/sample-apiserver-rolebinding reconcile successful
+configmap/pod-cache-config reconcile successful
+service/api reconcile successful
+service/function-runner reconcile successful
+deployment.apps/porch-server reconcile successful
+deployment.apps/porch-controllers reconcile successful
+deployment.apps/function-runner reconcile successful
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 29 attempted, 29 successful, 0 skipped, 0 failed
+reconcile result: 29 attempted, 29 successful, 0 skipped, 0 failed, 0 timed out
+--- ns/porch-system ---
+NAME                                 READY   STATUS    RESTARTS   AGE   IP            NODE                        NOMINATED NODE   READINESS GATES
+function-runner-7ff554ddd8-9rhfd     1/1     Running   0          83s   10.244.0.10   nephio-mgmt-control-plane   <none>           <none>
+function-runner-7ff554ddd8-lmfmd     1/1     Running   0          83s   10.244.0.9    nephio-mgmt-control-plane   <none>           <none>
+porch-controllers-555fc8947f-89z79   1/1     Running   0          83s   10.244.0.11   nephio-mgmt-control-plane   <none>           <none>
+porch-server-6747cc875f-mtpsb        1/1     Running   0          83s   10.244.0.12   nephio-mgmt-control-plane   <none>           <none>
+--- ns/porch-fn-system ---
+NAME                                     READY   STATUS            RESTARTS   AGE   IP            NODE                        NOMINATED NODE   READINESS GATES
+apply-replacements-85913d4e              0/1     PodInitializing   0          62s   10.244.0.21   nephio-mgmt-control-plane   <none>           <none>
+apply-setters-4d429572                   0/1     PodInitializing   0          62s   10.244.0.20   nephio-mgmt-control-plane   <none>           <none>
+create-setters-0220cc87                  0/1     PodInitializing   0          62s   10.244.0.18   nephio-mgmt-control-plane   <none>           <none>
+enable-gcp-services-a56558d5             0/1     PodInitializing   0          62s   10.244.0.27   nephio-mgmt-control-plane   <none>           <none>
+ensure-name-substring-33ff7d9a           0/1     PodInitializing   0          62s   10.244.0.30   nephio-mgmt-control-plane   <none>           <none>
+export-terraform-571fedd3                0/1     PodInitializing   0          62s   10.244.0.31   nephio-mgmt-control-plane   <none>           <none>
+gatekeeper-a1c19318                      0/1     PodInitializing   0          62s   10.244.0.29   nephio-mgmt-control-plane   <none>           <none>
+generate-folders-4511c517                0/1     PodInitializing   0          62s   10.244.0.19   nephio-mgmt-control-plane   <none>           <none>
+kubeconform-4a1c76b8                     0/1     PodInitializing   0          62s   10.244.0.17   nephio-mgmt-control-plane   <none>           <none>
+remove-local-config-resources-2825914e   0/1     PodInitializing   0          62s   10.244.0.22   nephio-mgmt-control-plane   <none>           <none>
+search-replace-6864b06b                  0/1     PodInitializing   0          62s   10.244.0.16   nephio-mgmt-control-plane   <none>           <none>
+set-annotations-76d65ebd                 0/1     PodInitializing   0          62s   10.244.0.14   nephio-mgmt-control-plane   <none>           <none>
+set-enforcement-action-aea09be3          0/1     PodInitializing   0          62s   10.244.0.28   nephio-mgmt-control-plane   <none>           <none>
+set-image-49c7a466                       0/1     PodInitializing   0          62s   10.244.0.26   nephio-mgmt-control-plane   <none>           <none>
+set-labels-0dfc3c8a                      0/1     PodInitializing   0          62s   10.244.0.25   nephio-mgmt-control-plane   <none>           <none>
+set-namespace-f930d924                   0/1     PodInitializing   0          62s   10.244.0.15   nephio-mgmt-control-plane   <none>           <none>
+set-project-id-966c9e51                  0/1     PodInitializing   0          62s   10.244.0.24   nephio-mgmt-control-plane   <none>           <none>
+starlark-6ba3971c                        0/1     PodInitializing   0          62s   10.244.0.13   nephio-mgmt-control-plane   <none>           <none>
+upsert-resource-77196bdb                 0/1     PodInitializing   0          62s   10.244.0.23   nephio-mgmt-control-plane   <none>           <none>
+--- CRDs/APIs porch ---
+packagerevs.config.porch.kpt.dev          2026-09-10T11:45:58Z
+packagevariants.config.porch.kpt.dev      2026-09-10T11:45:58Z
+packagevariantsets.config.porch.kpt.dev   2026-09-10T11:45:58Z
+repositories.config.porch.kpt.dev         2026-09-10T11:45:58Z
+packagerevs                                      config.porch.kpt.dev/v1alpha1     true         PackageRev
+packagevariants                                  config.porch.kpt.dev/v1alpha1     true         PackageVariant
+packagevariantsets                               config.porch.kpt.dev/v1alpha2     true         PackageVariantSet
+repositories                                     config.porch.kpt.dev/v1alpha1     true         Repository
+packagerevisionresources                         porch.kpt.dev/v1alpha1            true         PackageRevisionResources
+packagerevisions                                 porch.kpt.dev/v1alpha1            true         PackageRevision
+packages                                         porch.kpt.dev/v1alpha1            true         PorchPackage
+

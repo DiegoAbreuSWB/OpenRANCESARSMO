@@ -1,0 +1,42 @@
+===================================================================
+ RESOURCE SNAPSHOT  |  label=post-host-setup  |  2026-09-09T16:16:50-03:00
+ host: Linux 6.18.33.2-microsoft-standard-WSL2 x86_64  |  kernel WSL2
+===================================================================
+
+----- free -h -----
+               total        used        free      shared  buff/cache   available
+Mem:           9.7Gi       585Mi       8.3Gi       3.5Mi       1.0Gi       9.1Gi
+Swap:          4.0Gi          0B       4.0Gi
+
+----- /proc/loadavg -----
+0.85 0.36 0.13 1/242 850
+
+----- top 8 processos por RSS -----
+    PID COMMAND           RSS (rss KiB)
+244      dockerd                        89.8 MiB
+195      containerd                     43.4 MiB
+207      unattended-upgr                31.8 MiB
+144      networkd-dispat                29.1 MiB
+46       systemd-journal                16.4 MiB
+1        systemd                        15.0 MiB
+152      wsl-pro-service                14.7 MiB
+77       systemd-resolve                14.2 MiB
+
+----- docker stats --no-stream -----
+
+  (containers: 0 rodando / 0 total)
+
+----- kind clusters -----
+No kind clusters found.
+
+----- kubectl top nodes -----
+  (metrics-server ausente ou sem contexto - pulado, sem instalar nada)
+
+----- kubectl top pods -A -----
+  (metrics-server ausente ou sem contexto - pulado)
+
+----- resumo pods por contexto (se houver) -----
+
+===================================================================
+ fim do snapshot
+===================================================================

@@ -1,0 +1,20 @@
+# Porch Repository: catálogo read-only de blueprints de infraestrutura (Cluster API).
+# É o repo que o o2ims-operator usa (env UPSTREAM_PKG_REPO=catalog-infra-capi) como
+# 'upstream' do PackageVariant que ele cria a partir de um ProvisioningRequest.
+# Shape idêntico ao de nephio/optional/stock-repos/repo-infra-capi-packages.yaml (catalog@v6).
+apiVersion: config.porch.kpt.dev/v1alpha1
+kind: Repository
+metadata:
+  name: catalog-infra-capi
+  namespace: default
+  labels:
+    kpt.dev/repository-access: read-only
+    kpt.dev/repository-content: external-blueprints
+spec:
+  content: Package
+  deployment: false
+  type: git
+  git:
+    repo: https://github.com/nephio-project/catalog.git
+    branch: main
+    directory: /infra/capi

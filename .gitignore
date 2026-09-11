@@ -1,0 +1,13 @@
+# credenciais/kubeconfigs nunca devem ir para o repo (são extraídos para /tmp no WSL)
+*kubeconfig*
+*.pem
+*.key
+!scripts/*.sh
+
+# artefatos de SO
+.DS_Store
+Thumbs.db
+
+# resultados grandes/gerados que preferimos não versionar binário
+*.tgz
+*.tar.gz

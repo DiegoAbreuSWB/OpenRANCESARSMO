@@ -1,0 +1,810 @@
+
+
+############ 1. CRDs candidatos (o2 / provision / ocloud / oran / focom / template / infrastructure) ############
+clustercontexts.infra.nephio.org                             2026-09-10T11:50:21Z
+dockerclusters.infrastructure.cluster.x-k8s.io               2026-09-10T12:10:17Z
+dockerclustertemplates.infrastructure.cluster.x-k8s.io       2026-09-10T12:10:18Z
+dockermachinepools.infrastructure.cluster.x-k8s.io           2026-09-10T12:10:18Z
+dockermachinepooltemplates.infrastructure.cluster.x-k8s.io   2026-09-10T12:10:18Z
+dockermachines.infrastructure.cluster.x-k8s.io               2026-09-10T12:10:18Z
+dockermachinetemplates.infrastructure.cluster.x-k8s.io       2026-09-10T12:10:18Z
+focomprovisioningrequests.focom.nephio.org                   2026-09-10T12:19:59Z
+kubeadmconfigtemplates.bootstrap.cluster.x-k8s.io            2026-09-10T12:09:22Z
+kubeadmcontrolplanetemplates.controlplane.cluster.x-k8s.io   2026-09-10T12:09:22Z
+oclouds.focom.nephio.org                                     2026-09-10T12:19:59Z
+provisioningrequests.o2ims.provisioning.oran.org             2026-09-10T12:20:36Z
+templateinfoes.provisioning.oran.org                         2026-09-10T12:19:59Z
+workloadclusters.infra.nephio.org                            2026-09-10T11:50:22Z
+
+
+############ 2. api-resources candidatos ############
+podtemplates                                     v1                                        true         PodTemplate
+kubeadmconfigtemplates                           bootstrap.cluster.x-k8s.io/v1beta1        true         KubeadmConfigTemplate
+kubeadmcontrolplanetemplates                     controlplane.cluster.x-k8s.io/v1beta1     true         KubeadmControlPlaneTemplate
+focomprovisioningrequests                        focom.nephio.org/v1alpha1                 true         FocomProvisioningRequest
+oclouds                                          focom.nephio.org/v1alpha1                 true         OCloud
+clustercontexts                                  infra.nephio.org/v1alpha1                 true         ClusterContext
+workloadclusters                                 infra.nephio.org/v1alpha1                 true         WorkloadCluster
+dockerclustertemplates                           infrastructure.cluster.x-k8s.io/v1beta1   true         DockerClusterTemplate
+dockermachinepooltemplates                       infrastructure.cluster.x-k8s.io/v1beta1   true         DockerMachinePoolTemplate
+dockermachinetemplates                           infrastructure.cluster.x-k8s.io/v1beta1   true         DockerMachineTemplate
+provisioningrequests                             o2ims.provisioning.oran.org/v1alpha1      false        ProvisioningRequest
+templateinfoes                                   provisioning.oran.org/v1alpha1            true         TemplateInfo
+
+
+############ 3. explain --recursive :: provisioningrequests.o2ims.provisioning.oran.org ############
+  GROUP:      o2ims.provisioning.oran.org
+  KIND:       ProvisioningRequest
+  VERSION:    v1alpha1
+  
+  DESCRIPTION:
+      <empty>
+  FIELDS:
+    apiVersion	<string>
+    kind	<string>
+    metadata	<ObjectMeta>
+      annotations	<map[string]string>
+      creationTimestamp	<string>
+      deletionGracePeriodSeconds	<integer>
+      deletionTimestamp	<string>
+      finalizers	<[]string>
+      generateName	<string>
+      generation	<integer>
+      labels	<map[string]string>
+      managedFields	<[]ManagedFieldsEntry>
+        apiVersion	<string>
+        fieldsType	<string>
+        fieldsV1	<FieldsV1>
+        manager	<string>
+        operation	<string>
+        subresource	<string>
+        time	<string>
+      name	<string>
+      namespace	<string>
+      ownerReferences	<[]OwnerReference>
+        apiVersion	<string> -required-
+        blockOwnerDeletion	<boolean>
+        controller	<boolean>
+        kind	<string> -required-
+        name	<string> -required-
+        uid	<string> -required-
+      resourceVersion	<string>
+      selfLink	<string>
+      uid	<string>
+    spec	<Object>
+      description	<string>
+      name	<string>
+      templateName	<string> -required-
+      templateParameters	<Object> -required-
+      templateVersion	<string> -required-
+    status	<Object>
+      extensions	<Object>
+      provisionedResourceSet	<Object>
+        oCloudInfrastructureResourceIds	<[]string>
+        oCloudNodeClusterId	<string>
+      provisioningStatus	<Object>
+        provisioningMessage	<string>
+        provisioningState	<string>
+        enum: progressing, fulfilled, failed, deleting
+        provisioningUpdateTime	<string>
+  
+
+
+############ 3. explain --recursive :: focomprovisioningrequests.focom.nephio.org ############
+  GROUP:      focom.nephio.org
+  KIND:       FocomProvisioningRequest
+  VERSION:    v1alpha1
+  
+  DESCRIPTION:
+      FocomProvisioningRequest is the Schema for the focomprovisioningrequests API
+      
+  FIELDS:
+    apiVersion	<string>
+    kind	<string>
+    metadata	<ObjectMeta>
+      annotations	<map[string]string>
+      creationTimestamp	<string>
+      deletionGracePeriodSeconds	<integer>
+      deletionTimestamp	<string>
+      finalizers	<[]string>
+      generateName	<string>
+      generation	<integer>
+      labels	<map[string]string>
+      managedFields	<[]ManagedFieldsEntry>
+        apiVersion	<string>
+        fieldsType	<string>
+        fieldsV1	<FieldsV1>
+        manager	<string>
+        operation	<string>
+        subresource	<string>
+        time	<string>
+      name	<string>
+      namespace	<string>
+      ownerReferences	<[]OwnerReference>
+        apiVersion	<string> -required-
+        blockOwnerDeletion	<boolean>
+        controller	<boolean>
+        kind	<string> -required-
+        name	<string> -required-
+        uid	<string> -required-
+      resourceVersion	<string>
+      selfLink	<string>
+      uid	<string>
+    spec	<Object>
+      description	<string>
+      name	<string>
+      oCloudId	<string> -required-
+      oCloudNamespace	<string> -required-
+      templateName	<string> -required-
+      templateParameters	<Object> -required-
+      templateVersion	<string> -required-
+    status	<Object>
+      lastUpdated	<string>
+      message	<string>
+      phase	<string>
+      remoteName	<string>
+  
+
+
+############ 3. explain --recursive :: oclouds.focom.nephio.org ############
+  GROUP:      focom.nephio.org
+  KIND:       OCloud
+  VERSION:    v1alpha1
+  
+  DESCRIPTION:
+      OCloud is the Schema for the oclouds API
+      
+  FIELDS:
+    apiVersion	<string>
+    kind	<string>
+    metadata	<ObjectMeta>
+      annotations	<map[string]string>
+      creationTimestamp	<string>
+      deletionGracePeriodSeconds	<integer>
+      deletionTimestamp	<string>
+      finalizers	<[]string>
+      generateName	<string>
+      generation	<integer>
+      labels	<map[string]string>
+      managedFields	<[]ManagedFieldsEntry>
+        apiVersion	<string>
+        fieldsType	<string>
+        fieldsV1	<FieldsV1>
+        manager	<string>
+        operation	<string>
+        subresource	<string>
+        time	<string>
+      name	<string>
+      namespace	<string>
+      ownerReferences	<[]OwnerReference>
+        apiVersion	<string> -required-
+        blockOwnerDeletion	<boolean>
+        controller	<boolean>
+        kind	<string> -required-
+        name	<string> -required-
+        uid	<string> -required-
+      resourceVersion	<string>
+      selfLink	<string>
+      uid	<string>
+    spec	<Object>
+      o2imsSecret	<Object> -required-
+        secretRef	<Object> -required-
+          name	<string> -required-
+          namespace	<string> -required-
+    status	<Object>
+  
+
+
+############ 3. explain --recursive :: templateinfoes.provisioning.oran.org ############
+  GROUP:      provisioning.oran.org
+  KIND:       TemplateInfo
+  VERSION:    v1alpha1
+  
+  DESCRIPTION:
+      TemplateInfo is the Schema for the templateinfoes API
+      
+  FIELDS:
+    apiVersion	<string>
+    kind	<string>
+    metadata	<ObjectMeta>
+      annotations	<map[string]string>
+      creationTimestamp	<string>
+      deletionGracePeriodSeconds	<integer>
+      deletionTimestamp	<string>
+      finalizers	<[]string>
+      generateName	<string>
+      generation	<integer>
+      labels	<map[string]string>
+      managedFields	<[]ManagedFieldsEntry>
+        apiVersion	<string>
+        fieldsType	<string>
+        fieldsV1	<FieldsV1>
+        manager	<string>
+        operation	<string>
+        subresource	<string>
+        time	<string>
+      name	<string>
+      namespace	<string>
+      ownerReferences	<[]OwnerReference>
+        apiVersion	<string> -required-
+        blockOwnerDeletion	<boolean>
+        controller	<boolean>
+        kind	<string> -required-
+        name	<string> -required-
+        uid	<string> -required-
+      resourceVersion	<string>
+      selfLink	<string>
+      uid	<string>
+    spec	<Object>
+      templateName	<string> -required-
+      templateParameterSchema	<string> -required-
+      templateVersion	<string> -required-
+    status	<Object>
+  
+
+
+############ 3. explain --recursive :: workloadclusters.infra.nephio.org ############
+  GROUP:      infra.nephio.org
+  KIND:       WorkloadCluster
+  VERSION:    v1alpha1
+  
+  DESCRIPTION:
+      WorkloadCluster is the Schema for the clustercontexts API
+      
+  FIELDS:
+    apiVersion	<string>
+    kind	<string>
+    metadata	<ObjectMeta>
+      annotations	<map[string]string>
+      creationTimestamp	<string>
+      deletionGracePeriodSeconds	<integer>
+      deletionTimestamp	<string>
+      finalizers	<[]string>
+      generateName	<string>
+      generation	<integer>
+      labels	<map[string]string>
+      managedFields	<[]ManagedFieldsEntry>
+        apiVersion	<string>
+        fieldsType	<string>
+        fieldsV1	<FieldsV1>
+        manager	<string>
+        operation	<string>
+        subresource	<string>
+        time	<string>
+      name	<string>
+      namespace	<string>
+      ownerReferences	<[]OwnerReference>
+        apiVersion	<string> -required-
+        blockOwnerDeletion	<boolean>
+        controller	<boolean>
+        kind	<string> -required-
+        name	<string> -required-
+        uid	<string> -required-
+      resourceVersion	<string>
+      selfLink	<string>
+      uid	<string>
+    spec	<Object>
+      clusterName	<string>
+      cnis	<[]string>
+      masterInterface	<string>
+    status	<Object>
+  
+
+
+############ 4. CRD provisioningrequests.o2ims.provisioning.oran.org (-o yaml, só spec/status) ############
+        {"apiVersion":"apiextensions.k8s.io/v1","kind":"CustomResourceDefinition","metadata":{"annotations":{"config.k8s.io/owning-inventory":"2fd3a00e30b2c319aa8c6453430c1b688fb981c6-1789042836096379646","internal.kpt.dev/upstream-identifier":"apiextensions.k8s.io|CustomResourceDefinition|default|provisioningrequests.o2ims.provisioning.oran.org"},"name":"provisioningrequests.o2ims.provisioning.oran.org"},"spec":{"group":"o2ims.provisioning.oran.org","names":{"kind":"ProvisioningRequest","listKind":"ProvisioningRequestList","plural":"provisioningrequests","singular":"provisioningrequest"},"scope":"Cluster","versions":[{"name":"v1alpha1","schema":{"openAPIV3Schema":{"properties":{"apiVersion":{"description":"APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nThe current apiVersion of this api is v1alpha1","type":"string"},"kind":{"description":"Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nThe kind value for this api is ProvisioningRequest","type":"string"},"metadata":{"properties":{"name":{"description":"The name of the ProvisioningRequest custom resource instance contains the provisioningItemId.\nThe provisioningItemId is the unique SMO provided identifier that the SMO will use to\nidentify all resources provisioned by this provisioning request in interactions\nwith the O-Cloud.\n","type":"string"}},"type":"object"},"spec":{"properties":{"description":{"description":"A description of this provisioning request.\n","type":"string"},"name":{"description":"the name in this spec section is a human readable name intended for descriptive\npurposes, this name is not required to be unique and does not identify a provisioning\nrequest or any provisioned resources.\n","type":"string"},"templateName":{"description":"templateName is the name of the template that the SMO wants to use to provision\nresources\n","type":"string"},"templateParameters":{"description":"templateParams carries the parameters required to provision resources using this template.\nThe type is object as actual parameters are defined by the template.\nThe template parameter schema itself is not defined here as it is template specific.\nThe themplate parameter schema must be published by the template provider so that FOCOM can\nlearn about required parameters and validate the same.\nThe template parameter schema language must be standardized by O-RAN.\n","type":"object","x-kubernetes-preserve-unknown-fields":true},"templateVersion":{"description":"templateVersion is the version of the template that the SMO wants to use to provision\nresources. templateName and templateVersion together uniquely identify the template\ninstance that the SMO wants to use in the provisioning request.\n","type":"string"}},"required":["templateName","templateVersion","templateParameters"],"type":"object"},"status":{"description":"ProvisioningRequestStatus defines the observed state of ProvisioningRequest","properties":{"extensions":{"description":"Extensions contain extra details about the resources and the configuration used for/by\nthe ProvisioningRequest.","type":"object","x-kubernetes-preserve-unknown-fields":true},"provisionedResourceSet":{"description":"The resources that have been successfully provisioned as part of the provisioning process.\n","properties":{"oCloudInfrastructureResourceIds":{"description":"The list of provisioned infrastructure resource ids.\n","items":{"description":"The provisioned infrastructure resource id.\n","type":"string"},"type":"array"},"oCloudNodeClusterId":{"description":"The identifier of the provisioned oCloud NodeCluster.\n","type":"string"}},"type":"object"},"provisioningStatus":{"properties":{"provisioningMessage":{"description":"The details about the current state of the provisioning process.\n","type":"string"},"provisioningState":{"description":"The current state of the provisioning process.","enum":["progressing","fulfilled","failed","deleting"],"type":"string"},"provisioningUpdateTime":{"description":"The last update time of the provisioning status.\n","format":"date-time","type":"string"}},"type":"object"}},"type":"object"}},"type":"object"}},"served":true,"storage":true,"subresources":{"status":{}}}]}}
+    creationTimestamp: "2026-09-10T12:20:36Z"
+    generation: 1
+    name: provisioningrequests.o2ims.provisioning.oran.org
+    resourceVersion: "7679"
+    uid: 9e93fb9a-9672-490c-8951-7d121b31ddfc
+  spec:
+    conversion:
+      strategy: None
+    group: o2ims.provisioning.oran.org
+    names:
+      kind: ProvisioningRequest
+      listKind: ProvisioningRequestList
+      plural: provisioningrequests
+      singular: provisioningrequest
+    scope: Cluster
+    versions:
+    - name: v1alpha1
+      schema:
+        openAPIV3Schema:
+          properties:
+            apiVersion:
+              description: |-
+                APIVersion defines the versioned schema of this representation of an object.
+                Servers should convert recognized schemas to the latest internal value, and
+                may reject unrecognized values.
+                The current apiVersion of this api is v1alpha1
+              type: string
+            kind:
+              description: |-
+                Kind is a string value representing the REST resource this object represents.
+                Servers may infer this from the endpoint the client submits requests to.
+                Cannot be updated.
+                In CamelCase.
+                The kind value for this api is ProvisioningRequest
+              type: string
+            metadata:
+              properties:
+                name:
+                  description: |
+                    The name of the ProvisioningRequest custom resource instance contains the provisioningItemId.
+                    The provisioningItemId is the unique SMO provided identifier that the SMO will use to
+                    identify all resources provisioned by this provisioning request in interactions
+                    with the O-Cloud.
+                  type: string
+              type: object
+            spec:
+              properties:
+                description:
+                  description: |
+                    A description of this provisioning request.
+                  type: string
+                name:
+                  description: |
+                    the name in this spec section is a human readable name intended for descriptive
+                    purposes, this name is not required to be unique and does not identify a provisioning
+                    request or any provisioned resources.
+                  type: string
+                templateName:
+                  description: |
+                    templateName is the name of the template that the SMO wants to use to provision
+                    resources
+                  type: string
+                templateParameters:
+                  description: |
+                    templateParams carries the parameters required to provision resources using this template.
+                    The type is object as actual parameters are defined by the template.
+                    The template parameter schema itself is not defined here as it is template specific.
+                    The themplate parameter schema must be published by the template provider so that FOCOM can
+                    learn about required parameters and validate the same.
+                    The template parameter schema language must be standardized by O-RAN.
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                templateVersion:
+                  description: |
+                    templateVersion is the version of the template that the SMO wants to use to provision
+                    resources. templateName and templateVersion together uniquely identify the template
+                    instance that the SMO wants to use in the provisioning request.
+                  type: string
+              required:
+              - templateName
+              - templateVersion
+              - templateParameters
+              type: object
+            status:
+              description: ProvisioningRequestStatus defines the observed state of ProvisioningRequest
+              properties:
+                extensions:
+                  description: |-
+                    Extensions contain extra details about the resources and the configuration used for/by
+                    the ProvisioningRequest.
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                provisionedResourceSet:
+                  description: |
+                    The resources that have been successfully provisioned as part of the provisioning process.
+                  properties:
+                    oCloudInfrastructureResourceIds:
+                      description: |
+                        The list of provisioned infrastructure resource ids.
+                      items:
+                        description: |
+                          The provisioned infrastructure resource id.
+                        type: string
+                      type: array
+                    oCloudNodeClusterId:
+                      description: |
+                        The identifier of the provisioned oCloud NodeCluster.
+                      type: string
+                  type: object
+                provisioningStatus:
+                  properties:
+                    provisioningMessage:
+                      description: |
+                        The details about the current state of the provisioning process.
+                      type: string
+                    provisioningState:
+                      description: The current state of the provisioning process.
+                      enum:
+                      - progressing
+                      - fulfilled
+                      - failed
+                      - deleting
+                      type: string
+                    provisioningUpdateTime:
+                      description: |
+                        The last update time of the provisioning status.
+                      format: date-time
+                      type: string
+                  type: object
+              type: object
+          type: object
+      served: true
+      storage: true
+      subresources:
+
+
+############ 5. CRD focomprovisioningrequests.focom.nephio.org (-o yaml, schema) ############
+        {"apiVersion":"apiextensions.k8s.io/v1","kind":"CustomResourceDefinition","metadata":{"annotations":{"config.k8s.io/owning-inventory":"d8271b03516e3c0e23fffc13e8d07c7d03fd7a5e-1789042799120044701","controller-gen.kubebuilder.io/version":"v0.20.0","internal.kpt.dev/upstream-identifier":"apiextensions.k8s.io|CustomResourceDefinition|default|focomprovisioningrequests.focom.nephio.org"},"name":"focomprovisioningrequests.focom.nephio.org"},"spec":{"group":"focom.nephio.org","names":{"kind":"FocomProvisioningRequest","listKind":"FocomProvisioningRequestList","plural":"focomprovisioningrequests","singular":"focomprovisioningrequest"},"scope":"Namespaced","versions":[{"name":"v1alpha1","schema":{"openAPIV3Schema":{"description":"FocomProvisioningRequest is the Schema for the focomprovisioningrequests API","properties":{"apiVersion":{"description":"APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources","type":"string"},"kind":{"description":"Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds","type":"string"},"metadata":{"type":"object"},"spec":{"description":"FocomProvisioningRequestSpec defines the desired state of FocomProvisioningRequest","properties":{"description":{"type":"string"},"name":{"type":"string"},"oCloudId":{"type":"string"},"oCloudNamespace":{"type":"string"},"templateName":{"type":"string"},"templateParameters":{"type":"object","x-kubernetes-preserve-unknown-fields":true},"templateVersion":{"type":"string"}},"required":["oCloudId","oCloudNamespace","templateName","templateParameters","templateVersion"],"type":"object"},"status":{"description":"FocomProvisioningRequestStatus defines the observed state of FocomProvisioningRequest","properties":{"lastUpdated":{"format":"date-time","type":"string"},"message":{"type":"string"},"phase":{"type":"string"},"remoteName":{"description":"The name of the remote resource in the target cluster","type":"string"}},"type":"object"}},"type":"object"}},"served":true,"storage":true,"subresources":{"status":{}}}]}}
+    creationTimestamp: "2026-09-10T12:19:59Z"
+    generation: 1
+    name: focomprovisioningrequests.focom.nephio.org
+    resourceVersion: "7451"
+    uid: 8cdde79b-9d2c-4cf6-9556-d0455cb3bb4f
+  spec:
+    conversion:
+      strategy: None
+    group: focom.nephio.org
+    names:
+      kind: FocomProvisioningRequest
+      listKind: FocomProvisioningRequestList
+      plural: focomprovisioningrequests
+      singular: focomprovisioningrequest
+    scope: Namespaced
+    versions:
+    - name: v1alpha1
+      schema:
+        openAPIV3Schema:
+          description: FocomProvisioningRequest is the Schema for the focomprovisioningrequests
+            API
+          properties:
+            apiVersion:
+              description: |-
+                APIVersion defines the versioned schema of this representation of an object.
+                Servers should convert recognized schemas to the latest internal value, and
+                may reject unrecognized values.
+                More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+              type: string
+            kind:
+              description: |-
+                Kind is a string value representing the REST resource this object represents.
+                Servers may infer this from the endpoint the client submits requests to.
+                Cannot be updated.
+                In CamelCase.
+                More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+              type: string
+            metadata:
+              type: object
+            spec:
+              description: FocomProvisioningRequestSpec defines the desired state of
+                FocomProvisioningRequest
+              properties:
+                description:
+                  type: string
+                name:
+                  type: string
+                oCloudId:
+                  type: string
+                oCloudNamespace:
+                  type: string
+                templateName:
+                  type: string
+                templateParameters:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                templateVersion:
+                  type: string
+              required:
+              - oCloudId
+              - oCloudNamespace
+              - templateName
+              - templateParameters
+              - templateVersion
+              type: object
+            status:
+
+
+############ 6. CRD oclouds.focom.nephio.org (-o yaml, schema) ############
+        {"apiVersion":"apiextensions.k8s.io/v1","kind":"CustomResourceDefinition","metadata":{"annotations":{"config.k8s.io/owning-inventory":"d8271b03516e3c0e23fffc13e8d07c7d03fd7a5e-1789042799120044701","controller-gen.kubebuilder.io/version":"v0.20.0","internal.kpt.dev/upstream-identifier":"apiextensions.k8s.io|CustomResourceDefinition|default|oclouds.focom.nephio.org"},"name":"oclouds.focom.nephio.org"},"spec":{"group":"focom.nephio.org","names":{"kind":"OCloud","listKind":"OCloudList","plural":"oclouds","singular":"ocloud"},"scope":"Namespaced","versions":[{"name":"v1alpha1","schema":{"openAPIV3Schema":{"description":"OCloud is the Schema for the oclouds API","properties":{"apiVersion":{"description":"APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources","type":"string"},"kind":{"description":"Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds","type":"string"},"metadata":{"type":"object"},"spec":{"description":"OCloudSpec defines the desired state of OCloud","properties":{"o2imsSecret":{"description":"O2imsSecret references a Secret containing endpoint \u0026 credentials","properties":{"secretRef":{"description":"SecretRef points to the Secret with O2IMS credentials","properties":{"name":{"description":"Name of the Secret","type":"string"},"namespace":{"description":"Namespace of the Secret","type":"string"}},"required":["name","namespace"],"type":"object"}},"required":["secretRef"],"type":"object"}},"required":["o2imsSecret"],"type":"object"},"status":{"description":"OCloudStatus defines the observed state of OCloud","type":"object"}},"type":"object"}},"served":true,"storage":true,"subresources":{"status":{}}}]}}
+    creationTimestamp: "2026-09-10T12:19:59Z"
+    generation: 1
+    name: oclouds.focom.nephio.org
+    resourceVersion: "7454"
+    uid: 69b81a84-3c2b-4f3e-99d9-70070f99306b
+  spec:
+    conversion:
+      strategy: None
+    group: focom.nephio.org
+    names:
+      kind: OCloud
+      listKind: OCloudList
+      plural: oclouds
+      singular: ocloud
+    scope: Namespaced
+    versions:
+    - name: v1alpha1
+      schema:
+        openAPIV3Schema:
+          description: OCloud is the Schema for the oclouds API
+          properties:
+            apiVersion:
+              description: |-
+                APIVersion defines the versioned schema of this representation of an object.
+                Servers should convert recognized schemas to the latest internal value, and
+                may reject unrecognized values.
+                More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+              type: string
+            kind:
+              description: |-
+                Kind is a string value representing the REST resource this object represents.
+                Servers may infer this from the endpoint the client submits requests to.
+                Cannot be updated.
+                In CamelCase.
+                More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+              type: string
+            metadata:
+              type: object
+            spec:
+              description: OCloudSpec defines the desired state of OCloud
+              properties:
+                o2imsSecret:
+                  description: O2imsSecret references a Secret containing endpoint &
+                    credentials
+                  properties:
+                    secretRef:
+                      description: SecretRef points to the Secret with O2IMS credentials
+                      properties:
+                        name:
+                          description: Name of the Secret
+                          type: string
+                        namespace:
+                          description: Namespace of the Secret
+                          type: string
+                      required:
+                      - name
+                      - namespace
+                      type: object
+                  required:
+                  - secretRef
+                  type: object
+              required:
+              - o2imsSecret
+              type: object
+            status:
+
+
+############ 7. CRD templateinfoes.provisioning.oran.org (-o yaml, schema) ############
+        {"apiVersion":"apiextensions.k8s.io/v1","kind":"CustomResourceDefinition","metadata":{"annotations":{"config.k8s.io/owning-inventory":"d8271b03516e3c0e23fffc13e8d07c7d03fd7a5e-1789042799120044701","controller-gen.kubebuilder.io/version":"v0.20.0","internal.kpt.dev/upstream-identifier":"apiextensions.k8s.io|CustomResourceDefinition|default|templateinfoes.provisioning.oran.org"},"name":"templateinfoes.provisioning.oran.org"},"spec":{"group":"provisioning.oran.org","names":{"kind":"TemplateInfo","listKind":"TemplateInfoList","plural":"templateinfoes","singular":"templateinfo"},"scope":"Namespaced","versions":[{"name":"v1alpha1","schema":{"openAPIV3Schema":{"description":"TemplateInfo is the Schema for the templateinfoes API","properties":{"apiVersion":{"description":"APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources","type":"string"},"kind":{"description":"Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds","type":"string"},"metadata":{"type":"object"},"spec":{"description":"TemplateInfoSpec defines the desired state of TemplateInfo","properties":{"templateName":{"type":"string"},"templateParameterSchema":{"description":"This is a string containing a JSON or YAML-based schema for template parameters","type":"string"},"templateVersion":{"type":"string"}},"required":["templateName","templateParameterSchema","templateVersion"],"type":"object"},"status":{"description":"TemplateInfoStatus defines the observed state of TemplateInfo","type":"object"}},"type":"object"}},"served":true,"storage":true,"subresources":{"status":{}}}]}}
+    creationTimestamp: "2026-09-10T12:19:59Z"
+    generation: 1
+    name: templateinfoes.provisioning.oran.org
+    resourceVersion: "7458"
+    uid: 763492f3-ccd7-4f53-b892-6c553b4508f8
+  spec:
+    conversion:
+      strategy: None
+    group: provisioning.oran.org
+    names:
+      kind: TemplateInfo
+      listKind: TemplateInfoList
+      plural: templateinfoes
+      singular: templateinfo
+    scope: Namespaced
+    versions:
+    - name: v1alpha1
+      schema:
+        openAPIV3Schema:
+          description: TemplateInfo is the Schema for the templateinfoes API
+          properties:
+            apiVersion:
+              description: |-
+                APIVersion defines the versioned schema of this representation of an object.
+                Servers should convert recognized schemas to the latest internal value, and
+                may reject unrecognized values.
+                More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+              type: string
+            kind:
+              description: |-
+                Kind is a string value representing the REST resource this object represents.
+                Servers may infer this from the endpoint the client submits requests to.
+                Cannot be updated.
+                In CamelCase.
+                More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+              type: string
+            metadata:
+              type: object
+            spec:
+              description: TemplateInfoSpec defines the desired state of TemplateInfo
+              properties:
+                templateName:
+                  type: string
+                templateParameterSchema:
+                  description: This is a string containing a JSON or YAML-based schema
+                    for template parameters
+                  type: string
+                templateVersion:
+                  type: string
+              required:
+              - templateName
+              - templateParameterSchema
+              - templateVersion
+              type: object
+            status:
+              description: TemplateInfoStatus defines the observed state of TemplateInfo
+              type: object
+          type: object
+      served: true
+      storage: true
+      subresources:
+
+
+############ 8. o2ims-operator :: deployment (env/args/img) ############
+img=docker.io/nephio/o2ims-operator:v6.0.0
+args=
+env=[UPSTREAM_PKG_REPO=catalog-infra-capi; KUBERNETES_BASE_URL=https://kubernetes.default.svc; ]
+
+
+############ 8b. o2ims-operator :: ClusterRole (o que observa/muta) ############
+  rules:
+  - apiGroups:
+    - ""
+    resources:
+    - events
+    verbs:
+    - create
+  - apiGroups:
+    - apiextensions.k8s.io
+    resources:
+    - customresourcedefinitions
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+  - apiGroups:
+    - o2ims.provisioning.oran.org
+    resources:
+    - provisioningrequests
+    - provisioningrequests/status
+    - provisioningrequests/finalizers
+    verbs:
+    - get
+    - list
+    - watch
+    - update
+    - patch
+  - apiGroups:
+    - cluster.x-k8s.io
+    resources:
+    - clusters
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - admissionregistration.k8s.io/v1
+    - admissionregistration.k8s.io/v1beta1
+    resources:
+    - validatingwebhookconfigurations
+    - mutatingwebhookconfigurations
+    verbs:
+    - create
+    - patch
+
+
+############ 8c. o2ims-operator :: logs (tail 40) ############
+  [2026-09-10 12:21:10,583] kopf.activities.star [INFO    ] Activity 'configure' succeeded.
+  [2026-09-10 12:21:10,585] kopf._core.engines.a [INFO    ] Initial authentication has been initiated.
+  [2026-09-10 12:21:10,682] kopf.activities.auth [INFO    ] Activity 'login_via_client' succeeded.
+  [2026-09-10 12:21:10,682] kopf._core.engines.a [INFO    ] Initial authentication has finished.
+
+
+############ 9. focom-operator :: deployment (env/args/img) ############
+name=manager img=docker.io/nephio/focom-operator:v6.0.0
+args=["--metrics-bind-address=:8443","--leader-elect","--health-probe-bind-address=:8081"]
+
+
+############ 9b. focom-operator :: ClusterRole manager-role (rules) ############
+  rules:
+  - apiGroups:
+    - ""
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - focom.nephio.org
+    resources:
+    - focomprovisioningrequests
+    verbs:
+    - create
+    - delete
+    - get
+    - list
+    - patch
+    - update
+    - watch
+  - apiGroups:
+    - focom.nephio.org
+    resources:
+    - focomprovisioningrequests/finalizers
+    verbs:
+    - update
+  - apiGroups:
+    - focom.nephio.org
+    resources:
+    - focomprovisioningrequests/status
+    verbs:
+    - get
+    - patch
+    - update
+  - apiGroups:
+    - focom.nephio.org
+    resources:
+    - oclouds
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - provisioning.oran.org
+    resources:
+    - templateinfoes
+    verbs:
+    - create
+    - delete
+    - get
+    - list
+    - patch
+    - update
+    - watch
+
+
+############ 9c. focom-operator :: logs (tail 40) ############
+  2026-09-10T12:20:08Z	INFO	setup	starting manager
+  2026-09-10T12:20:08Z	INFO	controller-runtime.metrics	Starting metrics server
+  2026-09-10T12:20:08Z	INFO	setup	disabling http/2
+  2026-09-10T12:20:08Z	INFO	starting server	{"name": "health probe", "addr": "[::]:8081"}
+  I0910 12:20:08.539497       1 leaderelection.go:257] attempting to acquire leader lease focom-operator-system/7ad7da43.nephio.org...
+  I0910 12:20:08.553915       1 leaderelection.go:271] successfully acquired lease focom-operator-system/7ad7da43.nephio.org
+  2026-09-10T12:20:08Z	DEBUG	events	focom-operator-controller-manager-f6b85465c-6vj99_049a84a6-e57c-4535-bf89-fa4027c74805 became leader	{"type": "Normal", "object": {"kind":"Lease","namespace":"focom-operator-system","name":"7ad7da43.nephio.org","uid":"fccd8faa-835c-456c-9e4e-4967a1756fda","apiVersion":"coordination.k8s.io/v1","resourceVersion":"7529"}, "reason": "LeaderElection"}
+  2026-09-10T12:20:08Z	INFO	Starting EventSource	{"controller": "focomprovisioningrequest", "controllerGroup": "focom.nephio.org", "controllerKind": "FocomProvisioningRequest", "source": "kind source: *v1alpha1.FocomProvisioningRequest"}
+  2026-09-10T12:20:08Z	INFO	Starting Controller	{"controller": "focomprovisioningrequest", "controllerGroup": "focom.nephio.org", "controllerKind": "FocomProvisioningRequest"}
+  2026-09-10T12:20:08Z	INFO	Starting workers	{"controller": "focomprovisioningrequest", "controllerGroup": "focom.nephio.org", "controllerKind": "FocomProvisioningRequest", "worker count": 1}
+  2026-09-10T12:20:08Z	INFO	controller-runtime.metrics	Serving metrics server	{"bindAddress": ":8443", "secure": true}
+
+
+############ 10. instâncias já existentes desses CRDs (esperado: nenhuma) ############
+  provisioningrequests.o2ims.provisioning.oran.org        1 objeto(s)
+  focomprovisioningrequests.focom.nephio.org              1 objeto(s)
+  oclouds.focom.nephio.org                                1 objeto(s)
+  templateinfoes.provisioning.oran.org                    1 objeto(s)
+  workloadclusters.infra.nephio.org                       1 objeto(s)
+  clustercontexts.infra.nephio.org                        1 objeto(s)
+
+
+############ 11. Porch: repositórios registrados ############
+No resources found
+No resources found
+
+
+############ 12. CAPI: ClusterClass e templates disponíveis ############
+NAMESPACE   NAME     AGE
+default     docker   3h10m
+NAMESPACE   NAME                                                                   AGE
+default     dockerclustertemplate.infrastructure.cluster.x-k8s.io/docker-cluster   3h9m
+
+NAMESPACE   NAME                                                                                          AGE
+default     dockermachinetemplate.infrastructure.cluster.x-k8s.io/docker-control-plane                    3h9m
+default     dockermachinetemplate.infrastructure.cluster.x-k8s.io/docker-default-worker-machinetemplate   3h9m
+
+NAMESPACE   NAME                                                                             AGE
+default     kubeadmcontrolplanetemplate.controlplane.cluster.x-k8s.io/docker-control-plane   3h10m
+
+NAMESPACE   NAME                                                                                       AGE
+default     kubeadmconfigtemplate.bootstrap.cluster.x-k8s.io/docker-default-worker-bootstraptemplate   3h10m
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/o2ims/20260910-122847_o2ims-discovery.txt

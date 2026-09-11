@@ -1,0 +1,98 @@
+== ETAPA 6 :: mgmt :: 2026-09-10T13:08:17-03:00 :: VM up 4 hours, 25 minutes ==
+-- package-context de repo-mgmt --
+apiVersion: v1
+kind: ConfigMap
+metadata: # kpt-merge: /kptfile.kpt.dev
+  name: kptfile.kpt.dev
+  annotations:
+    config.kubernetes.io/local-config: "true"
+    internal.kpt.dev/upstream-identifier: '|ConfigMap|default|kptfile.kpt.dev'
+data:
+  name: mgmt
+  clusterName: mgmt
+Package "repo-mgmt":
+[RUNNING] "ghcr.io/kptdev/krm-functions-catalog/starlark:v0.4.3" on package "repo-mgmt"
+[PASS] "ghcr.io/kptdev/krm-functions-catalog/starlark:v0.4.3" in 5.492s
+
+Successfully executed 1 function(s) in 1 package(s).
+installing inventory ResourceGroup CRD.
+inventory update started
+inventory update finished
+apply phase started
+repository.config.porch.kpt.dev/mgmt apply successful
+repository.infra.nephio.org/mgmt apply successful
+token.infra.nephio.org/mgmt-access-token-configsync apply successful
+token.infra.nephio.org/mgmt-access-token-porch apply successful
+apply phase finished
+reconcile phase started
+repository.infra.nephio.org/mgmt reconcile successful
+token.infra.nephio.org/mgmt-access-token-configsync reconcile successful
+token.infra.nephio.org/mgmt-access-token-porch reconcile successful
+repository.config.porch.kpt.dev/mgmt reconcile successful
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 4 attempted, 4 successful, 0 skipped, 0 failed
+reconcile result: 4 attempted, 4 successful, 0 skipped, 0 failed, 0 timed out
+Package "repo-mgmt-staging":
+Fetching https://github.com/nephio-project/catalog@v6
+From https://github.com/nephio-project/catalog
+ * branch            v6         -> FETCH_HEAD
+Adding package "distros/sandbox/repository".
+
+Fetched 1 package(s).
+-- package-context de repo-mgmt-staging --
+apiVersion: v1
+kind: ConfigMap
+metadata: # kpt-merge: /kptfile.kpt.dev
+  name: kptfile.kpt.dev
+  annotations:
+    config.kubernetes.io/local-config: "true"
+    internal.kpt.dev/upstream-identifier: '|ConfigMap|default|kptfile.kpt.dev'
+data:
+  name: mgmt-staging
+  clusterName: mgmt-staging
+Package "repo-mgmt-staging":
+[RUNNING] "ghcr.io/kptdev/krm-functions-catalog/starlark:v0.4.3" on package "repo-mgmt-staging"
+[PASS] "ghcr.io/kptdev/krm-functions-catalog/starlark:v0.4.3" in 639ms
+
+Successfully executed 1 function(s) in 1 package(s).
+installing inventory ResourceGroup CRD.
+inventory update started
+inventory update finished
+apply phase started
+repository.config.porch.kpt.dev/mgmt-staging apply successful
+repository.infra.nephio.org/mgmt-staging apply successful
+token.infra.nephio.org/mgmt-staging-access-token-configsync apply successful
+token.infra.nephio.org/mgmt-staging-access-token-porch apply successful
+apply phase finished
+reconcile phase started
+repository.infra.nephio.org/mgmt-staging reconcile successful
+token.infra.nephio.org/mgmt-staging-access-token-configsync reconcile successful
+token.infra.nephio.org/mgmt-staging-access-token-porch reconcile successful
+repository.config.porch.kpt.dev/mgmt-staging reconcile successful
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 4 attempted, 4 successful, 0 skipped, 0 failed
+reconcile result: 4 attempted, 4 successful, 0 skipped, 0 failed, 0 timed out
+
+-- infra.nephio.org Repository + Token --
+NAMESPACE   NAME                                       REPO_STATUS
+default     repository.infra.nephio.org/mgmt           True
+default     repository.infra.nephio.org/mgmt-staging   True
+
+NAMESPACE                  NAME                                                          REPO_TOKEN_STATUS
+config-management-system   token.infra.nephio.org/mgmt-access-token-configsync           True
+config-management-system   token.infra.nephio.org/mgmt-staging-access-token-configsync   True
+default                    token.infra.nephio.org/mgmt-access-token-porch                True
+default                    token.infra.nephio.org/mgmt-staging-access-token-porch        True
+
+-- aguardando repos Porch mgmt / mgmt-staging --
+  13:10:29 repository/mgmt Ready=True
+  13:10:29 repository/mgmt-staging Ready=True
+NAMESPACE   NAME                 TYPE   CONTENT   SYNC SCHEDULE   DEPLOYMENT   READY   ADDRESS
+default     catalog-infra-capi   git    Package                   false        True    https://github.com/nephio-project/catalog.git
+default     mgmt                 git    Package                   true         True    http://172.18.0.200:3000/nephio/mgmt.git
+default     mgmt-staging         git    Package                   false        True    http://172.18.0.200:3000/nephio/mgmt-staging.git
+

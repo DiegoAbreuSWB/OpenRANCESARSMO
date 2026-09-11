@@ -1,0 +1,45 @@
+===================================================================
+ RESOURCE SNAPSHOT  |  label=etapa3-after-porch  |  2026-09-10T08:47:35-03:00
+ host: Linux 6.18.33.2-microsoft-standard-WSL2 x86_64  |  kernel WSL2
+===================================================================
+
+----- free -h -----
+               total        used        free      shared  buff/cache   available
+Mem:           9.7Gi       1.5Gi       4.9Gi        16Mi       3.5Gi       8.2Gi
+Swap:          4.0Gi          0B       4.0Gi
+
+----- /proc/loadavg -----
+2.81 1.25 0.61 3/929 8498
+
+----- top 8 processos por RSS -----
+    PID COMMAND           RSS (rss KiB)
+1570     kube-apiserver                322.8 MiB
+1563     kube-controller               121.3 MiB
+1073     kubelet                       105.5 MiB
+1024     containerd                     95.1 MiB
+254      dockerd                        94.1 MiB
+6411     porch                          90.5 MiB
+1548     etcd                           79.7 MiB
+1556     kube-scheduler                 66.9 MiB
+
+----- docker stats --no-stream -----
+NAME                        CPU %     MEM USAGE / LIMIT     MEM %
+nephio-mgmt-control-plane   253.84%   1.084GiB / 9.713GiB   11.16%
+
+  (containers: 1 rodando / 1 total)
+
+----- kind clusters -----
+nephio-mgmt
+
+----- kubectl top nodes -----
+  (metrics-server ausente ou sem contexto - pulado, sem instalar nada)
+
+----- kubectl top pods -A -----
+  (metrics-server ausente ou sem contexto - pulado)
+
+----- resumo pods por contexto (se houver) -----
+  ctx=kind-nephio-mgmt pods=35 running/completed=19
+
+===================================================================
+ fim do snapshot
+===================================================================

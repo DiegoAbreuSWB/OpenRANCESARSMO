@@ -1,0 +1,116 @@
+== ETAPA 3 :: passo=metallb :: 2026-09-10T09:22:21-03:00 ==
+kpt Version: 1.0.0  |  VM uptime: up 40 minutes
+[kpt pkg get] https://github.com/nephio-project/catalog.git/distros/sandbox/metallb@v6 -> metallb
+Package "metallb":
+Fetching https://github.com/nephio-project/catalog@v6
+From https://github.com/nephio-project/catalog
+ * branch            v6         -> FETCH_HEAD
+Adding package "distros/sandbox/metallb".
+
+Fetched 1 package(s).
+    upstream:
+        ref: v6
+    upstreamLock:
+        ref: v6
+        commit: 3b548f1cdd239101f79e3e49797bd59a39dad161
+    initializing "resourcegroup.yaml" data (namespace: metallb-system)...success
+[kpt live apply] metallb (reconcile-timeout=5m)
+installing inventory ResourceGroup CRD.
+inventory update started
+inventory update finished
+apply phase started
+namespace/metallb-system apply successful
+customresourcedefinition.apiextensions.k8s.io/addresspools.metallb.io apply successful
+customresourcedefinition.apiextensions.k8s.io/bfdprofiles.metallb.io apply successful
+customresourcedefinition.apiextensions.k8s.io/bgpadvertisements.metallb.io apply successful
+customresourcedefinition.apiextensions.k8s.io/bgppeers.metallb.io apply successful
+customresourcedefinition.apiextensions.k8s.io/communities.metallb.io apply successful
+customresourcedefinition.apiextensions.k8s.io/ipaddresspools.metallb.io apply successful
+customresourcedefinition.apiextensions.k8s.io/l2advertisements.metallb.io apply successful
+clusterrole.rbac.authorization.k8s.io/metallb-system:controller apply successful
+clusterrole.rbac.authorization.k8s.io/metallb-system:speaker apply successful
+clusterrolebinding.rbac.authorization.k8s.io/metallb-system:controller apply successful
+clusterrolebinding.rbac.authorization.k8s.io/metallb-system:speaker apply successful
+validatingwebhookconfiguration.admissionregistration.k8s.io/metallb-webhook-configuration apply successful
+apply phase finished
+reconcile phase started
+namespace/metallb-system reconcile successful
+customresourcedefinition.apiextensions.k8s.io/addresspools.metallb.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/bfdprofiles.metallb.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/bgpadvertisements.metallb.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/bgppeers.metallb.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/communities.metallb.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/ipaddresspools.metallb.io reconcile successful
+customresourcedefinition.apiextensions.k8s.io/l2advertisements.metallb.io reconcile successful
+clusterrole.rbac.authorization.k8s.io/metallb-system:controller reconcile successful
+clusterrole.rbac.authorization.k8s.io/metallb-system:speaker reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/metallb-system:controller reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/metallb-system:speaker reconcile successful
+validatingwebhookconfiguration.admissionregistration.k8s.io/metallb-webhook-configuration reconcile successful
+reconcile phase finished
+apply phase started
+serviceaccount/controller apply successful
+serviceaccount/speaker apply successful
+role.rbac.authorization.k8s.io/controller apply successful
+role.rbac.authorization.k8s.io/pod-lister apply successful
+rolebinding.rbac.authorization.k8s.io/controller apply successful
+rolebinding.rbac.authorization.k8s.io/pod-lister apply successful
+secret/webhook-server-cert apply successful
+service/webhook-service apply successful
+deployment.apps/controller apply successful
+daemonset.apps/speaker apply successful
+apply phase finished
+reconcile phase started
+serviceaccount/controller reconcile successful
+serviceaccount/speaker reconcile successful
+role.rbac.authorization.k8s.io/controller reconcile successful
+role.rbac.authorization.k8s.io/pod-lister reconcile successful
+rolebinding.rbac.authorization.k8s.io/controller reconcile successful
+rolebinding.rbac.authorization.k8s.io/pod-lister reconcile successful
+secret/webhook-server-cert reconcile successful
+service/webhook-service reconcile successful
+deployment.apps/controller reconcile successful
+daemonset.apps/speaker reconcile successful
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 23 attempted, 23 successful, 0 skipped, 0 failed
+reconcile result: 23 attempted, 23 successful, 0 skipped, 0 failed, 0 timed out
+[kpt pkg get] https://github.com/nephio-project/catalog.git/distros/sandbox/metallb-sandbox-config@v6 -> metallb-sandbox-config
+Package "metallb-sandbox-config":
+Fetching https://github.com/nephio-project/catalog@v6
+From https://github.com/nephio-project/catalog
+ * branch            v6         -> FETCH_HEAD
+Adding package "distros/sandbox/metallb-sandbox-config".
+
+Fetched 1 package(s).
+    upstream:
+        ref: v6
+    upstreamLock:
+        ref: v6
+        commit: 3b548f1cdd239101f79e3e49797bd59a39dad161
+    initializing "resourcegroup.yaml" data (namespace: metallb-system)...success
+[kpt live apply] metallb-sandbox-config (reconcile-timeout=3m)
+installing inventory ResourceGroup CRD.
+inventory update started
+inventory update finished
+apply phase started
+ipaddresspool.metallb.io/nephio apply successful
+l2advertisement.metallb.io/nephio apply successful
+apply phase finished
+reconcile phase started
+ipaddresspool.metallb.io/nephio reconcile successful
+l2advertisement.metallb.io/nephio reconcile successful
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 2 attempted, 2 successful, 0 skipped, 0 failed
+reconcile result: 2 attempted, 2 successful, 0 skipped, 0 failed, 0 timed out
+--- ns/metallb-system ---
+NAME                         READY   STATUS    RESTARTS   AGE   IP            NODE                        NOMINATED NODE   READINESS GATES
+controller-66586998d-zpc85   1/1     Running   0          49s   10.244.0.53   nephio-mgmt-control-plane   <none>           <none>
+speaker-76jwr                1/1     Running   0          49s   172.18.0.2    nephio-mgmt-control-plane   <none>           <none>
+NAMESPACE        NAME     AUTO ASSIGN   AVOID BUGGY IPS   ADDRESSES
+metallb-system   nephio   true          false             ["172.18.0.0/20"]
+
+[ok] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/nephio-install/20260910-092221_etapa3_metallb.txt

@@ -1,0 +1,45 @@
+===================================================================
+ RESOURCE SNAPSHOT  |  label=etapa3-complete  |  2026-09-10T09:31:01-03:00
+ host: Linux 6.18.33.2-microsoft-standard-WSL2 x86_64  |  kernel WSL2
+===================================================================
+
+----- free -h -----
+               total        used        free      shared  buff/cache   available
+Mem:           9.7Gi       2.6Gi       1.2Gi        38Mi       6.1Gi       7.1Gi
+Swap:          4.0Gi          0B       4.0Gi
+
+----- /proc/loadavg -----
+1.48 1.40 1.55 2/1181 103187
+
+----- top 8 processos por RSS -----
+    PID COMMAND           RSS (rss KiB)
+1570     kube-apiserver                708.3 MiB
+17180    gitea                         157.5 MiB
+1563     kube-controller               146.4 MiB
+62600    otelcontribcol                145.5 MiB
+63181    otelcontribcol                144.4 MiB
+62383    otelcontribcol                143.5 MiB
+1548     etcd                          136.3 MiB
+1073     kubelet                       121.8 MiB
+
+----- docker stats --no-stream -----
+NAME                        CPU %     MEM USAGE / LIMIT     MEM %
+nephio-mgmt-control-plane   44.00%    2.577GiB / 9.713GiB   26.53%
+
+  (containers: 1 rodando / 1 total)
+
+----- kind clusters -----
+nephio-mgmt
+
+----- kubectl top nodes -----
+  (metrics-server ausente ou sem contexto - pulado, sem instalar nada)
+
+----- kubectl top pods -A -----
+  (metrics-server ausente ou sem contexto - pulado)
+
+----- resumo pods por contexto (se houver) -----
+  ctx=kind-nephio-mgmt pods=34 running/completed=34
+
+===================================================================
+ fim do snapshot
+===================================================================
