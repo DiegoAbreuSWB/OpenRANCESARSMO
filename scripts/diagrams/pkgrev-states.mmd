@@ -1,0 +1,6 @@
+stateDiagram-v2
+    [*] --> Draft: porchctl rpkg init / copy
+    Draft --> Proposed: porchctl rpkg propose
+    Proposed --> Published: porchctl rpkg approve
+    Draft --> Draft: porchctl rpkg pull / push
+    Published --> [*]: porchctl rpkg copy (nova revisao)

@@ -1,0 +1,27 @@
+flowchart TD
+    U["Operador / Intent"]
+
+    subgraph MGMT["Management Cluster"]
+        NEPHIO["Nephio Core<br/>(operadores + controllers)"]
+        PORCH["Porch<br/>(Package Orchestration API)"]
+        KPT["kpt<br/>(Configuration as Data)"]
+        REPO["Package Repository<br/>(Git / OCI)"]
+        CS_M["Config Sync<br/>(GitOps, no proprio mgmt cluster)"]
+    end
+
+    subgraph WL["Workload Cluster(s)"]
+        CS_W["Config Sync<br/>(GitOps, reconcilia o workload cluster)"]
+        CNF1["CNF"]
+        CNF2["CNF"]
+        CNF3["CNF"]
+    end
+
+    U -->|"intent (kpt package / CR)"| NEPHIO
+    NEPHIO --> PORCH
+    PORCH --> KPT
+    KPT --> REPO
+    REPO -->|"pacote hydrated publicado"| CS_W
+    CS_M -.->|"reconcilia o proprio mgmt cluster"| NEPHIO
+    CS_W --> CNF1
+    CS_W --> CNF2
+    CS_W --> CNF3

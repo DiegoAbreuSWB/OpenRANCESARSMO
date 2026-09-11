@@ -1,0 +1,6 @@
+flowchart LR
+    I["Intent<br/>(CR declarativo)"] --> P["Package<br/>(kpt, via PackageVariant)"]
+    P --> R["Repository<br/>(Git, pacote publicado)"]
+    R --> N["Reconciliacao<br/>(Config Sync / RootSync)"]
+    N --> K["Kubernetes<br/>(recursos aplicados)"]
+    K --> C["CNF / Cluster<br/>em execucao"]

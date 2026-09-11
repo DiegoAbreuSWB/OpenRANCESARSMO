@@ -2,7 +2,7 @@
 #   wsl -d Ubuntu
 #   cd "/mnt/c/Users/.../SMO/X"
 #   make up | make status | make experiment | make down
-.PHONY: up status experiment down deploy cnfs cleanup report validate help
+.PHONY: up status experiment down deploy cnfs cleanup report validate help slides report-pdf deliverables
 
 help:
 	@echo "Alvos disponíveis:"
@@ -12,6 +12,9 @@ help:
 	@echo "  make experiment  - roda os 6 experimentos formais e grava results/experiments.csv"
 	@echo "  make validate    - scripts/validate-lab.sh (10 checagens PASS/FAIL/SKIP)"
 	@echo "  make report      - snapshot de recursos (evidence/resources/)"
+	@echo "  make slides      - presentation/Parte1-Apresentacao-SMO-Nephio.pptx (pandoc)"
+	@echo "  make report-pdf  - report/Parte2-Relatorio-SMO-Nephio.pdf (weasyprint)"
+	@echo "  make deliverables- diagramas + slides + report-pdf (instala pandoc/weasyprint se preciso)"
 	@echo "  make down        - scripts/cleanup.sh (pergunta antes de cada remoção)"
 	@echo "  make cleanup     - idem 'down', sem perguntar (--yes)"
 
@@ -43,3 +46,15 @@ down:
 
 cleanup:
 	bash scripts/cleanup.sh --yes
+
+slides:
+	bash scripts/build-pptx.sh
+
+report-pdf:
+	bash scripts/build-report-pdf.sh
+
+deliverables:
+	bash scripts/install-docgen-tools.sh
+	bash scripts/render-diagrams.sh
+	bash scripts/build-pptx.sh
+	bash scripts/build-report-pdf.sh

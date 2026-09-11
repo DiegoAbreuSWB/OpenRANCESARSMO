@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    actor U as Usuario/SMO
+    participant O2 as o2ims-operator
+    participant PV as Porch (PackageVariant/Revision)
+    participant GIT as Gitea (repo "mgmt")
+    participant CS as Config Sync (RootSync)
+    participant CAPI as CAPI + CAPD
+    participant OC as o-cloud-1 (containers)
+
+    U->>O2: kubectl apply ProvisioningRequest
+    Note over O2: valida templateName/Version/Parameters
+    O2->>PV: cria PackageVariant (upstream -> downstream mgmt/o-cloud-1)
+    PV->>GIT: renderiza e publica PackageRevision
+    GIT->>CS: RootSync(mgmt) detecta o commit
+    CS->>CAPI: aplica CAPI Cluster o-cloud-1 (class=docker)
+    CAPI->>OC: kubeadm cria control-plane + worker
+    OC-->>CAPI: Cluster.status.phase = Provisioned
+    O2->>O2: poll Cluster.status.phase
+    O2-->>U: ProvisioningRequest.status.provisioningState = fulfilled

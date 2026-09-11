@@ -1,0 +1,15 @@
+flowchart TD
+    U["Usuario"] -->|kubectl apply| PR["ProvisioningRequest (O2 IMS)"]
+    subgraph MGMT["Management Cluster (nephio-mgmt)"]
+        PR --> O2["o2ims-operator"]
+        O2 --> PV1["PackageVariant (cluster o-cloud-1)"]
+        PV1 --> POR["Porch + repo 'mgmt'"]
+        POR -->|RootSync| CAPI["Cluster API + CAPD"]
+        REPO2["repo 'openran-cnfs' (Porch/Gitea)"]
+    end
+    CAPI -->|cria| OC["Workload Cluster o-cloud-1 = O-Cloud"]
+    U -->|porchctl + kpt| REPO2
+    REPO2 -->|kpt live apply| OC
+    OC --> CU["oran-cu"]
+    OC --> DU["oran-du"]
+    OC --> CORE["oran-core"]

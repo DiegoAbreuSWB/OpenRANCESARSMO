@@ -1,0 +1,7 @@
+flowchart TD
+    A["Intent (pacote kpt autoral, lab/nephio/openran-cnfs)"] -->|porchctl rpkg init/push| B["Package (PackageRevision no Porch, Draft)"]
+    B -->|porchctl rpkg propose/approve| C["Repository (Gitea, repo openran-cnfs, Published)"]
+    C -->|porchctl rpkg pull| D["Nephio (copia de trabalho vinda do repositorio publicado)"]
+    D -->|kpt live apply --context=o-cloud-1| E["Reconciliation (ResourceGroup / inventario declarativo)"]
+    E --> F["Kubernetes (o-cloud-1: Namespace, ConfigMap, Deployment, Service)"]
+    F --> G["CNF (oran-cu / oran-du / oran-core Running, /health = 200)"]

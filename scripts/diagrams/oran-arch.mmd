@@ -1,0 +1,19 @@
+flowchart TB
+    SMO["SMO<br/>Service Management and Orchestration"]
+    NRT["Non-RT RIC"]
+    RT["Near-RT RIC"]
+    OCLOUD["O-Cloud<br/>(infraestrutura)"]
+    OCU["O-CU"]
+    ODU["O-DU"]
+    ORU["O-RU"]
+
+    SMO -->|O1: FCAPS| OCU
+    SMO -->|O1: FCAPS| ODU
+    SMO -->|O1: FCAPS| RT
+    SMO -->|O2: infra/deploy| OCLOUD
+    SMO -.->|contém| NRT
+    NRT -->|A1: políticas| RT
+    RT -->|E2| OCU
+    RT -->|E2| ODU
+    OCU -->|F1| ODU
+    ODU -->|"fronthaul"| ORU
