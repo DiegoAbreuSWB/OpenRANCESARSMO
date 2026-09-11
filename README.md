@@ -29,8 +29,10 @@ kind), sem OpenStack, sem cloud paga, dentro de 16 GB de RAM.
 | | Arquivo |
 |---|---|
 | **Parte 1 — relatório** | [`report/part1-report.md`](report/part1-report.md) |
-| **Parte 1 — apresentação** | [`presentation/part1-slides.md`](presentation/part1-slides.md) |
+| **Parte 1 — apresentação (fonte)** | [`presentation/part1-slides.md`](presentation/part1-slides.md) |
+| **Parte 1 — apresentação (.pptx, 15 slides + notas)** | [`presentation/Parte1-Apresentacao-SMO-Nephio.pptx`](presentation/Parte1-Apresentacao-SMO-Nephio.pptx) |
 | **Parte 2 — relatório** | [`report/part2-report.md`](report/part2-report.md) |
+| **Parte 2 — relatório (.pdf, com evidências/diagramas/prints)** | [`report/Parte2-Relatorio-SMO-Nephio.pdf`](report/Parte2-Relatorio-SMO-Nephio.pdf) |
 | **Parte 2 — apresentação** | [`presentation/part2-slides.md`](presentation/part2-slides.md) |
 | **Roteiro de demo (8–10 min)** | [`demo/demo-script.md`](demo/demo-script.md) |
 | Diagnóstico de ambiente | [`docs/environment-assessment.md`](docs/environment-assessment.md) |
@@ -84,7 +86,20 @@ make status      # visão geral
 make experiment  # os 6 experimentos formais -> results/experiments.csv
 make validate    # scripts/validate-lab.sh (10 checagens)
 make down        # scripts/cleanup.sh (pergunta antes de remover)
+
+# Deliverables finais (.pptx / .pdf) — não precisam do laboratório de pé, só de rede:
+make deliverables   # instala pandoc+weasyprint sem sudo, renderiza diagramas, gera os 2 arquivos
+# ou individualmente:
+make slides         # -> presentation/Parte1-Apresentacao-SMO-Nephio.pptx
+make report-pdf     # -> report/Parte2-Relatorio-SMO-Nephio.pdf
 ```
+
+`make deliverables` não usa `sudo` (nesse WSL, `sudo` não-interativo trava pedindo autenticação
+do Windows — ver [`scripts/install-docgen-tools.sh`](scripts/install-docgen-tools.sh)): pandoc é
+um binário standalone baixado para `~/.local/bin`, e o WeasyPrint vai para um venv
+(`~/.venvs/docgen`) via `pip install --user` (desde a v53 ele não depende mais de Pango/GTK).
+Os diagramas (`scripts/diagrams/*.mmd`) são renderizados via o serviço público
+[mermaid.ink](https://mermaid.ink) — sem precisar instalar Mermaid-CLI/Chromium localmente.
 
 ## 4. Reprodução do zero (passo a passo, sem Makefile)
 
@@ -214,8 +229,10 @@ workload cluster, sem edge/regional/core, RIC, Free5GC/OAI). Lista completa:
 docs/          00-06 (auditoria/instalação/arquitetura/O2IMS/relatório do lab base) +
                environment-assessment, references, nephio-architecture, nephio-vs-smo,
                o1-o2-analysis, tool-comparison, provisioning-flow, monitoring, real-nf-extension
-report/        part1-report.md, part2-report.md
-presentation/  part1-slides.md, part2-slides.md
+report/        part1-report.md, part2-report.md, part2-report-print.html (fonte do PDF),
+               Parte2-Relatorio-SMO-Nephio.pdf, assets/ (diagramas .png renderizados)
+presentation/  part1-slides.md, part2-slides.md, part1-slides-deck.md (fonte do pptx),
+               Parte1-Apresentacao-SMO-Nephio.pptx, assets/ (diagramas .png renderizados)
 demo/          demo-script.md
 lab/
   cnfs/        oran-cu, oran-du, oran-core (FastAPI) + smoke-test.sh
@@ -224,9 +241,11 @@ lab/
 manifests/     kind-management-cluster, o2-provisioning-request, demo-nf, porch-repo-*, rootsync-mgmt
 scripts/       setup-host, check-requirements, install-nephio, 01/03/06/07/09/10-*, deploy,
                status, run-experiments, validate-lab, resource-usage, cleanup, fix-*, lab-recover,
-               reprovision-ocloud, ocloud-kubeconfig, lab-keepalive, patch-*
+               reprovision-ocloud, ocloud-kubeconfig, lab-keepalive, patch-*, diagrams/*.mmd,
+               render-diagrams, install-docgen-tools, build-pptx, build-report-pdf
 evidence/      saídas timestamped (environment/ resources/ nephio-install/ o2ims/
                workload-cluster/ lifecycle/ experiments/)
 results/       experiments.csv
-Makefile       make up | deploy | status | experiment | validate | down | cleanup
+Makefile       make up | deploy | status | experiment | validate | slides | report-pdf |
+               deliverables | down | cleanup
 ```
