@@ -19,11 +19,17 @@ NF_VERSION = os.environ.get("NF_VERSION", "v1")
 # auto-reportado; o valor autoritativo de reinicios vem do Kubernetes (RESTARTS em `kubectl get pods`)
 RESTART_COUNT = int(os.environ.get("NF_RESTART_COUNT", "0"))
 
+# Config de dominio lida do ConfigMap (envFrom no Deployment) quando presente - e o
+# que permite ao config-bridge (lab/nephio/config-bridge) saber qual era o "ultimo
+# estado publicado no pacote" ao decidir se precisa comitar uma correcao de drift.
+# Antes desta mudanca estes valores eram hardcoded aqui e nao existiam no pacote kpt -
+# por isso a config de dominio (cell_id etc.) nunca "propagava de volta ao pacote"
+# (limitacao registrada em report/part2-report.md Sec.14 item 5).
 DEFAULT_CONFIG = {
-    "plmn_id": "00101",
-    "cell_id": 1,
-    "tx_power_dbm": 20,
-    "du_id": 1,
+    "plmn_id": os.environ.get("CFG_PLMN_ID", "00101"),
+    "cell_id": int(os.environ.get("CFG_CELL_ID", "1")),
+    "tx_power_dbm": int(os.environ.get("CFG_TX_POWER_DBM", "20")),
+    "du_id": int(os.environ.get("CFG_DU_ID", "1")),
 }
 
 app = FastAPI(title=f"{NF_NAME} simulator", version=NF_VERSION)

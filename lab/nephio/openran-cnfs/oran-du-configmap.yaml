@@ -13,3 +13,10 @@ data:
   NF_NAME: "oran-du"
   NF_TYPE: "O-DU"
   NF_VERSION: "v1"
+  # Config de dominio (o "estado publicado no pacote"). O lab/nephio/config-bridge
+  # compara isto com o /config ao vivo da NF e comita uma correcao aqui quando um
+  # operador muda a config via API (PUT /config) em vez de via pacote.
+  CFG_PLMN_ID: "00101"
+  CFG_CELL_ID: "1"
+  CFG_TX_POWER_DBM: "20"
+  CFG_DU_ID: "1"

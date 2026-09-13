@@ -181,10 +181,12 @@ O laboratório inteiro (management + O-Cloud + 3 CNFs + Porch + Gitea + Cluster 
    (decisão registrada em `docs/provisioning-flow.md` §4).
 3. **Sem O1** — configuração operacional via API REST própria da NF, não NETCONF/YANG.
 4. **Sem monitoramento O-RAN** (VES, PM Jobs) — apenas `/metrics` Prometheus-like e `kubectl`.
-5. **`cell_id`/config de domínio não propaga de volta ao pacote** — a mudança via `/config` (API
-   da NF) e a mudança via pacote (Porch) são caminhos independentes; uma alteração feita por um
-   não aparece automaticamente no outro (seria necessário um controller adicional para
-   sincronizar os dois, fora do escopo).
+5. ~~**`cell_id`/config de domínio não propaga de volta ao pacote** — a mudança via `/config`
+   (API da NF) e a mudança via pacote (Porch) são caminhos independentes~~ — **superado para
+   `oran-du`/`cell_id`**: ver [`docs/improvements-16gb.md`](../docs/improvements-16gb.md) §3
+   (`config-bridge`, controller que detecta o drift e comita a correção de volta no pacote,
+   com prova real de round-trip completo). Mantido riscado por fidelidade histórica ao escopo
+   original desta Parte 2; continua valendo para os campos/NFs não cobertos pelo `config-bridge`.
 6. Ver também as limitações do O2 IMS/O-Cloud herdadas da Parte 1
    (`docs/05-experiment-report.md` §11) — o `o-cloud-1` não sobrevive a um restart da VM do
    WSL2 sem re-provisionamento.

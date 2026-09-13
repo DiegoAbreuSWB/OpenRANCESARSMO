@@ -1,0 +1,65 @@
+# Deployment do config-bridge no o-cloud-1. Aplicado via kubectl diretamente (nao faz
+# parte do pacote "openran-nfs" entregue via Porch) - e infraestrutura de suporte do
+# laboratorio, no mesmo espirito do metrics-server e do Config Sync
+# (docs/improvements-16gb.md), nao uma das 3 CNFs orquestradas.
+#
+# O Secret "config-bridge-gitea" com GITEA_TOKEN e criado por
+# scripts/12-config-bridge.sh (nao commitado - reaproveita o token que o Porch ja usa
+# pra este repo, lido do management cluster em tempo de deploy).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-bridge
+  namespace: openran-lab
+  labels:
+    app: config-bridge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-bridge
+  template:
+    metadata:
+      labels:
+        app: config-bridge
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: config-bridge
+          image: config-bridge:v1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: GITEA_URL
+              value: "http://172.18.0.200:3000"
+            - name: GITEA_REPO
+              value: "nephio/openran-cnfs"
+            - name: GITEA_BRANCH
+              value: "main"
+            - name: POLL_SECONDS
+              value: "15"
+            - name: GITEA_USER
+              valueFrom:
+                secretKeyRef:
+                  name: config-bridge-gitea
+                  key: username
+            - name: GITEA_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: config-bridge-gitea
+                  key: token
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "10m"
+            limits:
+              memory: "64Mi"
+              cpu: "100m"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
