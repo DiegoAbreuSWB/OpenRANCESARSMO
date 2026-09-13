@@ -1,0 +1,28 @@
+== metrics-server instalado em o-cloud-1 ==
+2026-09-13T03:46:39-03:00
+
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS       IMAGES                                                 SELECTOR
+metrics-server   1/1     1            1           79s   metrics-server   registry.k8s.io/metrics-server/metrics-server:v0.9.0   k8s-app=metrics-server
+
+-- kubectl top nodes --
+NAME                               CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+o-cloud-1-45dsx-cbjjq              333m         5%       971Mi           9%          
+o-cloud-1-md-0-6s4dn-kbzk5-gcf5r   148m         2%       576Mi           5%          
+
+-- kubectl top pods -A --
+NAMESPACE            NAME                                            CPU(cores)   MEMORY(bytes)   
+default              demo-nf-766b7dd5cb-6fx79                        1m           5Mi             
+kube-system          coredns-6f6b679f8f-9bmbw                        4m           13Mi            
+kube-system          coredns-6f6b679f8f-zlmg7                        5m           12Mi            
+kube-system          etcd-o-cloud-1-45dsx-cbjjq                      59m          39Mi            
+kube-system          kindnet-kwt9j                                   5m           14Mi            
+kube-system          kindnet-tbxr4                                   1m           21Mi            
+kube-system          kube-apiserver-o-cloud-1-45dsx-cbjjq            110m         254Mi           
+kube-system          kube-controller-manager-o-cloud-1-45dsx-cbjjq   46m          100Mi           
+kube-system          kube-multus-ds-7b5vk                            3m           28Mi            
+kube-system          kube-multus-ds-g5mmt                            3m           35Mi            
+kube-system          kube-proxy-5xjng                                2m           44Mi            
+kube-system          kube-proxy-q6lhj                                4m           40Mi            
+kube-system          kube-scheduler-o-cloud-1-45dsx-cbjjq            14m          42Mi            
+kube-system          metrics-server-594f6d74c5-cb66t                 12m          17Mi            
+local-path-storage   local-path-provisioner-6f99cf6b49-d6lkw         2m           12Mi            

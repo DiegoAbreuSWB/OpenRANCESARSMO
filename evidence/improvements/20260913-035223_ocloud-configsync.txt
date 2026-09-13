@@ -1,0 +1,49 @@
+== instala Config Sync em o-cloud-1 :: 2026-09-13T03:52:23-03:00 ==
+== 1) busca o pacote kpt oficial (mesmo do mgmt) ==
+Package "configsync":
+Fetching https://github.com/nephio-project/catalog@v6
+From https://github.com/nephio-project/catalog
+ * branch            v6         -> FETCH_HEAD
+Adding package "nephio/core/configsync".
+
+Fetched 1 package(s).
+== 2) kpt live apply no o-cloud-1 ==
+error: no ResourceGroup object was provided within the stream or package
+== 3) aguarda reconciler-manager ==
+Error from server (NotFound): namespaces "config-management-system" not found
+== 4) cria o RootSync 'openran-cnfs' apontando para o repo real do Porch/Gitea ==
+error: resource mapping not found for name: "openran-cnfs" namespace: "config-management-system" from "STDIN": no matches for kind "RootSync" in version "configsync.gke.io/v1beta1"
+ensure CRDs are installed first
+== 5) aguarda primeira sincronização (~60-90s) ==
+  03:52:29 syncErrors=? commit=<none>
+  03:52:36 syncErrors=? commit=<none>
+  03:52:42 syncErrors=? commit=<none>
+  03:52:48 syncErrors=? commit=<none>
+  03:52:55 syncErrors=? commit=<none>
+  03:53:01 syncErrors=? commit=<none>
+  03:53:08 syncErrors=? commit=<none>
+  03:53:14 syncErrors=? commit=<none>
+  03:53:21 syncErrors=? commit=<none>
+  03:53:27 syncErrors=? commit=<none>
+  03:53:33 syncErrors=? commit=<none>
+  03:53:40 syncErrors=? commit=<none>
+  03:53:46 syncErrors=? commit=<none>
+  03:53:53 syncErrors=? commit=<none>
+  03:53:59 syncErrors=? commit=<none>
+  03:54:06 syncErrors=? commit=<none>
+  03:54:12 syncErrors=? commit=<none>
+  03:54:18 syncErrors=? commit=<none>
+  03:54:25 syncErrors=? commit=<none>
+  03:54:31 syncErrors=? commit=<none>
+
+== 6) validação: os recursos existem SEM eu ter rodado deploy-cnfs-via-porch.sh agora ==
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/oran-core   1/1     1            1           7m25s
+deployment.apps/oran-cu     1/1     1            1           7m25s
+deployment.apps/oran-du     1/1     1            1           7m25s
+
+NAME                             READY   STATUS    RESTARTS   AGE
+pod/oran-core-7dfbc47d97-b8r58   1/1     Running   0          7m25s
+pod/oran-cu-c44ff566c-dqd4v      1/1     Running   0          7m25s
+pod/oran-du-7d44959c84-5njrs     1/1     Running   0          7m24s
+

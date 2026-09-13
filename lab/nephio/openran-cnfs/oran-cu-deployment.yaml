@@ -20,7 +20,7 @@ spec:
       annotations:
         # bump isto no pacote para forcar um novo ReplicaSet (rollout) - mudar
         # so o ConfigMap (envFrom) NAO dispara rollout automatico no Kubernetes.
-        openran-lab/nf-version: "v2"
+        openran-lab/nf-version: "v1"
     spec:
       securityContext:
         runAsNonRoot: true

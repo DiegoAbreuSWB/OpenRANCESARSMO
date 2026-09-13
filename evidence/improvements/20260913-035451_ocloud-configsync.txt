@@ -1,0 +1,68 @@
+== instala Config Sync em o-cloud-1 :: 2026-09-13T03:54:51-03:00 ==
+== 1) busca o pacote kpt oficial (mesmo do mgmt) ==
+[skip get] /home/diegoabreu/nephio-install-ocloud/configsync já existe
+== 2) kpt live apply no o-cloud-1 ==
+    initializing "resourcegroup.yaml" data (namespace: default)...success
+inventory update started
+inventory update finished
+apply phase started
+namespace/config-management-monitoring apply successful
+namespace/config-management-system apply successful
+customresourcedefinition.apiextensions.k8s.io/configmanagements.configmanagement.gke.io apply successful
+customresourcedefinition.apiextensions.k8s.io/rootsyncs.configsync.gke.io apply successful
+clusterrole.rbac.authorization.k8s.io/config-management-operator apply successful
+clusterrolebinding.rbac.authorization.k8s.io/config-management-operator apply successful
+apply phase finished
+reconcile phase started
+namespace/config-management-monitoring reconcile successful
+namespace/config-management-system reconcile successful
+customresourcedefinition.apiextensions.k8s.io/configmanagements.configmanagement.gke.io reconcile successful
+clusterrole.rbac.authorization.k8s.io/config-management-operator reconcile successful
+clusterrolebinding.rbac.authorization.k8s.io/config-management-operator reconcile successful
+customresourcedefinition.apiextensions.k8s.io/rootsyncs.configsync.gke.io reconcile successful
+reconcile phase finished
+apply phase started
+serviceaccount/config-management-operator apply successful
+deployment.apps/config-management-operator apply successful
+configmanagement.configmanagement.gke.io/config-management apply successful
+apply phase finished
+reconcile phase started
+serviceaccount/config-management-operator reconcile successful
+configmanagement.configmanagement.gke.io/config-management reconcile successful
+deployment.apps/config-management-operator reconcile successful
+reconcile phase finished
+inventory update started
+inventory update finished
+apply result: 9 attempted, 9 successful, 0 skipped, 0 failed
+reconcile result: 9 attempted, 9 successful, 0 skipped, 0 failed, 0 timed out
+== 3) aguarda reconciler-manager ==
+Error from server (NotFound): deployments.apps "reconciler-manager" not found
+== 4) cria o RootSync 'openran-cnfs' apontando para o repo real do Porch/Gitea ==
+rootsync.configsync.gke.io/openran-cnfs created
+== 5) aguarda primeira sincronização (~60-90s) ==
+  03:55:06 syncErrors=? commit=<none>
+  03:55:12 syncErrors=? commit=<none>
+  03:55:19 syncErrors=? commit=<none>
+  03:55:26 syncErrors=? commit=<none>
+  03:55:33 syncErrors=? commit=<none>
+  03:55:40 syncErrors=? commit=<none>
+  03:55:47 syncErrors=? commit=<none>
+  03:55:54 syncErrors=? commit=<none>
+  03:56:01 syncErrors=? commit=<none>
+  03:56:08 syncErrors=? commit=<none>
+  03:56:16 syncErrors=? commit=<none>
+  03:56:24 syncErrors=? commit=<none>
+  03:56:32 syncErrors=? commit=1bdae53df4d16b4ebbebf0cec10c71a1e527ad13
+
+== 6) validação: os recursos existem SEM eu ter rodado deploy-cnfs-via-porch.sh agora ==
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/oran-core   1/1     1            1           9m20s
+deployment.apps/oran-cu     1/1     1            1           9m20s
+deployment.apps/oran-du     1/1     1            1           9m20s
+
+NAME                             READY   STATUS    RESTARTS   AGE
+pod/oran-core-7dfbc47d97-b8r58   1/1     Running   0          9m20s
+pod/oran-cu-c44ff566c-dqd4v      1/1     Running   0          9m20s
+pod/oran-du-7d44959c84-5njrs     1/1     Running   0          9m19s
+
+[fim] log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/improvements/20260913-035451_ocloud-configsync.txt

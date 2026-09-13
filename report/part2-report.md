@@ -131,7 +131,10 @@ GitOps de um simples script de `kubectl apply`.
 Opção leve (sem Prometheus/Grafana) — ver [`docs/monitoring.md`](../docs/monitoring.md):
 `/metrics` de cada CNF (formato Prometheus: `nf_up`, `nf_requests_total`,
 `nf_config_version`, `nf_restart_count`), `docker stats`/`free -h` para custo de host, logs e
-eventos do Kubernetes. `metrics-server` não instalado (decisão explícita).
+eventos do Kubernetes. `metrics-server` inicialmente não instalado (decisão explícita) —
+posteriormente instalado no `o-cloud-1` como melhoria de baixo custo dentro do orçamento de
+16 GB; ver [`docs/improvements-16gb.md`](../docs/improvements-16gb.md) §1 para `kubectl top`
+real por nó/pod.
 
 ## 11. Falhas e recuperação
 
@@ -170,9 +173,12 @@ O laboratório inteiro (management + O-Cloud + 3 CNFs + Porch + Gitea + Cluster 
 
 1. **CNFs simuladas, não NFs O-RAN reais** — sem protocolos de rádio, planos de
    usuário/controle, ou interfaces F1/E1/E2.
-2. **Sem GitOps contínuo no `o-cloud-1`** — a entrega usa `kpt live apply` sob demanda, não um
-   `RootSync`/Config Sync observando o repositório continuamente (decisão de escopo — ver
-   `docs/provisioning-flow.md` §4).
+2. ~~**Sem GitOps contínuo no `o-cloud-1`** — a entrega usa `kpt live apply` sob demanda, não um
+   `RootSync`/Config Sync observando o repositório continuamente~~ — **superado**: ver
+   [`docs/improvements-16gb.md`](../docs/improvements-16gb.md) §2 (RootSync `openran-cnfs`
+   instalado no `o-cloud-1`, com prova de auto-reconciliação sem `kpt live apply` manual).
+   Mantido riscado aqui por fidelidade histórica ao escopo original desta Parte 2
+   (decisão registrada em `docs/provisioning-flow.md` §4).
 3. **Sem O1** — configuração operacional via API REST própria da NF, não NETCONF/YANG.
 4. **Sem monitoramento O-RAN** (VES, PM Jobs) — apenas `/metrics` Prometheus-like e `kubectl`.
 5. **`cell_id`/config de domínio não propaga de volta ao pacote** — a mudança via `/config` (API

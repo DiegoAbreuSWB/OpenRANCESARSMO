@@ -1,0 +1,13 @@
+== RootSync continuo (openran-cnfs) - prova de auto-reconciliacao ==
+2026-09-13T03:58:36-03:00
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES         SELECTOR
+deployment.apps/oran-core   1/1     1            1           11m   oran-core    oran-core:v1   app=oran-core
+deployment.apps/oran-cu     1/1     1            1           11m   oran-cu      oran-cu:v1     app=oran-cu
+deployment.apps/oran-du     1/1     1            1           11m   oran-du      oran-du:v1     app=oran-du
+
+NAME                             READY   STATUS    RESTARTS   AGE   IP             NODE                               NOMINATED NODE   READINESS GATES
+pod/oran-core-7dfbc47d97-b8r58   1/1     Running   0          11m   192.168.1.9    o-cloud-1-md-0-6s4dn-kbzk5-gcf5r   <none>           <none>
+pod/oran-cu-5b85f7d48-9vfbc      1/1     Running   0          26s   192.168.1.18   o-cloud-1-md-0-6s4dn-kbzk5-gcf5r   <none>           <none>
+pod/oran-du-7d44959c84-5njrs     1/1     Running   0          11m   192.168.1.10   o-cloud-1-md-0-6s4dn-kbzk5-gcf5r   <none>           <none>
+
+{"status":"ok","nf_name":"oran-cu","nf_type":"O-CU","nf_version":"v2","uptime_seconds":21.3}
