@@ -1,0 +1,61 @@
+# Deployment do rApp simulado no o-cloud-1. Aplicado via kubectl direto (infraestrutura
+# de suporte do laboratorio, como metrics-server/config-sync/config-bridge -
+# ver docs/improvements-16gb.md), nao uma das 3 CNFs orquestradas via Porch.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rapp-autoscale
+  namespace: openran-lab
+  labels:
+    app: rapp-autoscale
+    smo-role: non-rt-ric-rapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rapp-autoscale
+  template:
+    metadata:
+      labels:
+        app: rapp-autoscale
+        smo-role: non-rt-ric-rapp
+    spec:
+      serviceAccountName: rapp-autoscale
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: rapp-autoscale
+          image: rapp-autoscale:v1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TARGET_NAMESPACE
+              value: "openran-lab"
+            - name: TARGET_DEPLOYMENT
+              value: "oran-cu"
+            - name: METRICS_URL
+              value: "http://oran-cu.openran-lab.svc.cluster.local:8080/metrics"
+            - name: POLL_SECONDS
+              value: "30"
+            - name: UP_RATE_REQ_S
+              value: "1.0"
+            - name: DOWN_RATE_REQ_S
+              value: "0.1"
+            - name: MIN_REPLICAS
+              value: "1"
+            - name: MAX_REPLICAS
+              value: "3"
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "10m"
+            limits:
+              memory: "64Mi"
+              cpu: "100m"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]

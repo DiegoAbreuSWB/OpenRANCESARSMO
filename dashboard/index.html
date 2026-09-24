@@ -183,6 +183,8 @@
   .t-name{ font-size:1rem; font-weight:600; }
   .t-meta{ display:flex; align-items:center; gap:.5rem; font-size:.76rem; color:var(--ink-dim); }
   .t-dur{ font-family:"IBM Plex Mono"; color:var(--good); font-weight:600; }
+  .t-dur.pending{ color:var(--warn); }
+  .t-pending-note{ font-size:.68rem; font-weight:600; padding:.15rem .5rem; border-radius:99px; background:var(--warn-soft); color:var(--warn); white-space:nowrap; }
   .t-chevron{ margin-left:auto; transition:transform .15s ease; color:var(--ink-dim); flex:none; }
   details[open] .t-chevron{ transform:rotate(90deg); }
   .test-body{ padding:0 1.05rem 1.1rem; display:flex; flex-direction:column; gap:.7rem; }
@@ -269,7 +271,7 @@
     <div class="status-strip reveal">
       <div class="tile"><div class="num">2<small>/2</small></div><div class="lbl"><span class="pill-dot"></span>Nós o-cloud-1 Ready</div></div>
       <div class="tile"><div class="num">3<small>/3</small></div><div class="lbl"><span class="pill-dot"></span>CNFs Running</div></div>
-      <div class="tile"><div class="num">9<small>/9</small></div><div class="lbl"><span class="pill-dot"></span>Experimentos com sucesso</div></div>
+      <div class="tile"><div class="num">9<small>/10</small></div><div class="lbl"><span class="pill-dot"></span>Experimentos com sucesso</div></div>
       <div class="tile"><div class="num">5,3<small>/9,7 GiB</small></div><div class="lbl">RAM usada no WSL2</div></div>
       <div class="tile"><div class="num">76</div><div class="lbl">CRDs no management cluster</div></div>
       <div class="tile"><div class="num">11</div><div class="lbl">Bugs reais corrigidos</div></div>
@@ -353,18 +355,20 @@ flowchart TD
   <section id="testes">
     <div class="section-head">
       <div class="eyebrow">Testes e experimentos</div>
-      <h2>9 experimentos, comando → resultado real → o que isso prova</h2>
+      <h2>10 experimentos, comando → resultado real → o que isso prova</h2>
       <p>Os 6 originais (<code>results/experiments.csv</code>) cobrem o ciclo de vida completo de uma NF.
-      Os 3 mais recentes fecham lacunas de monitoramento e configuração levantadas depois da entrega.</p>
+      Os 4 mais recentes fecham lacunas de monitoramento, configuração e Non-RT RIC levantadas depois da
+      entrega — um deles (rApp) com reverificação final pendente, marcado honestamente como tal.</p>
     </div>
 
     <div class="filter-chips" role="group" aria-label="Filtrar por categoria">
-      <button class="chip" data-filter="all" aria-pressed="true">Todos · 9</button>
+      <button class="chip" data-filter="all" aria-pressed="true">Todos · 10</button>
       <button class="chip" data-filter="Provisioning" aria-pressed="false">Provisioning · 1</button>
       <button class="chip" data-filter="Configuration" aria-pressed="false">Configuration · 2</button>
       <button class="chip" data-filter="Lifecycle" aria-pressed="false">Lifecycle · 4</button>
       <button class="chip" data-filter="Orchestration" aria-pressed="false">Orchestration · 1</button>
       <button class="chip" data-filter="Monitoring" aria-pressed="false">Monitoring · 1</button>
+      <button class="chip" data-filter="Non-RT RIC" aria-pressed="false">Non-RT RIC · 1</button>
     </div>
 
     <div class="test-grid" id="test-grid">
@@ -500,6 +504,23 @@ RootSync sincroniza → CFG_CELL_ID=7 no ConfigMap real</div></div>
         </div>
       </details>
 
+      <details class="test-card" data-cat="Non-RT RIC">
+        <summary>
+          <div class="t-top"><span class="t-id">MEL‑10</span><span class="t-cat">Non-RT RIC</span></div>
+          <div class="t-name">rapp-autoscale — rApp simulado</div>
+          <div class="t-meta"><span class="t-dur pending">parcial</span><span>·</span><span>poll 30s não-tempo-real</span><span class="t-chevron">▸</span></div>
+        </summary>
+        <div class="test-body">
+          <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd"># 300 req/s de carga em oran-cu, via scripts/14-rapp-load-test.sh</span></div></div>
+          <div><div class="t-block-lbl">Resultado real</div><div class="term mono">DECISAO rApp: rate=10.27 req/s replicas=1 -> 2
+acao aplicada via Kubernetes API (patch Deployment/oran-cu scale)
+--- achado real ---
+RootSync revertia a réplica p/ 1 (pacote ainda declarava replicas:1)
+CORRIGIDO: replicas removido do pacote (mesmo padrão de HPA+GitOps)</div></div>
+          <p class="t-explain"><b>Por que rApp, não xApp:</b> rApps rodam no Non-RT RIC — parte do próprio SMO; xApps exigiriam simular E2/Near-RT RIC, que nossas CNFs não implementam. <span class="t-pending-note">reverificação final pendente</span> — ambiente sofreu suspensões repetidas do host durante o teste; nenhuma evidência foi forjada para cobrir isso. Ver <code>docs/improvements-16gb.md</code> §4.</p>
+        </div>
+      </details>
+
     </div>
   </section>
 
@@ -526,7 +547,8 @@ RootSync sincroniza → CFG_CELL_ID=7 no ConfigMap real</div></div>
           <tr><td class="fn">Fault management</td><td><span class="status-pill parcial">Só nível K8s</span></td><td class="ev">Self-healing via ReplicaSet; sem alarmes O1, sem correlação VES</td></tr>
           <tr><td class="fn">O1</td><td><span class="status-pill nao">Não implementado</span></td><td class="ev">Nenhuma CRD/controller O1 encontrada na descoberta completa do cluster</td></tr>
           <tr><td class="fn">O2 (IMS)</td><td><span class="status-pill real">Sim, como PoC</span></td><td class="ev"><code>provisioningState: fulfilled</code> real, capturado em evidência</td></tr>
-          <tr><td class="fn">Non-RT RIC / Policy (A1)</td><td><span class="status-pill nao">Não implementado</span></td><td class="ev">Projeto separado do ecossistema O-RAN-SC; Nephio não o substitui</td></tr>
+          <tr><td class="fn">Non-RT RIC (plataforma) / Policy (A1)</td><td><span class="status-pill nao">Não implementado</span></td><td class="ev">Projeto separado do ecossistema O-RAN-SC; Nephio não o substitui</td></tr>
+          <tr><td class="fn">rApp (função, não a plataforma)</td><td><span class="status-pill parcial">Parcial (melhoria)</span></td><td class="ev"><code>rapp-autoscale</code>: política de capacidade não-tempo-real real, sem A1/Non-RT RIC de fato — reverificação final pendente</td></tr>
         </tbody>
       </table>
     </div>
@@ -546,6 +568,8 @@ RootSync sincroniza → CFG_CELL_ID=7 no ConfigMap real</div></div>
       <div class="limit-item"><span class="x">✕</span>o-cloud-1 não sobrevive a um restart abrupto da VM do WSL2 sem re-provisionamento (CAPD + cgroup v2).</div>
       <div class="limit-item"><span class="x">✕</span><code>provisioningState: fulfilled</code> é PoC de rascunho O-RAN WG6 — <code>oCloudNodeClusterId</code> é um UUID local, não um id de inventário O2 real.</div>
       <div class="limit-item"><span class="x">✕</span>config-bridge cobre só oran-du/cell_id — generalizável, mas não aplicado às demais NFs/campos.</div>
+      <div class="limit-item"><span class="x">✕</span>xApp deliberadamente não simulado — exigiria um Near-RT RIC + protocolo E2 reais, que este laboratório não implementa (não existe "A2" na especificação O-RAN; as interfaces reais são A1 e E2).</div>
+      <div class="limit-item"><span class="x">✕</span>rApp simulado com reverificação final pendente — ambiente sofreu suspensões repetidas do host durante o teste; nenhuma evidência foi forjada para cobrir isso (docs/improvements-16gb.md §4).</div>
     </div>
   </section>
 

@@ -175,7 +175,68 @@ componente do laboratório.
 Experimento 2), não às 3 CNFs. O padrão é generalizável (basta adicionar entradas em
 `WATCHED` no `bridge.py`), mas isso ficou fora do escopo desta melhoria pontual.
 
-## 4. O que isso muda na caracterização do laboratório
+## 4. `rapp-autoscale`: um rApp simulado (Non-RT RIC / SMO)
+
+**Origem:** ao revisar as lacunas de O1/O2/A1 com o usuário, ficou a pergunta se fazia
+sentido simular um xApp ou um rApp. Conclusão registrada e aprovada: **rApp sim, xApp
+não** — rApps rodam no **Non-RT RIC**, que é parte do próprio **SMO** (o escopo desta
+disciplina); xApps rodam no Near-RT RIC e falam **E2** com os "E2 Nodes", uma interface
+que nossas CNFs simuladas não implementam de forma alguma — simulá-la seria inventar um
+protocolo que não existe de fato no laboratório, contra a regra deste trabalho.
+
+**Implementação:** [`lab/nephio/rapp-autoscale/rapp.py`](../lab/nephio/rapp-autoscale/rapp.py)
+— um poller Python (não um operador `kopf`/`controller-runtime`: o estado observado é
+externo ao Kubernetes, não há evento de apiserver para reagir) que a cada **30 s**
+(deliberadamente não-tempo-real — O-RAN define rApp como >1 s e xApp como 10 ms–1 s; o
+próprio intervalo marca a distinção na prática, não só no texto) lê `nf_requests_total`
+de `/metrics` do `oran-cu`, calcula a taxa de requisições, e aplica uma política de
+capacidade: `rate > 1,0 req/s` → escala para cima; `rate < 0,1 req/s` → escala para
+baixo (faixa `[1..3]` réplicas). A ação é executada **diretamente** via PATCH no
+subrecurso `/scale` da API do Kubernetes — a mesma simplificação já usada no
+`config-bridge` (uma ação real, não uma policy A1 publicada para um Near-RT RIC que não
+existe aqui). RBAC mínimo: `ServiceAccount` + `Role` escopados só ao
+`Deployment/oran-cu` (`scripts/13-rapp-autoscale.sh` aplica RBAC + build + deploy).
+Custo de RAM: `requests 32Mi/limits 64Mi` — o mesmo patamar do `config-bridge`.
+
+### Achado real: conflito de autoridade entre GitOps e um controller imperativo
+
+Ao testar, o rApp calculava a taxa corretamente e o PATCH `/scale` retornava `200` com
+`spec.replicas: 2` — mas a réplica **voltava para 1 segundos depois**. Causa raiz
+identificada: o pacote publicado no Porch/Gitea ainda declarava `replicas: 1` no
+`oran-cu-deployment.yaml`, e o **RootSync contínuo** (§2) reconciliava o `Deployment` de
+volta ao valor do Git a cada ciclo — um conflito real entre duas autoridades de
+orquestração (declarativa via GitOps × imperativa via controller de escala), exatamente
+o tipo de comportamento que este trabalho existe para expor, não esconder.
+
+**Correção aplicada** (mesmo padrão usado na vida real quando um HPA coexiste com
+GitOps — Argo CD chama isso de `ignoreDifferences`): o campo `replicas` foi **removido**
+do `oran-cu-deployment.yaml` no pacote. Como tanto `kpt live apply` quanto o reconciler
+do Config Sync usam *server-side apply*, nenhum dos dois GitOps reivindica posse do
+campo `replicas` quando ele está ausente do manifesto — deixando o `rapp-autoscale` como
+dono exclusivo desse campo.
+
+**Evidência real capturada** (uma decisão de scale-up completa, comando → log → PATCH
+confirmado manualmente com `200` e `spec.replicas: 2` retornado pela API):
+
+```
+DECISAO rApp: rate=10.27 req/s replicas=1 -> 2 (politica de capacidade nao-tempo-real)
+acao aplicada via Kubernetes API (patch Deployment/oran-cu scale)
+```
+
+**Status honesto desta melhoria:** o código está completo, commitado, e a decisão de
+scale-up do rApp foi comprovada funcionando (incluindo a descoberta e correção do
+conflito com o GitOps, acima). A **reverificação final** — confirmar que, após a
+correção, o scale-up permanece estável (não é revertido) através de um ciclo completo de
+subida e descida — **não foi concluída nesta sessão**: o ambiente WSL2/Docker sofreu
+suspensões repetidas da máquina host durante os testes finais (containers de ambos os
+clusters caindo simultaneamente, gaps de vários minutos sem atividade, certificados TLS
+do `o-cloud-1` corrompidos a cada retomada — o mesmo padrão de fragilidade já documentado
+em §5/`docs/05-experiment-report.md` §11 item 5, aqui agravado pela frequência das
+suspensões). Reproduzível a qualquer momento via `scripts/13-rapp-autoscale.sh` +
+`scripts/14-rapp-load-test.sh` assim que o ambiente estiver estável — nenhuma evidência
+falsa foi registrada para cobrir essa lacuna.
+
+## 5. O que isso muda na caracterização do laboratório
 
 - `report/part2-report.md` §14 item 2 ("Sem GitOps contínuo no `o-cloud-1`") deixa de ser
   uma limitação **geral** e passa a ser uma limitação **de decisão de escopo original,
@@ -186,11 +247,16 @@ Experimento 2), não às 3 CNFs. O padrão é generalizável (basta adicionar en
   deixa de ser uma limitação geral — superada, para `oran-du`/`cell_id`, pelo
   `config-bridge` (§3). Continua válida para os demais campos/NFs não incluídos em
   `WATCHED`.
-- As demais lacunas (O1, NF real, FOCOM federado, fragilidade do `o-cloud-1` a restart da
-  VM) **permanecem** — nenhuma delas cabe no orçamento de 16 GB sem uma segunda máquina
-  dedicada, conforme já analisado em `docs/real-nf-extension.md`.
+- `docs/nephio-vs-smo.md` — "Non-RT RIC: ❌ Não implementado" ganha uma exceção pontual:
+  o `rapp-autoscale` (§4) implementa, de fato, um controller com a forma de um rApp
+  (política de capacidade não-tempo-real sobre dados de `/metrics`), embora não use A1
+  nem um Non-RT RIC real — continua sem cobrir a hospedagem/plataforma Non-RT RIC em si.
+- As demais lacunas (O1, A1/Non-RT RIC como plataforma, xApp/E2, NF real, FOCOM federado,
+  fragilidade do `o-cloud-1` a restart da VM) **permanecem** — nenhuma delas cabe no
+  orçamento de 16 GB sem uma segunda máquina dedicada, conforme já analisado em
+  `docs/real-nf-extension.md`.
 
-## 5. Recuperação de infraestrutura registrada nesta sessão (contexto operacional)
+## 6. Recuperação de infraestrutura registrada nesta sessão (contexto operacional)
 
 Como parte deste trabalho, a VM do WSL2 havia reiniciado (uptime zerado) e tanto o
 `o-cloud-1` quanto, momentaneamente, o `nephio-mgmt` precisaram de recuperação — o
@@ -202,3 +268,18 @@ manual) e o Gitea do `nephio-mgmt` ficou preso em `Unknown` (corrigido com um si
 causas-raiz são consistentes com as fragilidades já documentadas em
 `docs/05-experiment-report.md` §11 itens 5 e 6, e não indicam nenhum problema novo — apenas
 reafirmam, na prática, a limitação já conhecida de infraestrutura CAPD sobre WSL2.
+
+**Sessão de 2026-09-24 — recorrência agravada.** Durante o trabalho no `rapp-autoscale`
+(§4), o mesmo padrão se repetiu com frequência muito maior: os containers de **ambos**
+os clusters caíram simultaneamente várias vezes (`docker ps` mostrando `Exited (128)` em
+lockstep para `nephio-mgmt-control-plane` e todos os containers do `o-cloud-1` ao mesmo
+tempo), intercalados com picos de `load average` >18 (num host de 12 threads) durante os
+boots simultâneos e, em um dos ciclos, um hiato de mais de 50 minutos sem nenhuma
+atividade de log entre dois comandos consecutivos do mesmo script. Esse padrão — queda
+simultânea de processos não relacionados entre si (mgmt e o-cloud-1 são containers Docker
+independentes, sem motivo técnico para cair juntos) mais hiatos de tempo real muito
+maiores que qualquer `sleep` pedido — é consistente com o **host Windows suspendendo
+(sono/hibernação) durante os comandos em background**, não com uma falha do laboratório
+em si. Isso está fora do alcance de qualquer script deste repositório; recomenda-se
+manter a máquina acordada (configuração de energia do Windows, ou `powercfg`) durante
+sessões longas de laboratório.

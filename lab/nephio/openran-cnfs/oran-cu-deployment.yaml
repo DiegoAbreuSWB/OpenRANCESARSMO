@@ -8,7 +8,13 @@ metadata:
     nf-type: O-CU
     workload.nephio.org/represents: network-function
 spec:
-  replicas: 1
+  # "replicas" deliberadamente OMITIDO: o rapp-autoscale (lab/nephio/rapp-autoscale) e o
+  # dono exclusivo deste campo via PATCH no /scale subresource. Se "replicas" estivesse
+  # aqui, o RootSync continuo (kpt/Config Sync usam server-side apply) reverteria a
+  # decisao do rApp de volta ao valor do Git a cada ciclo de reconciliacao - um conflito
+  # real de autoridade entre GitOps declarativo e um controller imperativo de scaling,
+  # descoberto e documentado em docs/improvements-16gb.md. Mesmo padrao usado na vida
+  # real quando um HPA coexiste com GitOps (Argo CD chama isso de "ignoreDifferences").
   selector:
     matchLabels:
       app: oran-cu

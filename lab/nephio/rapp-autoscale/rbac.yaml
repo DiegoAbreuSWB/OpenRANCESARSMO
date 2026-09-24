@@ -1,0 +1,32 @@
+# RBAC minimo: o rApp so pode ler e escalar o Deployment "oran-cu" no namespace
+# openran-lab - nada mais. Principio de menor privilegio, mesmo num laboratorio.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: rapp-autoscale
+  namespace: openran-lab
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: rapp-autoscale
+  namespace: openran-lab
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments", "deployments/scale"]
+    resourceNames: ["oran-cu"]
+    verbs: ["get", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: rapp-autoscale
+  namespace: openran-lab
+subjects:
+  - kind: ServiceAccount
+    name: rapp-autoscale
+    namespace: openran-lab
+roleRef:
+  kind: Role
+  name: rapp-autoscale
+  apiGroup: rbac.authorization.k8s.io
