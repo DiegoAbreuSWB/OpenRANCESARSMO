@@ -60,7 +60,10 @@ def get_live_status():
         out["nodes_total"] = len(lines)
         out["nodes_ready"] = sum(1 for l in lines if " Ready" in l or "\tReady" in l)
 
-    pods = _kubectl(["--context", "o-cloud-1", "-n", "openran-lab", "get", "deploy", "--no-headers"])
+    # so as 3 CNFs entregues via pacote Porch - config-bridge/rapp-autoscale/metrics-server
+    # tambem vivem no namespace openran-lab, mas nao sao "CNFs" para efeito desta contagem.
+    pods = _kubectl(["--context", "o-cloud-1", "-n", "openran-lab", "get", "deploy",
+                      "oran-cu", "oran-du", "oran-core", "--no-headers"])
     if pods is not None:
         lines = [l for l in pods.splitlines() if l.strip()]
         out["cnfs_total"] = len(lines)

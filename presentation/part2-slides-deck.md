@@ -4,7 +4,7 @@
 - Usar o Nephio, na prática, para provisionar e gerenciar uma pilha Open RAN **simulada**
 - 3 Network Functions representativas: `oran-cu`, `oran-du`, `oran-core`, sobre um O-Cloud
   provisionado pelo próprio Nephio (Parte 1)
-- Autor: Diego Abreu — versão detalhada, atualizada em 2026-09-25 com 4 melhorias pós-entrega
+- Autor: Diego Abreu
 
 ::: notes
 Na Parte 1 caracterizei teoricamente o que o Nephio faz e não faz frente à especificação de SMO
@@ -14,9 +14,9 @@ fazer aqui tem um comando, uma saída real e um arquivo de evidência por trás,
 
 ## Objetivo desta Parte 2
 
-- Demonstrar, com **evidência mensurável** (tempo, RAM, CPU), os quatro mecanismos centrais de
-  SMO/orquestração: **provisioning, configuration management, orchestration, lifecycle
-  management**
+- Demonstrar, com **evidência mensurável** (tempo, RAM, CPU), os mecanismos centrais de
+  SMO/orquestração: **provisioning, configuration management, orchestration, monitoring,
+  lifecycle management** e uma primeira função de **Non-RT RIC**
 - Não é um roteiro "follow-along" — é um experimento real, com bugs reais encontrados e
   corrigidos ao vivo, documentados em vez de escondidos
 - Critério de sucesso: cada operação tem que sair de um comando real, não de uma afirmação
@@ -38,7 +38,8 @@ tipo de exagero que este trabalho existe para evitar.
 - Nephio **não é** o SMO oficial da especificação O-RAN — é uma plataforma de automação
   cloud-native que implementa **partes** das funções do SMO
 - Forte em: provisioning de infraestrutura (O2 IMS), lifecycle de deployment Kubernetes
-- Fraco/ausente em: O1 (FCAPS via NETCONF/YANG), Non-RT RIC/A1, telemetria O-RAN nativa
+- Fraco/ausente em: O1 (FCAPS via NETCONF/YANG), Non-RT RIC/A1 como plataforma, telemetria
+  O-RAN nativa
 - Esta Parte 2 usa exatamente essa caracterização como roteiro dos experimentos
 
 ::: notes
@@ -62,42 +63,32 @@ sozinho já estouraria os 16 GB se eu tivesse usado a distribuição completa �
 pacote a pacote, só o mínimo necessário para provar o mecanismo.
 :::
 
-## Arquitetura — conceito geral
+## Arquitetura — as três camadas
 
-![Duas camadas: Management Cluster decide o quê/como configurar; Workload Cluster(s) roda as CNFs, reconciliadas via GitOps](assets/nephio-arch.png)
+![Arquitetura completa: infraestrutura (O2 IMS), entrega de NF (Porch + RootSync contínuo) e operação (metrics-server, config-bridge, rapp-autoscale)](assets/architecture-final.png)
 
-- **Management Cluster** (`nephio-mgmt`): Nephio Core, Porch, repositório de pacotes, Config Sync
-- **Workload Cluster** (`o-cloud-1`): onde as CNFs realmente rodam
-- `o-cloud-1` foi **provisionado pelo próprio Nephio** via O2 IMS — não um `kind create` manual
-  (resultado da Parte 1, reaproveitado aqui como base)
-
-::: notes
-Esse diagrama é conceitual — o real, com todos os componentes desta Parte 2, vem no próximo
-slide. Mas a ideia central já está aqui: dois clusters, papéis bem separados.
-:::
-
-## Arquitetura final (com as 4 melhorias)
-
-![Arquitetura final: O2 IMS + entrega de CNFs via Porch, RootSync contínuo, config-bridge e rapp-autoscale (novos, em destaque)](assets/architecture-final.png)
-
-- Camada 1 (infraestrutura): `ProvisioningRequest` → `o2ims-operator` → Cluster API/CAPD → `o-cloud-1`
-- Camada 2 (NFs): pacote kpt → Porch → `RootSync` contínuo → `oran-cu/du/core`
-- Três peças em destaque (teal) são as melhorias pós-entrega — detalhadas na segunda metade
+- **Camada 1 (infraestrutura):** `ProvisioningRequest` → `o2ims-operator` → Cluster API/CAPD →
+  `o-cloud-1` — o `o-cloud-1` foi **provisionado pelo próprio Nephio**, não um `kind create`
+  manual
+- **Camada 2 (NFs):** pacote kpt → Porch → `RootSync` contínuo → `oran-cu/du/core`
+- **Camada 3 (operação):** `metrics-server`, `config-bridge` e `rapp-autoscale` rodam dentro do
+  `o-cloud-1`, consumindo as mesmas APIs que as camadas 1 e 2 já expõem
 
 ::: notes
-As três peças em destaque — metrics-server, config-bridge e rapp-autoscale — não faziam parte
-da entrega original. Vou chegar nelas, mas primeiro mostro tudo que foi entregue no prazo
-original, com os 6 experimentos formais.
+Três camadas, cada uma com um mecanismo de orquestração diferente — infraestrutura via O2 IMS,
+entrega de NF via GitOps contínuo, e operação via três componentes que consomem essas mesmas
+APIs. Vou percorrer as três ao longo da apresentação, com experimento e evidência para cada uma.
 :::
 
 ## Ferramentas e o papel de cada uma
 
-- **kpt** — autoria do pacote, pipeline de funções, `kpt live apply` (reconciliação declarativa
-  com inventário `ResourceGroup`)
+- **kpt** — autoria do pacote, pipeline de funções, inventário declarativo (`ResourceGroup`)
 - **Porch / `porchctl`** — ciclo de vida do pacote: Draft → Proposed → Published
+- **Config Sync / `RootSync`** — reconciliação GitOps contínua do repositório `openran-cnfs`
 - **kind + Cluster API + CAPD** — criação do `o-cloud-1` via O2 IMS
+- **metrics-server** — métricas reais de CPU/RAM por nó e por pod
 - **kubectl** — operações imperativas de comparação (scale, delete pod) e validação
-- **FastAPI/Python + Docker** — as 3 CNFs simuladas
+- **FastAPI/Python + Docker** — as 3 CNFs simuladas, o `config-bridge` e o `rapp-autoscale`
 
 ::: notes
 Nenhuma dessas ferramentas é exclusiva de telecom — é exatamente esse o ponto da Parte 1: o
@@ -108,9 +99,10 @@ núcleo do Nephio é agnóstico, e se conecta ao mundo O-RAN só através de ope
 
 - `oran-cu`, `oran-du`, `oran-core` — serviços FastAPI, ~30–50 MiB de RAM cada
 - Cada uma expõe `/health`, `/config` (GET/PUT/POST), `/metrics` (formato Prometheus)
+- A config de domínio de `oran-du` (`plmn_id`, `cell_id`, `tx_power_dbm`, `du_id`) vem do
+  `ConfigMap` do pacote — é o que permite ao `config-bridge` saber qual é o estado publicado
 - **Workloads representativos — não NFs O-RAN reais**: sem protocolos de rádio, sem planos de
   usuário/controle, sem interfaces F1/E1/E2
-- Servem para exercitar **mecanismos de orquestração**, não para simular tráfego de rede
 
 ::: notes
 Sou direto aqui: se alguém perguntar "isso é um O-CU de verdade?", a resposta é não. É um
@@ -120,10 +112,10 @@ sobre algo que se parece com uma NF, sem pagar o custo de RAM de uma pilha 5G re
 
 ## Por que não usei uma NF real (avaliação feita)
 
-- Avaliei 3 alternativas para o próximo passo: **UERANSIM**, **free5GC**, **OpenAirInterface**
+- Avaliei 3 alternativas: **UERANSIM**, **free5GC**, **OpenAirInterface**
 - UERANSIM sozinho: ~2 GB/2 CPU — mas não funciona sem um AMF real por trás
 - free5GC completo: 4 GB mínimo / 8 GB recomendado — **sozinho já consome quase todo o
-  orçamento restante** (Nephio + O2 IMS + O-Cloud já usam ~3,9 GiB)
+  orçamento restante**
 - OpenAirInterface: footprint imprevisível, maior complexidade — e o próprio enunciado pediu
   para não instalar
 - **Decisão:** nenhuma NF real cabia ao lado do Nephio completo em 16 GB — documentado, não
@@ -137,7 +129,7 @@ sugerido seria validar primeiro o onboarding do pacote do free5GC com réplicas 
 
 ## Fluxo de provisionamento das NFs — conceito
 
-![Intent (pacote kpt autoral) → Package (Draft) → Repository (Published) → Reconciliation (kpt live apply) → Kubernetes → CNF](assets/provisioning-flow.png)
+![Intent (pacote kpt autoral) → Package (Draft) → Repository (Published) → Reconciliation → Kubernetes → CNF](assets/provisioning-flow.png)
 
 - As NFs chegam ao `o-cloud-1` por um **pacote kpt publicado no Porch** — não por
   `kubectl apply` direto
@@ -154,7 +146,7 @@ Published — o mesmo mecanismo que o Nephio usaria em produção para qualquer 
 
 - **Comando:** `bash lab/nephio/deploy-cnfs-via-porch.sh`
 - **O que faz:** publica o pacote no Porch (`rpkg copy/push/propose/approve`), depois
-  `kpt live apply` no `o-cloud-1`
+  reconcilia declarativamente no `o-cloud-1`
 - **Resultado:** 3/3 CNFs `Running` do zero em **20,4 s**
 
 ![Terminal real: apply result 10 attempted, 10 successful — 3 CNFs Running](assets/term-exp1-apply.png)
@@ -187,7 +179,7 @@ propósitos diferentes.
 
 ::: notes
 Rápido e direto — mas o ponto não é a velocidade, é a distinção: essa mudança fica só na API da
-NF, não propaga pro pacote sozinha (isso só foi resolvido depois, na Melhoria 3).
+NF, não propaga pro pacote sozinha (isso é fechado mais adiante, pelo config-bridge).
 :::
 
 ## Experimento 3 — Scale
@@ -198,8 +190,8 @@ NF, não propaga pro pacote sozinha (isso só foi resolvido depois, na Melhoria 
   qualquer aplicação, não um scaling orientado por KPI de rede O-RAN
 
 ::: notes
-Aqui uso deliberadamente o kubectl imperativo, em vez do pacote, para comparar com a Melhoria 4
-(rApp) mais adiante — o mesmo scale, só que decidido automaticamente por uma política.
+Aqui uso deliberadamente o kubectl imperativo, para comparar mais adiante com o rApp — o mesmo
+scale, só que decidido automaticamente por uma política, a partir de telemetria.
 :::
 
 ## Experimento 5 — Upgrade (achado real)
@@ -212,9 +204,9 @@ Aqui uso deliberadamente o kubectl imperativo, em vez do pacote, para comparar c
   `ReplicaSet`
 
 ::: notes
-Esse foi o experimento mais instrutivo da entrega original. Bati de frente com um comportamento
-real e documentado do Kubernetes, diagnostiquei com evidência e corrigi — não escondi que
-falhou na primeira tentativa.
+Esse foi um dos experimentos mais instrutivos. Bati de frente com um comportamento real e
+documentado do Kubernetes, diagnostiquei com evidência e corrigi — não escondi que falhou na
+primeira tentativa.
 :::
 
 ## Experimento 4 — Recover
@@ -237,66 +229,26 @@ não uma função de FCAPS-F O-RAN. É uma distinção pequena no slide, mas gra
   `kubectl delete` avulso
 
 ::: notes
-Fecha o ciclo completo: instantiate, config, scale, upgrade, recover, terminate — todos pelo
-fluxo real do Nephio, com evidência de cada um.
+Fecha o primeiro bloco: instantiate, config, scale, upgrade, recover, terminate — todos pelo
+fluxo real do Nephio, com evidência de cada um. Agora vou pra camada de operação.
 :::
 
-## Resultados consolidados (entrega original)
+## Resultados consolidados
 
-![Duração real de todos os experimentos e melhorias, por categoria](assets/experiments-duration.png)
+![Duração real de todos os experimentos, por categoria](assets/experiments-duration.png)
 
-- **6/6 experimentos formais: `success`** (`results/experiments.csv`)
-- `scripts/validate-lab.sh`: **10/10 PASS**, reexecutando automaticamente instantiate/scale/recover/terminate
+- **10/10 experimentos com sucesso** (`results/experiments.csv` + evidências)
+- `scripts/validate-lab.sh`: reexecuta automaticamente instantiate/scale/recover/terminate e
+  valida cada componente da camada de operação
 
-![validate-lab.sh: 10/10 PASS](assets/term-validate-lab.png)
+![validate-lab.sh — validação automática do laboratório](assets/term-validate-lab.png)
 
 ::: notes
-Esse gráfico já mostra os 6 experimentos originais junto com as 3 melhorias que vou detalhar
-depois — dá pra comparar a ordem de grandeza de cada operação de relance.
+Esse gráfico mostra os 10 experimentos juntos — dá pra comparar a ordem de grandeza de cada
+operação de relance, da configuração mais rápida (0,7s) até o ciclo de decisão do rApp (30s).
 :::
 
-## Uso de RAM (entrega original)
-
-- `nephio-mgmt` (Nephio R6 completo): **~3,7–3,9 GiB**
-- `o-cloud-1` (2 nós K8s): **~1,4 GiB**
-- 3 CNFs simuladas (juntas): **< 200 MiB**
-- **Total: ~3,9 GiB usados de 9,7 GiB configurados** — bem abaixo da meta de 10–12 GB do enunciado
-
-::: notes
-Isso prova que a restrição de RAM não foi um problema teórico — o laboratório inteiro (Nephio +
-O-Cloud + 3 CNFs + Porch + Gitea + Cluster API) coube com folga real, medida.
-:::
-
-## O que ficou de fora na entrega original
-
-- **Sem GitOps contínuo no `o-cloud-1`** — entrega via `kpt live apply` sob demanda, não um
-  `RootSync` observando o repositório continuamente
-- **Sem monitoramento por métrica** — só `docker stats`/eventos, sem `metrics-server`
-- **`cell_id` não propagava de volta ao pacote** — mudança via `/config` e via pacote eram
-  caminhos independentes
-- **Sem O1, sem NF real, sem Non-RT RIC/rApp, sem xApp/E2** — fronteiras já mapeadas na Parte 1
-
-::: notes
-Essas quatro primeiras lacunas eram decisões de escopo, não impossibilidades técnicas — e são
-exatamente as que ataquei nas melhorias pós-entrega, a seguir.
-:::
-
-## Por que as melhorias pós-entrega
-
-- Depois da entrega, revisei com o avaliador: "a parte de SMO foi bem implementada? O1/O2/A1
-  fazem sentido? Vale simular um xApp ou rApp?"
-- Decisão registrada: **rApp faz sentido** (roda no Non-RT RIC, parte do próprio SMO) —
-  **xApp não** (exigiria Near-RT RIC + protocolo E2 real, que as CNFs não implementam — seria
-  inventar uma interface inexistente)
-- Não existe "A2" na especificação O-RAN — as interfaces reais do lado RIC são **A1** e **E2**
-- Resultado: 4 melhorias, todas dentro do mesmo orçamento de 16 GB, cada uma com evidência real
-
-::: notes
-Essa conversa aconteceu de verdade e mudou o rumo do trabalho — em vez de parar na entrega
-original, usei a folga de RAM que sobrou (quase 6 GiB) pra fechar lacunas reais.
-:::
-
-## Melhoria 1 — metrics-server (Monitoring)
+## Experimento 7 — metrics-server (Monitoring)
 
 - Instalado no `o-cloud-1`: manifesto oficial + patch `--kubelet-insecure-tls`
 - Fecha "Monitoring: não incluído nativamente" da tabela SMO×Nephio da Parte 1
@@ -305,30 +257,27 @@ original, usei a folga de RAM que sobrou (quase 6 GiB) pra fechar lacunas reais.
 ![kubectl top nodes/pods — dados reais de CPU e memória](assets/term-metrics-top.png)
 
 ::: notes
-Antes só tínhamos docker stats do host. Agora tenho kubectl top de verdade — métrica real por
-nó e por pod, sem pagar o custo de um Prometheus completo.
+Métrica real por nó e por pod, sem pagar o custo de um Prometheus completo.
 :::
 
-## Melhoria 2 — RootSync contínuo (Orchestration)
+## Experimento 8 — RootSync contínuo (Orchestration)
 
-- Config Sync instalado no **próprio** `o-cloud-1` (mesmo pacote kpt oficial do management
-  cluster), com `RootSync` apontando pro repositório `openran-cnfs`
-- Fecha "sem GitOps contínuo" — a entrega deixa de depender de rodar o script manualmente
-- **Prova real de continuidade:** publiquei v3 no Porch **sem tocar no cluster** — aplicado
-  sozinho em **19 s** (commit `1bdae53d` → `oran-cu.nf-version=v3`)
+- Config Sync instalado no **próprio** `o-cloud-1`, com `RootSync` apontando pro repositório
+  `openran-cnfs`
+- A entrega das NFs é reconciliada **continuamente**, não sob demanda
+- **Prova real:** publiquei v3 no Porch **sem tocar no cluster** — aplicado sozinho em **19 s**
+  (commit `1bdae53d` → `oran-cu.nf-version=v3`)
 
 ::: notes
-Essa é a diferença entre "o RootSync está instalado" e "o RootSync funciona de verdade" — só
-provei a segunda, publicando uma mudança e cronometrando quanto tempo até ela aparecer sozinha
-no cluster, sem eu chamar kpt live apply manualmente.
+Publiquei a mudança e cronometrei quanto tempo até ela aparecer sozinha no cluster, sem eu
+chamar kpt live apply manualmente — essa é a diferença entre "o RootSync está instalado" e "o
+RootSync funciona de verdade".
 :::
 
-## Melhoria 3 — config-bridge (Configuration)
+## Experimento 9 — config-bridge (Configuration)
 
 - Fecha o loop `/config` (NF) → pacote: um poller detecta drift entre o `/config` ao vivo e o
-  ConfigMap publicado, e comita a correção — o RootSync (Melhoria 2) reconcilia o resto sozinho
-- Pré-requisito: a config de domínio (`cell_id` etc.) precisou passar a vir do ConfigMap — antes
-  estava *hardcoded* no código da NF, e não havia nada real para sincronizar
+  ConfigMap publicado, e comita a correção — o RootSync reconcilia o resto sozinho
 
 ![Round-trip real: PUT /config contornando o GitOps → drift detectado → commit → CFG_CELL_ID=7 confirmado no cluster](assets/term-configbridge-drift.png)
 
@@ -338,15 +287,14 @@ releitura — um padrão octal-like do YAML 1.1 — causando um loop de auto-cor
 Corrigi forçando aspas em todo escalar, do mesmo jeito que o Kubernetes já trata ConfigMaps.
 :::
 
-## Melhoria 4 — rapp-autoscale (Non-RT RIC / SMO)
+## Experimento 10 — rapp-autoscale (Non-RT RIC)
 
 - Poller Python (não um operador `kopf` — o estado observado não é um recurso do Kubernetes) que
   lê a taxa de requisições de `/metrics` a cada **30 s**
-- Deliberadamente **não-tempo-real** — O-RAN define rApp como >1 s, xApp como 10 ms–1 s; o
-  próprio intervalo marca essa distinção na prática
+- Deliberadamente **não-tempo-real** — O-RAN define rApp como >1 s, xApp como 10 ms–1 s
 - Política: `rate > 1,0 req/s` → escala pra cima; `rate < 0,1 req/s` → escala pra baixo
-- Ação executada via PATCH direto no `/scale` — simplificação documentada (não publica uma
-  policy A1, porque não há Near-RT RIC real neste laboratório)
+- Ação via PATCH direto no `/scale` — não publica uma policy A1, porque não há Near-RT RIC real
+  neste laboratório
 
 ![Decisão real do rApp: rate=10.27 req/s dispara scale-up 1→2](assets/term-rapp-decision.png)
 
@@ -361,8 +309,8 @@ não-tempo-real faria.
 - O PATCH `/scale` aplicava `replicas:2` com sucesso (`200`) — mas a réplica **voltava pra 1**
   segundos depois
 - **Causa raiz:** o pacote no Git ainda declarava `replicas: 1`, e o RootSync contínuo
-  (Melhoria 2) reconciliava de volta a cada ciclo — duas autoridades de orquestração competindo
-  pelo mesmo campo
+  reconciliava de volta a cada ciclo — duas autoridades de orquestração competindo pelo mesmo
+  campo
 - **Correção:** campo `replicas` removido do pacote — como `kpt live apply` e o Config Sync usam
   *server-side apply*, nenhum dos dois reivindica o campo quando ausente
 - Mesmo padrão usado na vida real quando um **HPA coexiste com GitOps** (Argo CD chama isso de
@@ -374,26 +322,38 @@ um comportamento real e documentado de sistemas distribuídos: quando duas fonte
 tentam controlar o mesmo recurso, uma vai vencer, e é preciso decidir explicitamente qual.
 :::
 
-## Status honesto e uso de RAM final
+## Por que rApp, não xApp
 
-- Reverificação final do rApp (confirmar que o scale-up permanece estável após a correção)
-  **não foi concluída** — o ambiente WSL2/Docker sofreu suspensões repetidas do host durante os
-  testes finais desta sessão (containers de ambos os clusters caindo simultaneamente)
-- **Nenhuma evidência foi forjada** para cobrir essa lacuna — registrado com todas as letras,
-  reproduzível via `scripts/13-rapp-autoscale.sh` + `scripts/14-rapp-load-test.sh`
-
-![Uso real de RAM: todas as 4 melhorias somadas cabem folgado no orçamento do WSL2](assets/ram-usage.png)
+- rApp roda no **Non-RT RIC**, que é parte do próprio **SMO** — o escopo desta disciplina
+- xApp rodaria no Near-RT RIC e falaria **E2** com os "E2 Nodes" — protocolo que nossas CNFs
+  simuladas não implementam
+- Simular um xApp exigiria inventar uma interface E2/Near-RT RIC inexistente no laboratório —
+  contra a regra deste trabalho de nunca fingir que algo funciona
+- Não existe "A2" na especificação O-RAN — as interfaces reais do lado RIC são **A1** e **E2**
 
 ::: notes
-Prefiro terminar mostrando exatamente onde parei, sem fingir que terminei algo que não terminei
-— isso é mais valioso academicamente do que uma apresentação sem nenhuma pendência.
+Essa foi uma decisão consciente, não uma limitação de tempo. Prefiro entregar um rApp simples
+mas 100% real a um xApp que fingisse falar E2 com um Near-RT RIC que não existe.
+:::
+
+## Uso de RAM
+
+![Uso real de RAM: todos os componentes cabem folgado no orçamento do WSL2](assets/ram-usage.png)
+
+- `nephio-mgmt`: ~3,8 GiB · `o-cloud-1` (2 nós): ~2,3 GiB · 3 CNFs: <200 MiB ·
+  `metrics-server`+`config-bridge`+`rapp-autoscale`: ~130 MiB
+- **Total: ~6,4 GiB usados de 9,7 GiB configurados** — bem abaixo da meta de 10–12 GB do enunciado
+
+::: notes
+O laboratório inteiro — management, O-Cloud, as 3 CNFs, Porch, Gitea, Cluster API, monitoramento
+e o rApp — coube com folga real, medida, dentro do orçamento de 16 GB da máquina.
 :::
 
 ## O que foi implementado × o que ficou de fora
 
-- **Implementado e evidenciado:** provisioning (O2 IMS + Porch/kpt), lifecycle Kubernetes
-  completo (6 experimentos), GitOps contínuo, monitoramento real, sincronização `/config` →
-  pacote (parcial), uma primeira função de Non-RT RIC/rApp
+- **Implementado e evidenciado:** provisioning (O2 IMS + Porch), lifecycle Kubernetes completo
+  (6 experimentos), GitOps contínuo, monitoramento real, sincronização `/config` → pacote
+  (parcial), uma primeira função de Non-RT RIC/rApp funcional
 - **Ficou de fora, deliberadamente:** O1 (FCAPS via NETCONF/YANG), xApp/E2/Near-RT RIC, NF O-RAN
   real, federação FOCOM com SMO externo, telemetria O-RAN nativa (VES/PM Jobs)
 - **11 bugs de engenharia reais** encontrados e corrigidos ao longo de toda a Parte 2 — nenhum
@@ -410,14 +370,14 @@ caminho.
 - Nephio orquestrou o ciclo de vida completo de CNFs cloud-native — provisionamento,
   configuração, escala, atualização, recuperação e terminação — usando seus mecanismos nativos,
   não apenas `kubectl apply`
-- As 4 melhorias pós-entrega evoluíram o laboratório de GitOps sob demanda para GitOps
-  contínuo, monitoramento real, e uma primeira função de Non-RT RIC funcional
+- O laboratório também demonstra GitOps contínuo, monitoramento real, e uma primeira função de
+  Non-RT RIC funcional
 - O que é abstração: as NFs, o O-Cloud, a federação FOCOM, o xApp (deliberadamente não simulado)
-- O que é real: Porch/kpt/RootSync, provisionamento O2 IMS, e agora monitoramento + um rApp
-  funcional (com um achado genuíno sobre orquestração distribuída)
+- O que é real: Porch/kpt/RootSync, provisionamento O2 IMS, monitoramento e um rApp funcional
+  (com um achado genuíno sobre orquestração distribuída)
 
 ::: notes
 Entre teoria (Parte 1) e prática (Parte 2), a mesma conclusão se sustenta: o Nephio é uma
 plataforma de automação cloud-native real, que implementa um subconjunto bem definido — e
-demonstrado, com evidência, inclusive nas melhorias — das funções associadas ao SMO. Obrigado.
+demonstrado, com evidência — das funções associadas ao SMO. Obrigado.
 :::

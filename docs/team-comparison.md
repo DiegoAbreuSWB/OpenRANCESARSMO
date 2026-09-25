@@ -81,11 +81,11 @@ qualidade e menos tempo, o que eles já fizeram bem. Os itens abaixo são o que
 
 | # | Item | Prioridade | Esforço | Status |
 |---|---|---|---|---|
-| 1 | **Demonstração em `localhost`, não só um link do claude.ai** | Alta | Baixo | ✅ Feito nesta sessão — `dashboard/server.py` + `dashboard/local.html` |
-| 2 | Reforçar `validate-lab.sh` com mais asserções automatizadas (inspirado nos 87 testes deles — não precisamos do mesmo número, mas o princípio de "roteiro reproduzível, 0 falhas, versionado" é replicável a baixo custo) | Média | Médio | Pendente |
-| 3 | Deixar explícito, no relatório/apresentação, que O1/A1 foram **avaliados e conscientemente não replicados** aqui porque outra equipe já cobre esse ângulo com o stack certo para isso (OSC/OAM) — nosso ângulo é o cloud-native/O2 | Alta | Baixo | Fazer a seguir |
-| 4 | Um pequeno endpoint de "eventos ao vivo" no `dashboard/server.py` (ex.: últimas N linhas de log do `rapp-autoscale`/`config-bridge` via SSE ou polling) — dá ao nosso portal local uma sensação "ao vivo" parecida com o SSE deles, sem precisar de Kafka/VES | Baixa | Baixo-médio | Backlog |
-| 5 | Fechar a reverificação final do rApp (pendente por instabilidade de ambiente, não lógica) — item nosso mesmo, já documentado | Média | Baixo (quando o ambiente estiver estável) | Pendente |
+| 1 | **Demonstração em `localhost`, não só um link do claude.ai** | Alta | Baixo | ✅ Feito — `dashboard/server.py` + `dashboard/local.html` |
+| 2 | Reforçar `validate-lab.sh` com mais asserções automatizadas (inspirado nos 87 testes deles) | Média | Médio | ✅ Feito — 10→15 checagens (CNFs reais, metrics-server, RootSync, config-bridge, rapp-autoscale); rodado de verdade, 15/15 PASS |
+| 3 | Deixar explícito, no relatório/apresentação, que O1/A1 foram **avaliados e conscientemente não replicados** aqui porque outra equipe já cobre esse ângulo com o stack certo para isso (OSC/OAM) — nosso ângulo é o cloud-native/O2 | Alta | Baixo | ✅ Feito — §11/§15 do relatório e slides dedicados na apresentação |
+| 4 | Um pequeno endpoint de "eventos ao vivo" no `dashboard/server.py` (ex.: últimas N linhas de log do `rapp-autoscale`/`config-bridge` via SSE ou polling) — dá ao nosso portal local uma sensação "ao vivo" parecida com o SSE deles, sem precisar de Kafka/VES | Baixa | Baixo-médio | Backlog (não essencial) |
+| 5 | Fechar a reverificação final do rApp | Média | Baixo | ✅ Feito — scale-up confirmado estável (`spec.replicas=2`) num ciclo completo, ambiente estabilizado; ver `docs/improvements-16gb.md` §4 |
 
 ### Por que não vale a pena replicar O1/NETCONF/A1 aqui
 

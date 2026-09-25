@@ -1,0 +1,15 @@
+== rApp: reverificacao final apos fix (replicas omitido do pacote) ==
+2026-09-25T11:29:35-03:00
+
+-- scale-up disparado por carga real --
+2026-09-25 14:24:10,286 INFO sem acao: rate=0.00 req/s replicas=1 (dentro da faixa)
+2026-09-25 14:28:12,330 INFO sem acao: rate=0.83 req/s replicas=1 (dentro da faixa)
+2026-09-25 14:28:42,420 INFO DECISAO rApp: rate=3.92 req/s replicas=1 -> 2 (politica de capacidade nao-tempo-real)
+2026-09-25 14:29:12,536 INFO sem acao: rate=0.33 req/s replicas=2 (dentro da faixa)
+
+-- estado final: NAO revertido pelo RootSync --
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+oran-cu   2/2     2            2           8m12s
+NAME                       READY   STATUS    RESTARTS   AGE
+oran-cu-589c8458db-4cz2v   1/1     Running   0          8m12s
+oran-cu-589c8458db-vh97f   1/1     Running   0          53s

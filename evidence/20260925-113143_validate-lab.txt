@@ -1,0 +1,35 @@
+================ VALIDATE LAB :: 2026-09-25T11:31:43-03:00 ================
+1) Management Cluster existe
+  [PASS] kind 'nephio-mgmt' presente, 1 nó(s) Ready, contexto kind-nephio-mgmt responde
+2) Nephio está saudável (Porch + nephio-controller + Gitea + ConfigSync)
+  [PASS] pods de porch-system nephio-system gitea config-management-system todos Ready; API Porch registrada
+3) Componentes O2 IMS necessários existem
+  [PASS] CRD ProvisioningRequest + o2ims-operator + focom-operator Running + repo Porch catalog-infra-capi Ready
+4) Workload cluster (O-Cloud) existe
+  [PASS] kind 'o-cloud-1' presente | ProvisioningRequest=fulfilled | CAPI Cluster phase=Provisioned
+5) Workload cluster responde
+  [PASS] contexto o-cloud-1 /readyz OK, 2 nó(s) Ready
+6) demo-nf pode ser implantada
+  [PASS] kubectl apply -f manifests/demo-nf.yaml aceito
+7) demo-nf fica Ready
+  [PASS] deployment demo-nf rollout concluído (1/1)
+8) scale funciona (1 -> 3)
+  [PASS] 3/3 réplicas prontas
+9) delete de pod gera reconciliação
+  [PASS] pod 'demo-nf-766b7dd5cb-h5k9z' deletado -> ReplicaSet recriou -> 3/3 Running de novo
+10) cleanup funciona (delete -f remove tudo do demo-nf)
+  [PASS] nenhum recurso demo-nf remanescente após delete -f
+   (restaurando demo-nf replicas=1 para deixar o lab demonstrável)
+11) as 3 CNFs (oran-cu/du/core) estão Running via pacote Porch
+  [PASS] 3/3 CNFs (oran-cu/oran-du/oran-core) com todas as réplicas Ready
+12) metrics-server responde (kubectl top)
+  [PASS] metrics-server instalado e respondendo a 'kubectl top nodes'
+13) RootSync 'openran-cnfs' contínuo sincroniza sem erro
+  [PASS] RootSync sincronizado no commit 208e408cb570, 0 erros
+14) config-bridge está de pé (sincroniza /config -> pacote)
+  [PASS] deployment config-bridge 1/1 Ready
+15) rapp-autoscale está de pé e avaliando ciclos de política
+  [PASS] deployment rapp-autoscale 1/1 Ready, 10 ciclo(s) de política nos últimos logs
+
+================ RESUMO: PASS=15  FAIL=0  SKIP=0 ================
+log: /mnt/c/Users/diego.abreu/Documents/Desenvolvimento/Curso CESAR/SMO/X/evidence/20260925-113143_validate-lab.txt

@@ -223,18 +223,25 @@ DECISAO rApp: rate=10.27 req/s replicas=1 -> 2 (politica de capacidade nao-tempo
 acao aplicada via Kubernetes API (patch Deployment/oran-cu scale)
 ```
 
-**Status honesto desta melhoria:** o código está completo, commitado, e a decisão de
-scale-up do rApp foi comprovada funcionando (incluindo a descoberta e correção do
-conflito com o GitOps, acima). A **reverificação final** — confirmar que, após a
-correção, o scale-up permanece estável (não é revertido) através de um ciclo completo de
-subida e descida — **não foi concluída nesta sessão**: o ambiente WSL2/Docker sofreu
-suspensões repetidas da máquina host durante os testes finais (containers de ambos os
-clusters caindo simultaneamente, gaps de vários minutos sem atividade, certificados TLS
-do `o-cloud-1` corrompidos a cada retomada — o mesmo padrão de fragilidade já documentado
-em §5/`docs/05-experiment-report.md` §11 item 5, aqui agravado pela frequência das
-suspensões). Reproduzível a qualquer momento via `scripts/13-rapp-autoscale.sh` +
-`scripts/14-rapp-load-test.sh` assim que o ambiente estiver estável — nenhuma evidência
-falsa foi registrada para cobrir essa lacuna.
+**Reverificação final (concluída):** após uma sessão posterior em que o ambiente
+WSL2/Docker estabilizou, rodou-se o ciclo completo de carga → decisão → estado final via
+`scripts/14-rapp-load-test.sh`. Resultado real:
+
+```
+DECISAO rApp: rate=3.92 req/s replicas=1 -> 2 (politica de capacidade nao-tempo-real)
+acao aplicada via Kubernetes API (patch Deployment/oran-cu scale)
+...
+sem acao: rate=0.33 req/s replicas=2 (dentro da faixa)   # 30s depois — NAO revertido
+
+$ kubectl get deploy oran-cu
+NAME      READY   UP-TO-DATE   AVAILABLE
+oran-cu   2/2     2            2
+```
+
+`spec.replicas=2` confirmado via `kubectl` bem depois de múltiplos ciclos de sincronização
+do RootSync — o scale-up permanece estável, comprovando que a remoção de `replicas` do
+pacote (§ acima) realmente resolveu o conflito de autoridade. Evidência completa em
+`evidence/improvements/*_rapp-fix-final-verification.txt`.
 
 ## 5. O que isso muda na caracterização do laboratório
 

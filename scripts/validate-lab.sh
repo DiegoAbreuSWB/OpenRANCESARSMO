@@ -135,6 +135,61 @@ else
   ko apply -f "$M" >/dev/null 2>&1 && ko rollout status deploy/demo-nf --timeout=90s >/dev/null 2>&1 || true
 fi
 
+if [ "$(ko get --raw=/readyz 2>/dev/null)" != "ok" ]; then
+  res SKIP "o-cloud-1 não responde — pulando 11..15"
+else
+  # 11 --------------------------------------------------------------
+  echo "11) as 3 CNFs (oran-cu/du/core) estão Running via pacote Porch"
+  up=0
+  for nf in oran-cu oran-du oran-core; do
+    r=$(ko -n openran-lab get deploy "$nf" -o jsonpath='{.status.readyReplicas}' 2>/dev/null)
+    d=$(ko -n openran-lab get deploy "$nf" -o jsonpath='{.spec.replicas}' 2>/dev/null)
+    [ -n "$r" ] && [ "$r" = "$d" ] && [ "$r" != "0" ] && up=$((up+1))
+  done
+  if [ "$up" -eq 3 ]; then
+    res PASS "3/3 CNFs (oran-cu/oran-du/oran-core) com todas as réplicas Ready"
+  else
+    res FAIL "openran-lab: $up/3 CNFs prontas — rode lab/nephio/deploy-cnfs-via-porch.sh"
+  fi
+
+  # 12 --------------------------------------------------------------
+  echo "12) metrics-server responde (kubectl top)"
+  if ko top nodes >/dev/null 2>&1; then
+    res PASS "metrics-server instalado e respondendo a 'kubectl top nodes'"
+  else
+    res FAIL "kubectl top nodes falhou — metrics-server ausente ou API não registrada"
+  fi
+
+  # 13 --------------------------------------------------------------
+  echo "13) RootSync 'openran-cnfs' contínuo sincroniza sem erro"
+  syncerr=$(ko -n config-management-system get rootsync openran-cnfs -o jsonpath='{.status.sync.errorSummary.totalCount}' 2>/dev/null)
+  commit=$(ko -n config-management-system get rootsync openran-cnfs -o jsonpath='{.status.sync.commit}' 2>/dev/null)
+  if [ -n "$commit" ] && { [ -z "$syncerr" ] || [ "$syncerr" = "0" ]; }; then
+    res PASS "RootSync sincronizado no commit ${commit:0:12}, 0 erros"
+  else
+    res FAIL "RootSync sem commit sincronizado ou com erros (commit='$commit' errors='$syncerr')"
+  fi
+
+  # 14 --------------------------------------------------------------
+  echo "14) config-bridge está de pé (sincroniza /config -> pacote)"
+  cb=$(ko -n openran-lab get deploy config-bridge -o jsonpath='{.status.readyReplicas}' 2>/dev/null)
+  if [ "$cb" = "1" ]; then
+    res PASS "deployment config-bridge 1/1 Ready"
+  else
+    res FAIL "config-bridge não está Ready (readyReplicas='$cb')"
+  fi
+
+  # 15 --------------------------------------------------------------
+  echo "15) rapp-autoscale está de pé e avaliando ciclos de política"
+  ra=$(ko -n openran-lab get deploy rapp-autoscale -o jsonpath='{.status.readyReplicas}' 2>/dev/null)
+  cycles=$(ko -n openran-lab logs deploy/rapp-autoscale --tail=50 2>/dev/null | grep -Ec 'sem acao|DECISAO rApp' || true)
+  if [ "$ra" = "1" ] && [ "${cycles:-0}" -ge 1 ]; then
+    res PASS "deployment rapp-autoscale 1/1 Ready, $cycles ciclo(s) de política nos últimos logs"
+  else
+    res FAIL "rapp-autoscale não está Ready ou sem ciclos de política nos logs (ready='$ra' cycles='${cycles:-0}')"
+  fi
+fi
+
 echo
 echo "================ RESUMO: PASS=$PASS  FAIL=$FAIL  SKIP=$SKIP ================"
 echo "log: $LOG"
