@@ -154,6 +154,20 @@ bash scripts/run-experiments.sh all             # -> results/experiments.csv
 Roteiro cronometrado (comando/resultado esperado/fala): [`demo/demo-script.md`](demo/demo-script.md).
 Para a Parte 1 (só SMO/O2 IMS, sem as CNFs): [`docs/06-presentation-notes.md`](docs/06-presentation-notes.md).
 
+### Painel visual, em `localhost` (não um link externo)
+
+```bash
+bash scripts/run-dashboard-local.sh          # abre em http://localhost:8090/
+```
+
+Sobe um servidor Python (só biblioteca padrão, sem dependências) que serve o mesmo
+"Console SMO Nephio" do repositório, mas como HTML completo e independente — não
+precisa do visualizador de Artifacts da Claude. Quando o `o-cloud-1` está de pé, os
+números de nós/CNFs no topo são lidos **ao vivo** via `kubectl` (endpoint
+`/api/status`); com o cluster fora do ar, cai automaticamente para o último snapshot
+real capturado em `evidence/` — nunca um número inventado. Ver
+[`docs/team-comparison.md`](docs/team-comparison.md) para o porquê dessa escolha.
+
 ## 6. Validação
 
 ```bash

@@ -11,3 +11,6 @@ Thumbs.db
 # resultados grandes/gerados que preferimos não versionar binário
 *.tgz
 *.tar.gz
+
+# material de outra equipe (analisado, não redistribuído neste repositório)
+/outraequipe/

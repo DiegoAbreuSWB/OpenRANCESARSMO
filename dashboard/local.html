@@ -1,4 +1,9 @@
-<title>Console SMO Nephio</title>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Console SMO Nephio (local)</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
@@ -103,6 +108,16 @@
     padding:.4rem .65rem; border-radius:6px; white-space:nowrap;
   }
   .topbar nav a:hover{ color:var(--ink); background:var(--surface-2); }
+  .live-badge{
+    margin-left:auto; display:flex; align-items:center; gap:.4rem; font-size:.74rem; font-weight:600;
+    padding:.32rem .65rem; border-radius:99px; white-space:nowrap; font-family:"IBM Plex Mono";
+  }
+  .live-badge .dot2{ width:.5rem; height:.5rem; border-radius:50%; flex:none; }
+  .live-badge.ok{ background:var(--good-soft); color:var(--good); }
+  .live-badge.ok .dot2{ background:var(--good); animation:pulse 1.8s ease-in-out infinite; }
+  .live-badge.off{ background:var(--surface-2); color:var(--ink-dim); }
+  .live-badge.off .dot2{ background:var(--ink-dim); }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
 
   main{ max-width:76rem; margin:0 auto; padding:0 1.5rem; }
   section{ padding:3.4rem 0; border-bottom:1px solid var(--border); }
@@ -238,6 +253,9 @@
     @keyframes rise{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:none;} }
   }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+</head>
+<body>
 
 <header class="topbar">
   <div class="brand"><span class="dot"></span>Console SMO · Nephio</div>
@@ -249,6 +267,7 @@
     <a href="#limitacoes">Limitações</a>
     <a href="#recursos">Recursos</a>
   </nav>
+  <span class="live-badge off" id="live-badge"><span class="dot2"></span><span id="live-badge-text">verificando localhost…</span></span>
 </header>
 
 <main>
@@ -257,10 +276,10 @@
     <div class="eyebrow reveal">Curso CESAR — disciplina de Open RAN · Parte 2 (prática)</div>
     <h1 class="reveal">O laboratório SMO/O-Cloud rodando de verdade, com evidência.</h1>
     <p class="lede reveal">
-      Este painel apresenta o sistema construído para a disciplina: um Management Cluster com
-      Nephio R6, um Workload Cluster provisionado via O2 IMS tratado como O-Cloud acadêmico, e
-      três Network Functions simuladas sob orquestração GitOps contínua. Cada número abaixo vem
-      de comando real, capturado em <code>evidence/</code> — nada aqui foi encenado.
+      Este painel roda localmente (<code>localhost</code>), servido por um script Python sem
+      dependências externas. Quando o laboratório (<code>o-cloud-1</code>) está de pé, os dois
+      primeiros números abaixo são lidos ao vivo via <code>kubectl</code>; caso contrário, mostram
+      o último snapshot real capturado em <code>evidence/</code> — nunca inventado.
     </p>
     <blockquote class="thesis reveal">
       “Nephio is a cloud-native automation and orchestration platform that can implement or
@@ -269,14 +288,14 @@
     </blockquote>
 
     <div class="status-strip reveal">
-      <div class="tile"><div class="num">2<small>/2</small></div><div class="lbl"><span class="pill-dot"></span>Nós o-cloud-1 Ready</div></div>
-      <div class="tile"><div class="num">3<small>/3</small></div><div class="lbl"><span class="pill-dot"></span>CNFs Running</div></div>
+      <div class="tile"><div class="num" id="tile-nodes">2<small>/2</small></div><div class="lbl"><span class="pill-dot"></span>Nós o-cloud-1 Ready</div></div>
+      <div class="tile"><div class="num" id="tile-cnfs">3<small>/3</small></div><div class="lbl"><span class="pill-dot"></span>CNFs Running</div></div>
       <div class="tile"><div class="num">9<small>/10</small></div><div class="lbl"><span class="pill-dot"></span>Experimentos com sucesso</div></div>
       <div class="tile"><div class="num">5,3<small>/9,7 GiB</small></div><div class="lbl">RAM usada no WSL2</div></div>
       <div class="tile"><div class="num">76</div><div class="lbl">CRDs no management cluster</div></div>
       <div class="tile"><div class="num">11</div><div class="lbl">Bugs reais corrigidos</div></div>
     </div>
-    <p class="snapshot-note">Snapshot capturado em 2026‑09‑13 · kind v0.27.0 · Nephio R6 (v6.0.0) · Porch v1.5.6 · kpt v1.0.0 — reproduzível via <code>make status</code>.</p>
+    <p class="snapshot-note" id="snapshot-note">Snapshot capturado em 2026‑09‑13 · kind v0.27.0 · Nephio R6 (v6.0.0) · Porch v1.5.6 · kpt v1.0.0 — reproduzível via <code>make status</code>.</p>
   </section>
 
   <section id="arquitetura">
@@ -285,7 +304,7 @@
       <h2>Duas camadas, um único intent inicial</h2>
       <p>Infraestrutura (O2 IMS → Cluster API) e entrega de NF (Porch → GitOps contínuo) são cadeias
       distintas que convergem no mesmo o-cloud-1. O diagrama reflete o estado atual, incluindo as
-      duas melhorias adicionadas depois da entrega original.</p>
+      quatro melhorias adicionadas depois da entrega original.</p>
     </div>
 
     <div class="diagram-card">
@@ -293,30 +312,32 @@
 flowchart TD
     OP["Operador / SMO"]
     subgraph MGMT["Management Cluster — nephio-mgmt"]
-        PR["ProvisioningRequest<br/>(O2 IMS)"]
+        PR["ProvisioningRequest (O2 IMS)"]
         O2OP["o2ims-operator"]
         PORCH["Porch + repo mgmt"]
         RSM["RootSync mgmt"]
         CAPI["Cluster API + CAPD"]
-        REPO["repo openran-cnfs<br/>(Porch / Gitea)"]
+        REPO["repo openran-cnfs (Porch/Gitea)"]
     end
-    subgraph OC["Workload Cluster — o-cloud-1  (O-Cloud acadêmico)"]
-        RSC["RootSync openran-cnfs<br/>(contínuo)"]
+    subgraph OC["Workload Cluster — o-cloud-1 (O-Cloud academico)"]
+        RSC["RootSync openran-cnfs (continuo)"]
         CU["oran-cu"]
         DU["oran-du"]
         CORE["oran-core"]
         MS["metrics-server"]
         CB["config-bridge"]
-        RAPP["rapp-autoscale<br/>(rApp)"]
+        RAPP["rapp-autoscale (rApp)"]
     end
     OP -->|kubectl apply| PR --> O2OP --> PORCH --> RSM --> CAPI -->|cria| OC
     OP -->|porchctl / kpt| REPO
-    REPO -->|watch contínuo| RSC --> CU & DU & CORE
+    REPO -->|watch continuo| RSC
+    RSC --> CU
+    RSC --> DU
+    RSC --> CORE
     CU -.->|GET /metrics| RAPP
     RAPP -->|PATCH /scale| CU
     DU -.->|GET/PUT /config| CB
     CB -->|commit se houver drift| REPO
-    MS -.->|kubectl top| OC
     classDef novo fill:#0d8a83,color:#fff,stroke:#0a6b66
     class RAPP,CB,MS novo
 </pre>
@@ -590,13 +611,16 @@ CORRIGIDO: replicas removido do pacote (mesmo padrão de HPA+GitOps)</div></div>
       </div>
       <p class="foot-note">Curso CESAR · disciplina de redes Open RAN · Diego Abreu.
       Nephio é citado aqui como plataforma de automação cloud-native que pode implementar ou
-      apoiar funções do SMO — não como o SMO oficial da especificação O-RAN Alliance.</p>
+      apoiar funções do SMO — não como o SMO oficial da especificação O-RAN Alliance. Este painel
+      roda 100% local (<code>python3 dashboard/server.py</code>), sem depender de nenhum link externo.</p>
     </div>
   </footer>
 
 </main>
 
 <script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+
   (function(){
     var chips = document.querySelectorAll('.chip');
     var cards = document.querySelectorAll('.test-card');
@@ -610,4 +634,33 @@ CORRIGIDO: replicas removido do pacote (mesmo padrão de HPA+GitOps)</div></div>
       });
     });
   })();
+
+  (function(){
+    var badge = document.getElementById('live-badge');
+    var badgeText = document.getElementById('live-badge-text');
+    var tileNodes = document.getElementById('tile-nodes');
+    var tileCnfs = document.getElementById('tile-cnfs');
+    var note = document.getElementById('snapshot-note');
+
+    fetch('/api/status', { signal: AbortSignal.timeout ? AbortSignal.timeout(4000) : undefined })
+      .then(function(r){ if(!r.ok) throw new Error('http ' + r.status); return r.json(); })
+      .then(function(d){
+        badge.className = 'live-badge ok';
+        badgeText.textContent = 'ao vivo · ' + d.checked_at;
+        if (d.nodes_ready !== null && d.nodes_total !== null) {
+          tileNodes.innerHTML = d.nodes_ready + '<small>/' + d.nodes_total + '</small>';
+        }
+        if (d.cnfs_running !== null && d.cnfs_total !== null) {
+          tileCnfs.innerHTML = d.cnfs_running + '<small>/' + d.cnfs_total + '</small>';
+        }
+        note.innerHTML = 'Dados ao vivo, lidos via <code>kubectl</code> em ' + d.checked_at +
+          ' · kind v0.27.0 · Nephio R6 (v6.0.0) · Porch v1.5.6 · kpt v1.0.0.';
+      })
+      .catch(function(){
+        badge.className = 'live-badge off';
+        badgeText.textContent = 'localhost — cluster offline (snapshot)';
+      });
+  })();
 </script>
+</body>
+</html>

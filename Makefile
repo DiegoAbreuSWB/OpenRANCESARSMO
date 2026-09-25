@@ -2,7 +2,7 @@
 #   wsl -d Ubuntu
 #   cd "/mnt/c/Users/.../SMO/X"
 #   make up | make status | make experiment | make down
-.PHONY: up status experiment down deploy cnfs cleanup report validate help slides report-pdf deliverables
+.PHONY: up status experiment down deploy cnfs cleanup report validate help slides report-pdf deliverables dashboard
 
 help:
 	@echo "Alvos disponíveis:"
@@ -17,6 +17,7 @@ help:
 	@echo "  make deliverables- diagramas + slides + report-pdf (instala pandoc/weasyprint se preciso)"
 	@echo "  make down        - scripts/cleanup.sh (pergunta antes de cada remoção)"
 	@echo "  make cleanup     - idem 'down', sem perguntar (--yes)"
+	@echo "  make dashboard   - painel visual em http://localhost:8090/ (sem link externo)"
 
 up:
 	bash scripts/check-requirements.sh
@@ -58,3 +59,6 @@ deliverables:
 	bash scripts/render-diagrams.sh
 	bash scripts/build-pptx.sh
 	bash scripts/build-report-pdf.sh
+
+dashboard:
+	bash scripts/run-dashboard-local.sh
