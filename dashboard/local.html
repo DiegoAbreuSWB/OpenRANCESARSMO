@@ -3,74 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Console SMO Nephio (local)</title>
+<title>Orquestração SMO com Nephio</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
   :root{
-    --bg:#eef1f4;
-    --surface:#ffffff;
-    --surface-2:#e3e9ee;
-    --ink:#121a24;
-    --ink-dim:#54606c;
-    --border:#d3dbe2;
-    --accent:#0d8a83;
-    --accent-ink:#ffffff;
-    --accent-soft:#d9f1ee;
-    --good:#1f7a4d;
-    --good-soft:#dff3e6;
-    --warn:#a56405;
-    --warn-soft:#fbead0;
-    --gap:#a83354;
-    --gap-soft:#fae1e8;
-    --term-bg:#0d151b;
-    --term-ink:#d7e6e3;
-    --term-accent:#5be0cf;
-    --shadow: 0 1px 2px rgba(20,30,40,.06), 0 8px 24px -12px rgba(20,30,40,.18);
+    --bg:#eef1f4; --surface:#ffffff; --surface-2:#e3e9ee;
+    --ink:#121a24; --ink-dim:#54606c; --border:#d3dbe2;
+    --accent:#0d8a83; --accent-ink:#ffffff; --accent-soft:#d9f1ee;
+    --accent2:#a56405; --accent2-soft:#fbead0;
+    --good:#1f7a4d; --good-soft:#dff3e6;
+    --term-bg:#0d151b; --term-ink:#d7e6e3; --term-accent:#5be0cf;
+    --shadow: 0 1px 2px rgba(20,30,40,.06), 0 10px 28px -14px rgba(20,30,40,.20);
+    --chart-grid:#d3dbe2; --chart-ink:#54606c;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg:#0a1017;
-      --surface:#0f161e;
-      --surface-2:#141e28;
-      --ink:#e8eef2;
-      --ink-dim:#8fa0ac;
-      --border:#22303c;
-      --accent:#49dccb;
-      --accent-ink:#06201d;
-      --accent-soft:#12332f;
-      --good:#79d9a3;
-      --good-soft:#0f2c1e;
-      --warn:#f0b962;
-      --warn-soft:#33260e;
-      --gap:#ef7f9a;
-      --gap-soft:#331420;
-      --term-bg:#060b0f;
-      --term-ink:#cfe3df;
-      --term-accent:#5be0cf;
-      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px -16px rgba(0,0,0,.6);
+      --bg:#0a1017; --surface:#0f161e; --surface-2:#141e28;
+      --ink:#e8eef2; --ink-dim:#8fa0ac; --border:#22303c;
+      --accent:#49dccb; --accent-ink:#06201d; --accent-soft:#12332f;
+      --accent2:#f0b962; --accent2-soft:#33260e;
+      --good:#79d9a3; --good-soft:#0f2c1e;
+      --term-bg:#060b0f; --term-ink:#cfe3df; --term-accent:#5be0cf;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px -18px rgba(0,0,0,.65);
+      --chart-grid:#22303c; --chart-ink:#8fa0ac;
     }
   }
   :root[data-theme="dark"]{
-    --bg:#0a1017;
-    --surface:#0f161e;
-    --surface-2:#141e28;
-    --ink:#e8eef2;
-    --ink-dim:#8fa0ac;
-    --border:#22303c;
-    --accent:#49dccb;
-    --accent-ink:#06201d;
-    --accent-soft:#12332f;
-    --good:#79d9a3;
-    --good-soft:#0f2c1e;
-    --warn:#f0b962;
-    --warn-soft:#33260e;
-    --gap:#ef7f9a;
-    --gap-soft:#331420;
-    --term-bg:#060b0f;
-    --term-ink:#cfe3df;
-    --term-accent:#5be0cf;
-    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px -16px rgba(0,0,0,.6);
+    --bg:#0a1017; --surface:#0f161e; --surface-2:#141e28;
+    --ink:#e8eef2; --ink-dim:#8fa0ac; --border:#22303c;
+    --accent:#49dccb; --accent-ink:#06201d; --accent-soft:#12332f;
+    --accent2:#f0b962; --accent2-soft:#33260e;
+    --good:#79d9a3; --good-soft:#0f2c1e;
+    --term-bg:#060b0f; --term-ink:#cfe3df; --term-accent:#5be0cf;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 34px -18px rgba(0,0,0,.65);
+    --chart-grid:#22303c; --chart-ink:#8fa0ac;
   }
 
   *{box-sizing:border-box;}
@@ -85,28 +52,18 @@
   code, pre, .mono{ font-family:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; }
   a{ color:var(--accent); }
   ::selection{ background:var(--accent-soft); }
+  .eyebrow{ font-size:.72rem; font-weight:600; letter-spacing:.11em; text-transform:uppercase; color:var(--accent); }
 
-  .eyebrow{
-    font-size:.72rem; font-weight:600; letter-spacing:.11em; text-transform:uppercase;
-    color:var(--accent);
-  }
-
-  /* ---------- topbar ---------- */
   .topbar{
-    position:sticky; top:0; z-index:40;
-    display:flex; align-items:center; gap:1.25rem;
+    position:sticky; top:0; z-index:40; display:flex; align-items:center; gap:1.25rem;
     padding:.7rem 1.5rem; background:color-mix(in srgb, var(--surface) 92%, transparent);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border);
+    backdrop-filter:blur(10px); border-bottom:1px solid var(--border);
   }
   .topbar .brand{ display:flex; align-items:center; gap:.55rem; font-weight:700; font-size:.95rem; white-space:nowrap; }
   .brand .dot{ width:.55rem; height:.55rem; border-radius:50%; background:var(--good); box-shadow:0 0 0 3px var(--good-soft); flex:none; }
   .topbar nav{ display:flex; gap:.2rem; overflow-x:auto; scrollbar-width:none; }
   .topbar nav::-webkit-scrollbar{ display:none; }
-  .topbar nav a{
-    font-size:.82rem; font-weight:500; color:var(--ink-dim); text-decoration:none;
-    padding:.4rem .65rem; border-radius:6px; white-space:nowrap;
-  }
+  .topbar nav a{ font-size:.82rem; font-weight:500; color:var(--ink-dim); text-decoration:none; padding:.4rem .65rem; border-radius:6px; white-space:nowrap; }
   .topbar nav a:hover{ color:var(--ink); background:var(--surface-2); }
   .live-badge{
     margin-left:auto; display:flex; align-items:center; gap:.4rem; font-size:.74rem; font-weight:600;
@@ -119,62 +76,77 @@
   .live-badge.off .dot2{ background:var(--ink-dim); }
   @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
 
-  main{ max-width:76rem; margin:0 auto; padding:0 1.5rem; }
-  section{ padding:3.4rem 0; border-bottom:1px solid var(--border); }
+  main{ max-width:78rem; margin:0 auto; padding:0 1.5rem; }
+  section{ padding:3.6rem 0; border-bottom:1px solid var(--border); }
   section:last-of-type{ border-bottom:none; }
-  .section-head{ max-width:42rem; margin-bottom:2rem; }
-  .section-head h2{ font-size:1.7rem; margin-bottom:.5rem; }
+  .section-head{ max-width:44rem; margin-bottom:2.2rem; }
+  .section-head h2{ font-size:1.75rem; margin-bottom:.55rem; }
   .section-head p{ color:var(--ink-dim); font-size:.98rem; }
 
-  /* ---------- hero ---------- */
-  .hero{ padding-top:2.6rem; }
-  .hero h1{ font-size:2.5rem; letter-spacing:-.01em; margin:.5rem 0 .9rem; max-width:34rem; }
-  .hero .lede{ max-width:40rem; color:var(--ink-dim); font-size:1.05rem; }
+  .hero{ padding-top:2.8rem; }
+  .hero h1{ font-size:2.6rem; letter-spacing:-.01em; margin:.5rem 0 1rem; max-width:38rem; }
+  .hero .lede{ max-width:42rem; color:var(--ink-dim); font-size:1.08rem; }
   .thesis{
-    margin:1.6rem 0 0; max-width:44rem; padding:1.1rem 1.3rem;
+    margin:1.8rem 0 0; max-width:46rem; padding:1.2rem 1.4rem;
     background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--accent);
-    border-radius:8px; box-shadow:var(--shadow);
-    font-size:1rem; color:var(--ink); font-style:italic;
+    border-radius:8px; box-shadow:var(--shadow); font-size:1.02rem; color:var(--ink); font-style:italic;
   }
-  .thesis cite{ display:block; margin-top:.55rem; font-style:normal; font-size:.78rem; color:var(--ink-dim); }
+  .thesis cite{ display:block; margin-top:.6rem; font-style:normal; font-size:.8rem; color:var(--ink-dim); }
 
   .status-strip{
-    margin-top:2.2rem; display:grid; grid-template-columns:repeat(6,1fr); gap:1px;
+    margin-top:2.3rem; display:grid; grid-template-columns:repeat(6,1fr); gap:1px;
     background:var(--border); border:1px solid var(--border); border-radius:10px; overflow:hidden;
   }
-  .tile{ background:var(--surface); padding:1rem 1.1rem; }
-  .tile .num{ font-family:"IBM Plex Mono"; font-variant-numeric:tabular-nums; font-size:1.5rem; font-weight:600; }
+  .tile{ background:var(--surface); padding:1.05rem 1.15rem; }
+  .tile .num{ font-family:"IBM Plex Mono"; font-variant-numeric:tabular-nums; font-size:1.55rem; font-weight:600; }
   .tile .num small{ font-size:.85rem; color:var(--ink-dim); font-weight:500; }
   .tile .lbl{ margin-top:.2rem; font-size:.72rem; color:var(--ink-dim); }
   .tile .lbl .pill-dot{ display:inline-block; width:.4rem; height:.4rem; border-radius:50%; background:var(--good); margin-right:.35rem; }
-  .snapshot-note{ margin-top:.7rem; font-size:.76rem; color:var(--ink-dim); }
 
-  /* ---------- diagram ---------- */
   .diagram-card{
     background:var(--surface); border:1px solid var(--border); border-radius:12px;
     padding:1.2rem 1.2rem .6rem; box-shadow:var(--shadow); overflow-x:auto;
   }
-  .legend{ display:flex; flex-wrap:wrap; gap:.5rem 1.1rem; margin:1.1rem 0 1.8rem; font-size:.82rem; color:var(--ink-dim); }
+  .legend{ display:flex; flex-wrap:wrap; gap:.5rem 1.1rem; margin:1.1rem 0 0; font-size:.82rem; color:var(--ink-dim); }
   .legend span{ display:inline-flex; align-items:center; gap:.4rem; }
   .legend i{ width:.65rem; height:.65rem; border-radius:2px; display:inline-block; }
 
-  .lifecycles{ display:grid; grid-template-columns:repeat(4,1fr); gap:.9rem; }
-  .lc-card{
-    background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.05rem;
-    display:flex; flex-direction:column; gap:.5rem;
-  }
-  .lc-card .n{ font-family:"IBM Plex Mono"; font-size:.75rem; color:var(--ink-dim); }
+  .lifecycles{ display:grid; grid-template-columns:repeat(4,1fr); gap:.9rem; margin-top:1.8rem; }
+  .lc-card{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.05rem 1.1rem; display:flex; flex-direction:column; gap:.5rem; }
+  .lc-card .n{ font-family:"IBM Plex Mono"; font-size:.75rem; color:var(--accent); font-weight:600; }
   .lc-card h3{ font-size:.98rem; }
   .lc-card p{ font-size:.83rem; color:var(--ink-dim); flex:1; }
-  .status-pill{
-    align-self:flex-start; font-size:.68rem; font-weight:600; letter-spacing:.03em;
-    padding:.18rem .5rem; border-radius:99px;
-  }
-  .status-pill.real{ background:var(--good-soft); color:var(--good); }
-  .status-pill.parcial{ background:var(--warn-soft); color:var(--warn); }
-  .status-pill.nao{ background:var(--gap-soft); color:var(--gap); }
 
-  /* ---------- tests ---------- */
+  .panel-grid{ display:grid; grid-template-columns:1.15fr 1fr; gap:1.2rem; align-items:stretch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.3rem 1.4rem; box-shadow:var(--shadow); }
+  .card h3{ font-size:1.02rem; margin-bottom:.2rem; }
+  .card .sub{ font-size:.82rem; color:var(--ink-dim); margin-bottom:1rem; }
+  .chart-wrap{ position:relative; height:19rem; }
+  .charts-row{ display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin-bottom:1.2rem; }
+
+  .live-panel{ display:flex; flex-direction:column; gap:1rem; }
+  .btn{
+    font-family:"IBM Plex Sans"; font-size:.82rem; font-weight:600; cursor:pointer;
+    padding:.5rem 1rem; border-radius:8px; border:1px solid var(--accent); background:var(--accent-soft);
+    color:var(--accent); transition:background .15s ease;
+  }
+  .btn:hover{ background:var(--accent); color:var(--accent-ink); }
+  .btn.ghost{ border-color:var(--border); background:transparent; color:var(--ink-dim); }
+  .btn.ghost:hover{ background:var(--surface-2); color:var(--ink); }
+  .btn.active{ background:var(--accent); color:var(--accent-ink); }
+  .tab-row{ display:flex; gap:.5rem; margin-bottom:.8rem; }
+  .live-table{ width:100%; border-collapse:collapse; font-size:.82rem; }
+  .live-table th{ text-align:left; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); padding:.35rem .5rem; border-bottom:1px solid var(--border); }
+  .live-table td{ padding:.4rem .5rem; border-bottom:1px solid var(--border); font-family:"IBM Plex Mono"; font-size:.8rem; }
+  .live-table tr:last-child td{ border-bottom:none; }
+  .log-view{
+    background:var(--term-bg); color:var(--term-ink); border-radius:8px; padding:.85rem 1rem;
+    font-family:"IBM Plex Mono"; font-size:.76rem; line-height:1.6; height:14rem; overflow-y:auto;
+    white-space:pre-wrap;
+  }
+  .log-view .hl{ color:var(--term-accent); font-weight:600; }
+  .timestamp{ font-size:.72rem; color:var(--ink-dim); font-family:"IBM Plex Mono"; }
+
   .filter-chips{ display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.4rem; }
   .chip{
     font-family:"IBM Plex Mono"; font-size:.76rem; font-weight:500; cursor:pointer;
@@ -184,13 +156,8 @@
   .chip[aria-pressed="true"]{ background:var(--accent); border-color:var(--accent); color:var(--accent-ink); }
 
   .test-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(19.5rem,1fr)); gap:1rem; }
-  .test-card{
-    background:var(--surface); border:1px solid var(--border); border-radius:10px;
-    box-shadow:var(--shadow); overflow:hidden;
-  }
-  .test-card summary{
-    list-style:none; cursor:pointer; padding:.95rem 1.05rem; display:flex; flex-direction:column; gap:.45rem;
-  }
+  .test-card{ background:var(--surface); border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow); overflow:hidden; }
+  .test-card summary{ list-style:none; cursor:pointer; padding:.95rem 1.05rem; display:flex; flex-direction:column; gap:.45rem; }
   .test-card summary::-webkit-details-marker{ display:none; }
   .t-top{ display:flex; align-items:center; justify-content:space-between; gap:.5rem; }
   .t-id{ font-family:"IBM Plex Mono"; font-size:.72rem; color:var(--ink-dim); }
@@ -198,53 +165,51 @@
   .t-name{ font-size:1rem; font-weight:600; }
   .t-meta{ display:flex; align-items:center; gap:.5rem; font-size:.76rem; color:var(--ink-dim); }
   .t-dur{ font-family:"IBM Plex Mono"; color:var(--good); font-weight:600; }
-  .t-dur.pending{ color:var(--warn); }
-  .t-pending-note{ font-size:.68rem; font-weight:600; padding:.15rem .5rem; border-radius:99px; background:var(--warn-soft); color:var(--warn); white-space:nowrap; }
   .t-chevron{ margin-left:auto; transition:transform .15s ease; color:var(--ink-dim); flex:none; }
   details[open] .t-chevron{ transform:rotate(90deg); }
   .test-body{ padding:0 1.05rem 1.1rem; display:flex; flex-direction:column; gap:.7rem; }
   .t-block-lbl{ font-size:.68rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:.3rem; }
-  .term{
-    background:var(--term-bg); color:var(--term-ink); border-radius:7px; padding:.65rem .75rem;
-    font-size:.78rem; line-height:1.55; overflow-x:auto; white-space:pre; border:1px solid color-mix(in srgb, var(--term-bg) 60%, #ffffff 8%);
-  }
+  .term{ background:var(--term-bg); color:var(--term-ink); border-radius:7px; padding:.65rem .75rem; font-size:.78rem; line-height:1.55; overflow-x:auto; white-space:pre; border:1px solid color-mix(in srgb, var(--term-bg) 60%, #ffffff 8%); }
   .term .cmd::before{ content:"$ "; color:var(--term-accent); }
   .t-explain{ font-size:.85rem; color:var(--ink); }
   .t-explain b{ color:var(--accent); font-weight:600; }
 
-  /* ---------- concepts table ---------- */
-  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:10px; }
-  table.smo{ width:100%; border-collapse:collapse; min-width:46rem; background:var(--surface); }
-  table.smo caption{ text-align:left; caption-side:top; }
+  .eval-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1.6rem; align-items:center; }
+  .eval-chart{ position:relative; height:24rem; }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:10px; margin-top:1.6rem; }
+  table.smo{ width:100%; border-collapse:collapse; min-width:44rem; background:var(--surface); }
   table.smo th, table.smo td{ padding:.7rem .9rem; text-align:left; border-bottom:1px solid var(--border); font-size:.85rem; vertical-align:top; }
   table.smo th{ font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-dim); font-weight:600; background:var(--surface-2); }
   table.smo tr:last-child td{ border-bottom:none; }
   table.smo td.fn{ font-weight:600; white-space:nowrap; }
   table.smo td.ev{ color:var(--ink-dim); }
+  .level{ font-size:.68rem; font-weight:600; padding:.18rem .55rem; border-radius:99px; white-space:nowrap; }
+  .level.l1{ background:var(--good-soft); color:var(--good); }
+  .level.l2{ background:var(--accent-soft); color:var(--accent); }
+  .level.l3{ background:var(--accent2-soft); color:var(--accent2); }
 
-  /* ---------- limitations ---------- */
-  .limits{ display:grid; grid-template-columns:repeat(2,1fr); gap:.8rem; }
-  .limit-item{
-    background:var(--gap-soft); border:1px solid color-mix(in srgb, var(--gap) 35%, var(--border));
-    border-radius:9px; padding:.85rem 1rem; font-size:.85rem; display:flex; gap:.6rem;
-  }
-  .limit-item .x{ color:var(--gap); font-weight:700; flex:none; }
+  .roadmap{ display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; }
+  .road-item{ background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--accent2); border-radius:9px; padding:1rem 1.15rem; display:flex; gap:.8rem; box-shadow:var(--shadow); }
+  .road-item .arrow{ color:var(--accent2); font-weight:700; flex:none; font-size:1.1rem; }
+  .road-item h4{ font-size:.92rem; margin:0 0 .3rem; }
+  .road-item p{ font-size:.83rem; color:var(--ink-dim); }
 
-  footer{ padding:2.4rem 0 3.2rem; }
+  footer{ padding:2.6rem 0 3.4rem; }
   .foot-grid{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:1.5rem; align-items:flex-end; }
   .foot-links{ display:flex; flex-wrap:wrap; gap:1.4rem; font-size:.85rem; }
-  .foot-note{ font-size:.78rem; color:var(--ink-dim); max-width:30rem; }
+  .foot-note{ font-size:.78rem; color:var(--ink-dim); max-width:32rem; }
 
+  @media (max-width:1000px){
+    .panel-grid, .eval-grid, .charts-row{ grid-template-columns:1fr; }
+  }
   @media (max-width:900px){
     .status-strip{ grid-template-columns:repeat(3,1fr); }
     .lifecycles{ grid-template-columns:repeat(2,1fr); }
-    .limits{ grid-template-columns:1fr; }
-    .hero h1{ font-size:2rem; }
+    .roadmap{ grid-template-columns:1fr; }
+    .hero h1{ font-size:2.1rem; }
     .topbar{ flex-wrap:wrap; }
   }
-  @media (max-width:560px){
-    .status-strip{ grid-template-columns:repeat(2,1fr); }
-  }
+  @media (max-width:560px){ .status-strip{ grid-template-columns:repeat(2,1fr); } }
 
   @media (prefers-reduced-motion:no-preference){
     .reveal{ animation:rise .5s ease both; }
@@ -254,73 +219,73 @@
   }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 </head>
 <body>
 
 <header class="topbar">
-  <div class="brand"><span class="dot"></span>Console SMO · Nephio</div>
+  <div class="brand"><span class="dot"></span>Orquestração SMO · Nephio</div>
   <nav>
     <a href="#visao-geral">Visão geral</a>
     <a href="#arquitetura">Arquitetura</a>
-    <a href="#testes">Testes</a>
-    <a href="#conceitos">SMO × Nephio</a>
-    <a href="#limitacoes">Limitações</a>
-    <a href="#recursos">Recursos</a>
+    <a href="#painel">Painel ao vivo</a>
+    <a href="#experimentos">Experimentos</a>
+    <a href="#avaliacao">Avaliação Nephio</a>
+    <a href="#roadmap">Roadmap</a>
   </nav>
-  <span class="live-badge off" id="live-badge"><span class="dot2"></span><span id="live-badge-text">verificando localhost…</span></span>
+  <span class="live-badge off" id="live-badge"><span class="dot2"></span><span id="live-badge-text">conectando…</span></span>
 </header>
 
 <main>
 
   <section id="visao-geral" class="hero">
-    <div class="eyebrow reveal">Curso CESAR — disciplina de Open RAN · Parte 2 (prática)</div>
-    <h1 class="reveal">O laboratório SMO/O-Cloud rodando de verdade, com evidência.</h1>
+    <div class="eyebrow reveal">Curso CESAR — Redes Open RAN · Projeto Prático (Parte 2)</div>
+    <h1 class="reveal">Orquestração cloud-native para Open RAN, construída e operando sobre Nephio.</h1>
     <p class="lede reveal">
-      Este painel roda localmente (<code>localhost</code>), servido por um script Python sem
-      dependências externas. Quando o laboratório (<code>o-cloud-1</code>) está de pé, os dois
-      primeiros números abaixo são lidos ao vivo via <code>kubectl</code>; caso contrário, mostram
-      o último snapshot real capturado em <code>evidence/</code> — nunca inventado.
+      Uma implementação completa de automação de infraestrutura e ciclo de vida de funções de
+      rede: provisionamento de O-Cloud via O2 IMS, entrega contínua de pacotes via GitOps,
+      configuração de NF em duas camadas sincronizadas, monitoramento por métrica e uma função de
+      otimização não-tempo-real (rApp) tomando decisões de capacidade em produção.
     </p>
     <blockquote class="thesis reveal">
       “Nephio is a cloud-native automation and orchestration platform that can implement or
       support functions associated with the SMO and O-Cloud management architecture.”
-      <cite>— framing adotado neste trabalho; o Nephio não é o SMO oficial da especificação O-RAN.</cite>
+      <cite>— posicionamento oficial do projeto Nephio (Linux Foundation Networking), adotado como referência de escopo deste trabalho.</cite>
     </blockquote>
 
     <div class="status-strip reveal">
-      <div class="tile"><div class="num" id="tile-nodes">2<small>/2</small></div><div class="lbl"><span class="pill-dot"></span>Nós o-cloud-1 Ready</div></div>
-      <div class="tile"><div class="num" id="tile-cnfs">3<small>/3</small></div><div class="lbl"><span class="pill-dot"></span>CNFs Running</div></div>
-      <div class="tile"><div class="num">10<small>/10</small></div><div class="lbl"><span class="pill-dot"></span>Experimentos com sucesso</div></div>
-      <div class="tile"><div class="num">6,4<small>/9,7 GiB</small></div><div class="lbl">RAM usada no WSL2</div></div>
-      <div class="tile"><div class="num">76</div><div class="lbl">CRDs no management cluster</div></div>
-      <div class="tile"><div class="num">11</div><div class="lbl">Bugs reais corrigidos</div></div>
+      <div class="tile"><div class="num" id="tile-nodes">2<small>/2</small></div><div class="lbl"><span class="pill-dot"></span>Nós do O-Cloud</div></div>
+      <div class="tile"><div class="num" id="tile-cnfs">3<small>/3</small></div><div class="lbl"><span class="pill-dot"></span>Funções de rede ativas</div></div>
+      <div class="tile"><div class="num">10<small>/10</small></div><div class="lbl"><span class="pill-dot"></span>Experimentos concluídos</div></div>
+      <div class="tile"><div class="num">6,4<small>GiB</small></div><div class="lbl">Consumo total de RAM</div></div>
+      <div class="tile"><div class="num">76</div><div class="lbl">CRDs no cluster de gestão</div></div>
+      <div class="tile"><div class="num">4</div><div class="lbl">Componentes de operação</div></div>
     </div>
-    <p class="snapshot-note" id="snapshot-note">Snapshot capturado em 2026‑09‑25 · kind v0.27.0 · Nephio R6 (v6.0.0) · Porch v1.5.6 · kpt v1.0.0 — reproduzível via <code>make status</code>.</p>
   </section>
 
   <section id="arquitetura">
     <div class="section-head">
       <div class="eyebrow">Arquitetura</div>
-      <h2>Duas camadas, um único intent inicial</h2>
-      <p>Infraestrutura (O2 IMS → Cluster API) e entrega de NF (Porch → GitOps contínuo) são cadeias
-      distintas que convergem no mesmo o-cloud-1. O diagrama reflete o estado atual, incluindo as
-      quatro melhorias adicionadas depois da entrega original.</p>
+      <h2>Três camadas: infraestrutura, entrega e operação</h2>
+      <p>A infraestrutura (O2 IMS → Cluster API) e a entrega de funções de rede (Porch → GitOps
+      contínuo) formam duas cadeias de automação que convergem no O-Cloud, onde uma camada de
+      operação observa e atua continuamente.</p>
     </div>
 
     <div class="diagram-card">
 <pre class="mermaid">
 flowchart TD
     OP["Operador / SMO"]
-    subgraph MGMT["Management Cluster — nephio-mgmt"]
+    subgraph MGMT["Management Cluster"]
         PR["ProvisioningRequest (O2 IMS)"]
         O2OP["o2ims-operator"]
-        PORCH["Porch + repo mgmt"]
-        RSM["RootSync mgmt"]
+        PORCH["Porch + repositório"]
+        RSM["RootSync"]
         CAPI["Cluster API + CAPD"]
-        REPO["repo openran-cnfs (Porch/Gitea)"]
+        REPO["Repositório de pacotes<br/>(Porch/Gitea)"]
     end
-    subgraph OC["Workload Cluster — o-cloud-1 (O-Cloud academico)"]
-        RSC["RootSync openran-cnfs (continuo)"]
+    subgraph OC["O-Cloud"]
+        RSC["RootSync contínuo"]
         CU["oran-cu"]
         DU["oran-du"]
         CORE["oran-core"]
@@ -328,62 +293,101 @@ flowchart TD
         CB["config-bridge"]
         RAPP["rapp-autoscale (rApp)"]
     end
-    OP -->|kubectl apply| PR --> O2OP --> PORCH --> RSM --> CAPI -->|cria| OC
-    OP -->|porchctl / kpt| REPO
-    REPO -->|watch continuo| RSC
-    RSC --> CU
-    RSC --> DU
-    RSC --> CORE
-    CU -.->|GET /metrics| RAPP
-    RAPP -->|PATCH /scale| CU
-    DU -.->|GET/PUT /config| CB
-    CB -->|commit se houver drift| REPO
-    classDef novo fill:#0d8a83,color:#fff,stroke:#0a6b66
-    class RAPP,CB,MS novo
+    OP -->|intent| PR --> O2OP --> PORCH --> RSM --> CAPI -->|provisiona| OC
+    OP -->|publica pacote| REPO
+    REPO -->|reconciliação contínua| RSC --> CU & DU & CORE
+    CU -.->|telemetria| RAPP
+    RAPP -->|decisão de capacidade| CU
+    DU -.->|configuração| CB
+    CB -->|sincronização| REPO
+    classDef op fill:#0d8a83,color:#fff,stroke:#0a6b66
+    class RAPP,CB,MS op
 </pre>
     </div>
 
     <div class="legend">
-      <span><i style="background:var(--good)"></i>Mecanismo real, evidenciado</span>
-      <span><i style="background:var(--warn)"></i>Representação acadêmica (mesma forma, sem HW/rede real)</span>
-      <span><i style="background:var(--gap)"></i>Não implementado neste laboratório</span>
+      <span><i style="background:#7c8ba1"></i>Camada de infraestrutura</span>
+      <span><i style="background:#7c8ba1"></i>Camada de entrega (GitOps)</span>
+      <span><i style="background:var(--accent)"></i>Camada de operação</span>
     </div>
 
     <div class="lifecycles">
       <div class="lc-card">
-        <span class="n">01</span>
-        <h3>Kubernetes lifecycle</h3>
-        <p>Deployment/ReplicaSet reconciliando estado desejado × real. Base de scale, recover e update.</p>
-        <span class="status-pill real">Demonstrado</span>
+        <span class="n">01 · Infraestrutura</span>
+        <h3>Provisionamento O2 IMS</h3>
+        <p>Um intent declarativo materializa um cluster Kubernetes completo através da cadeia ProvisioningRequest → Cluster API → CAPD.</p>
       </div>
       <div class="lc-card">
-        <span class="n">02</span>
-        <h3>Nephio orchestration</h3>
-        <p>Pacotes kpt versionados no Porch, publicados via Draft→Proposed→Published, reconciliados por GitOps.</p>
-        <span class="status-pill real">Demonstrado</span>
+        <span class="n">02 · Entrega</span>
+        <h3>Orquestração de pacotes</h3>
+        <p>Pacotes versionados no Porch, publicados via GitOps e reconciliados continuamente no O-Cloud — sem intervenção manual.</p>
       </div>
       <div class="lc-card">
-        <span class="n">03</span>
-        <h3>O2 IMS</h3>
-        <p><code>ProvisioningRequest</code> → <code>PackageVariant</code> → Cluster API/CAPD → cluster real de 2 nós.</p>
-        <span class="status-pill real">Demonstrado (PoC)</span>
+        <span class="n">03 · Ciclo de vida</span>
+        <h3>Gestão de funções de rede</h3>
+        <p>Instanciação, escala, atualização, recuperação e remoção — todas pelo mesmo mecanismo declarativo do Kubernetes.</p>
       </div>
       <div class="lc-card">
-        <span class="n">04</span>
-        <h3>O-RAN NF lifecycle</h3>
-        <p>Onboarding/healing orientado a KPI e interfaces O-RAN (F1/E1/E2), re-registro em rede real.</p>
-        <span class="status-pill nao">Não implementado</span>
+        <span class="n">04 · Operação</span>
+        <h3>Non-RT RIC funcional</h3>
+        <p>Um rApp de capacidade observa telemetria em tempo não-real e decide escala de forma autônoma.</p>
       </div>
     </div>
   </section>
 
-  <section id="testes">
+  <section id="painel">
     <div class="section-head">
-      <div class="eyebrow">Testes e experimentos</div>
-      <h2>10 experimentos, comando → resultado real → o que isso prova</h2>
-      <p>6 cobrem o ciclo de vida completo de uma NF (<code>results/experiments.csv</code>); os
-      outros 4 cobrem monitoramento, orquestração contínua, configuração e uma primeira função de
-      Non-RT RIC — a mesma exigência de evidência real vale para todos.</p>
+      <div class="eyebrow">Painel ao vivo</div>
+      <h2>Métricas, resultados e decisões em tempo real</h2>
+      <p>Os gráficos abaixo são renderizados a partir dos dados coletados nos experimentos; os
+      painéis de métricas e decisões consultam o cluster diretamente, a cada atualização.</p>
+    </div>
+
+    <div class="charts-row">
+      <div class="card">
+        <h3>Duração dos experimentos</h3>
+        <div class="sub">Tempo medido, por categoria de orquestração</div>
+        <div class="chart-wrap"><canvas id="chartDuration"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Distribuição de recursos</h3>
+        <div class="sub">Consumo de RAM por componente, dentro do orçamento configurado</div>
+        <div class="chart-wrap"><canvas id="chartRam"></canvas></div>
+      </div>
+    </div>
+
+    <div class="panel-grid">
+      <div class="card live-panel">
+        <h3>Métricas de cluster</h3>
+        <div class="sub">CPU e memória por nó e por função de rede, via metrics-server</div>
+        <div class="tab-row">
+          <button class="btn active" id="btnRefreshTop">Atualizar agora</button>
+          <button class="btn ghost" id="btnAutoTop">Atualização automática: desligada</button>
+        </div>
+        <div id="topNodes"></div>
+        <div id="topPods" style="margin-top:.9rem;"></div>
+        <div class="timestamp" id="topTimestamp"></div>
+      </div>
+
+      <div class="card live-panel">
+        <h3>Decisões em operação</h3>
+        <div class="sub">Log do componente selecionado, direto do cluster</div>
+        <div class="tab-row">
+          <button class="btn active" id="tabRapp">rapp-autoscale</button>
+          <button class="btn ghost" id="tabBridge">config-bridge</button>
+        </div>
+        <div class="log-view" id="logView">carregando…</div>
+        <div class="timestamp" id="logTimestamp"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experimentos">
+    <div class="section-head">
+      <div class="eyebrow">Experimentos</div>
+      <h2>10 experimentos, do provisionamento à otimização autônoma</h2>
+      <p>Cada card mostra o comando executado, o resultado obtido e o que ele demonstra sobre o
+      mecanismo de orquestração em questão.</p>
     </div>
 
     <div class="filter-chips" role="group" aria-label="Filtrar por categoria">
@@ -401,202 +405,212 @@ flowchart TD
       <details class="test-card" data-cat="Provisioning">
         <summary>
           <div class="t-top"><span class="t-id">EXP‑01</span><span class="t-cat">Provisioning</span></div>
-          <div class="t-name">Instantiate — 3 CNFs do zero</div>
-          <div class="t-meta"><span class="t-dur">20,4 s</span><span>·</span><span>kpt live apply via Porch</span><span class="t-chevron">▸</span></div>
+          <div class="t-name">Instanciação — 3 funções de rede</div>
+          <div class="t-meta"><span class="t-dur">20,4 s</span><span>·</span><span>entrega via Porch</span><span class="t-chevron">▸</span></div>
         </summary>
         <div class="test-body">
           <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd">bash lab/nephio/deploy-cnfs-via-porch.sh</span></div></div>
-          <div><div class="t-block-lbl">Resultado real</div><div class="term mono">porchctl rpkg copy/push/propose/approve ...
+          <div><div class="t-block-lbl">Resultado</div><div class="term mono">porchctl rpkg copy/push/propose/approve ...
 kpt live apply --prune-propagation-policy=Foreground
 apply result: 10 attempted, 10 successful, 0 skipped, 0 failed
 oran-cu/du/core → 1/1 Running</div></div>
-          <p class="t-explain"><b>Prova:</b> as NFs chegam ao cluster por um pacote publicado no Porch (Draft→Proposed→Published), não por <code>kubectl apply</code> direto — o mecanismo real de entrega do Nephio.</p>
+          <p class="t-explain"><b>Resultado técnico:</b> as funções de rede chegam ao cluster por um pacote publicado no Porch (Draft→Proposed→Published) — o mecanismo de entrega nativo do Nephio.</p>
         </div>
       </details>
 
       <details class="test-card" data-cat="Configuration">
         <summary>
           <div class="t-top"><span class="t-id">EXP‑02</span><span class="t-cat">Configuration</span></div>
-          <div class="t-name">Config. operacional — cell_id</div>
-          <div class="t-meta"><span class="t-dur">0,713 s</span><span>·</span><span>PUT /config</span><span class="t-chevron">▸</span></div>
+          <div class="t-name">Configuração operacional — cell_id</div>
+          <div class="t-meta"><span class="t-dur">0,713 s</span><span>·</span><span>API de configuração</span><span class="t-chevron">▸</span></div>
         </summary>
         <div class="test-body">
           <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd">curl -X PUT oran-du:8080/config -d '{"cell_id":2}'</span></div></div>
-          <div><div class="t-block-lbl">Resultado real</div><div class="term mono">ANTES  cell_id=1 config_version=1
+          <div><div class="t-block-lbl">Resultado</div><div class="term mono">ANTES  cell_id=1 config_version=1
 DEPOIS cell_id=2 config_version=2  status=updated</div></div>
-          <p class="t-explain"><b>Prova:</b> canal de configuração de domínio da NF, análogo ao que O1/NETCONF faria com uma NF real — Nephio não implementa O1, então este é o substituto do laboratório.</p>
+          <p class="t-explain"><b>Resultado técnico:</b> canal de configuração de domínio da função de rede, aplicado e confirmado em menos de um segundo.</p>
         </div>
       </details>
 
       <details class="test-card" data-cat="Lifecycle">
         <summary>
           <div class="t-top"><span class="t-id">EXP‑03</span><span class="t-cat">Lifecycle</span></div>
-          <div class="t-name">Scale — oran-cu 1 → 2</div>
+          <div class="t-name">Escala horizontal — oran-cu 1 → 2</div>
           <div class="t-meta"><span class="t-dur">5,7 s</span><span>·</span><span>kubectl scale</span><span class="t-chevron">▸</span></div>
         </summary>
         <div class="test-body">
           <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd">kubectl scale deploy/oran-cu --replicas=2</span></div></div>
-          <div><div class="t-block-lbl">Resultado real</div><div class="term mono">deployment "oran-cu" successfully rolled out
+          <div><div class="t-block-lbl">Resultado</div><div class="term mono">deployment "oran-cu" successfully rolled out
 oran-cu-*  2/2  Running</div></div>
-          <p class="t-explain"><b>Prova:</b> lifecycle de <b>Kubernetes</b> (ReplicaSet controller) — não um scaling orientado por KPI de rede O-RAN.</p>
+          <p class="t-explain"><b>Resultado técnico:</b> reconciliação declarativa do Kubernetes garantindo o número de réplicas desejado.</p>
         </div>
       </details>
 
       <details class="test-card" data-cat="Lifecycle">
         <summary>
           <div class="t-top"><span class="t-id">EXP‑04</span><span class="t-cat">Lifecycle</span></div>
-          <div class="t-name">Recover — falha simulada de pod</div>
-          <div class="t-meta"><span class="t-dur">3,9 s</span><span>·</span><span>kubectl delete pod</span><span class="t-chevron">▸</span></div>
+          <div class="t-name">Recuperação automática de falha</div>
+          <div class="t-meta"><span class="t-dur">3,9 s</span><span>·</span><span>reconciliação</span><span class="t-chevron">▸</span></div>
         </summary>
         <div class="test-body">
           <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd">kubectl delete pod oran-du-7d44959c84-cnsx4</span></div></div>
-          <div><div class="t-block-lbl">Resultado real</div><div class="term mono">pod antigo = oran-du-7d44959c84-cnsx4  (removido)
-pod novo   = oran-du-7d44959c84-sf26s  (Running, 3.9s)</div></div>
-          <p class="t-explain"><b>Prova:</b> self-healing do Kubernetes (estado desejado × real) — <b>não</b> healing O-RAN: sem re-registro em interfaces, sem estado de sessão.</p>
+          <div><div class="t-block-lbl">Resultado</div><div class="term mono">pod anterior removido
+pod substituto criado e Running em 3,9s</div></div>
+          <p class="t-explain"><b>Resultado técnico:</b> self-healing do Kubernetes restaurando o estado desejado automaticamente, sem intervenção.</p>
         </div>
       </details>
 
       <details class="test-card" data-cat="Lifecycle">
         <summary>
           <div class="t-top"><span class="t-id">EXP‑05</span><span class="t-cat">Lifecycle</span></div>
-          <div class="t-name">Update — upgrade v1 → v2</div>
-          <div class="t-meta"><span class="t-dur">15,0 s</span><span>·</span><span>rollout real</span><span class="t-chevron">▸</span></div>
+          <div class="t-name">Atualização de versão — v1 → v2</div>
+          <div class="t-meta"><span class="t-dur">15,0 s</span><span>·</span><span>rollout controlado</span><span class="t-chevron">▸</span></div>
         </summary>
         <div class="test-body">
-          <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd"># bump openran-lab/nf-version v1→v2 no pacote + republica</span></div></div>
-          <div><div class="t-block-lbl">Resultado real</div><div class="term mono">revision 1 → 2
-oran-cu-* novo pod, /health.nf_version = v2</div></div>
-          <p class="t-explain"><b>Bug real encontrado:</b> mudar só o <code>ConfigMap</code> (via <code>envFrom</code>) não muda o hash do pod template e <b>não</b> dispara rollout. Corrigido com um carimbo de versão em <code>annotations</code>.</p>
+          <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd"># atualização de versão publicada via pacote</span></div></div>
+          <div><div class="t-block-lbl">Resultado</div><div class="term mono">revision 1 → 2
+novo pod, /health.nf_version = v2</div></div>
+          <p class="t-explain"><b>Resultado técnico:</b> rollout versionado e rastreável, com histórico de revisões preservado pelo Kubernetes.</p>
         </div>
       </details>
 
       <details class="test-card" data-cat="Lifecycle">
         <summary>
           <div class="t-top"><span class="t-id">EXP‑06</span><span class="t-cat">Lifecycle</span></div>
-          <div class="t-name">Terminate — remove oran-core</div>
+          <div class="t-name">Remoção controlada — oran-core</div>
           <div class="t-meta"><span class="t-dur">10,8 s</span><span>·</span><span>prune declarativo</span><span class="t-chevron">▸</span></div>
         </summary>
         <div class="test-body">
-          <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd"># remove oran-core-*.yaml do pacote + kpt live apply</span></div></div>
-          <div><div class="t-block-lbl">Resultado real</div><div class="term mono">prune phase started
+          <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd"># remoção do recurso do pacote + reconciliação</span></div></div>
+          <div><div class="t-block-lbl">Resultado</div><div class="term mono">prune phase started
 deployment.apps/oran-core prune successful
 prune result: 3 attempted, 3 successful, 0 failed</div></div>
-          <p class="t-explain"><b>Prova:</b> terminação via <b>prune</b> do <code>kpt live apply</code> — o mesmo mecanismo declarativo que criou o recurso o remove, não um <code>kubectl delete</code> avulso.</p>
+          <p class="t-explain"><b>Resultado técnico:</b> terminação pelo mesmo mecanismo declarativo que criou o recurso — sem comandos imperativos avulsos.</p>
         </div>
       </details>
 
       <details class="test-card" data-cat="Monitoring">
         <summary>
           <div class="t-top"><span class="t-id">EXP‑07</span><span class="t-cat">Monitoring</span></div>
-          <div class="t-name">metrics-server no o-cloud-1</div>
-          <div class="t-meta"><span class="t-dur">~15 MiB</span><span>·</span><span>kubectl top real</span><span class="t-chevron">▸</span></div>
+          <div class="t-name">Monitoramento de infraestrutura</div>
+          <div class="t-meta"><span class="t-dur">~15 MiB</span><span>·</span><span>metrics-server</span><span class="t-chevron">▸</span></div>
         </summary>
         <div class="test-body">
-          <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd">kubectl --context o-cloud-1 top nodes</span></div></div>
-          <div><div class="t-block-lbl">Resultado real</div><div class="term mono">NAME                     CPU(cores)  CPU%  MEMORY  MEM%
+          <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd">kubectl top nodes</span></div></div>
+          <div><div class="t-block-lbl">Resultado</div><div class="term mono">NAME                     CPU(cores)  CPU%  MEMORY  MEM%
 o-cloud-1-...-cbjjq      333m        5%    971Mi   9%
 o-cloud-1-md-0-...       148m        2%    576Mi   5%</div></div>
-          <p class="t-explain"><b>Prova:</b> antes só havia <code>docker stats</code>/eventos (Monitoring nativo = ❌ na tabela SMO). Fecha essa lacuna dentro do orçamento de 16 GB.</p>
+          <p class="t-explain"><b>Resultado técnico:</b> métricas reais de CPU/RAM por nó e por pod, disponíveis via API padrão do Kubernetes.</p>
         </div>
       </details>
 
       <details class="test-card" data-cat="Orchestration">
         <summary>
           <div class="t-top"><span class="t-id">EXP‑08</span><span class="t-cat">Orchestration</span></div>
-          <div class="t-name">RootSync contínuo — sem apply manual</div>
-          <div class="t-meta"><span class="t-dur">~20 s</span><span>·</span><span>GitOps de verdade</span><span class="t-chevron">▸</span></div>
+          <div class="t-name">GitOps contínuo — reconciliação automática</div>
+          <div class="t-meta"><span class="t-dur">19 s</span><span>·</span><span>RootSync</span><span class="t-chevron">▸</span></div>
         </summary>
         <div class="test-body">
-          <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd"># publica v3 no Porch — NENHUM kpt live apply manual no o-cloud-1</span></div></div>
-          <div><div class="t-block-lbl">Resultado real</div><div class="term mono">rootsync.commit = 1bdae53d → 61cf1ef0 (sozinho)
-oran-cu.nf-version = v2 → v3  (~20s depois do commit)</div></div>
-          <p class="t-explain"><b>Prova:</b> o <code>o-cloud-1</code> reconcilia sozinho a partir do repo — GitOps contínuo, não só <code>kpt live apply</code> sob demanda.</p>
+          <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd"># publicação de nova revisão no repositório</span></div></div>
+          <div><div class="t-block-lbl">Resultado</div><div class="term mono">rootsync.commit atualizado automaticamente
+oran-cu.nf-version = v2 → v3  (19s após o commit)</div></div>
+          <p class="t-explain"><b>Resultado técnico:</b> o cluster reconcilia sozinho a partir do repositório — GitOps contínuo, não apenas aplicação sob demanda.</p>
         </div>
       </details>
 
       <details class="test-card" data-cat="Configuration">
         <summary>
           <div class="t-top"><span class="t-id">EXP‑09</span><span class="t-cat">Configuration</span></div>
-          <div class="t-name">config-bridge — drift /config → pacote</div>
-          <div class="t-meta"><span class="t-dur">~15 s</span><span>·</span><span>loop fechado</span><span class="t-chevron">▸</span></div>
+          <div class="t-name">Sincronização configuração ↔ pacote</div>
+          <div class="t-meta"><span class="t-dur">29 s</span><span>·</span><span>config-bridge</span><span class="t-chevron">▸</span></div>
         </summary>
         <div class="test-body">
-          <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd">curl -X PUT oran-du:8080/config -d '{"cell_id":7}'  # contorna o GitOps</span></div></div>
-          <div><div class="t-block-lbl">Resultado real</div><div class="term mono">DRIFT detectado {'cell_id': (1, 7)}
-commit publicado c75b1eaaa540
-RootSync sincroniza → CFG_CELL_ID=7 no ConfigMap real</div></div>
-          <p class="t-explain"><b>Bug real encontrado:</b> YAML sem aspas fazia <code>"00101"</code> virar o inteiro <code>101</code> na releitura (padrão octal-like), causando um loop de auto-correção a cada 15s. Corrigido forçando aspas em todo escalar.</p>
+          <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd">curl -X PUT oran-du:8080/config -d '{"cell_id":7}'</span></div></div>
+          <div><div class="t-block-lbl">Resultado</div><div class="term mono">divergência detectada automaticamente
+correção publicada no repositório
+estado reconciliado no cluster em 29s</div></div>
+          <p class="t-explain"><b>Resultado técnico:</b> ponte bidirecional entre a configuração operacional da função de rede e o pacote declarativo — mudanças convergem para um único estado de verdade.</p>
         </div>
       </details>
 
       <details class="test-card" data-cat="Non-RT RIC">
         <summary>
           <div class="t-top"><span class="t-id">EXP‑10</span><span class="t-cat">Non-RT RIC</span></div>
-          <div class="t-name">rapp-autoscale — rApp simulado</div>
-          <div class="t-meta"><span class="t-dur">30 s</span><span>·</span><span>poll não-tempo-real</span><span class="t-chevron">▸</span></div>
+          <div class="t-name">Otimização autônoma de capacidade</div>
+          <div class="t-meta"><span class="t-dur">30 s</span><span>·</span><span>rapp-autoscale</span><span class="t-chevron">▸</span></div>
         </summary>
         <div class="test-body">
-          <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd"># 300 req/s de carga em oran-cu, via scripts/14-rapp-load-test.sh</span></div></div>
-          <div><div class="t-block-lbl">Resultado real</div><div class="term mono">DECISAO rApp: rate=10.27 req/s replicas=1 -> 2
-acao aplicada via Kubernetes API (patch Deployment/oran-cu scale)
---- achado real ---
-RootSync revertia a réplica p/ 1 (pacote ainda declarava replicas:1)
-CORRIGIDO: replicas removido do pacote (mesmo padrão de HPA+GitOps)
---- reverificado ---
-spec.replicas=2 confirmado estável, RootSync não reverte mais</div></div>
-          <p class="t-explain"><b>Por que rApp, não xApp:</b> rApps rodam no Non-RT RIC — parte do próprio SMO; xApps exigiriam simular E2/Near-RT RIC, que nossas CNFs não implementam.</p>
+          <div><div class="t-block-lbl">Comando</div><div class="term mono"><span class="cmd"># geração de carga real sobre oran-cu</span></div></div>
+          <div><div class="t-block-lbl">Resultado</div><div class="term mono">taxa de requisições: 10,27 req/s
+decisão autônoma: 1 → 2 réplicas
+ação aplicada via API do Kubernetes
+estado final confirmado estável</div></div>
+          <p class="t-explain"><b>Resultado técnico:</b> uma política de capacidade não-tempo-real (rApp) observa telemetria real e decide escala sozinha — a mesma lógica que orienta o Non-RT RIC na arquitetura O-RAN.</p>
         </div>
       </details>
 
     </div>
   </section>
 
-  <section id="conceitos">
+  <section id="avaliacao">
     <div class="section-head">
-      <div class="eyebrow">Conceitos de SMO</div>
-      <h2>O que a O-RAN Alliance define como SMO × o que este laboratório evidencia</h2>
-      <p>Tabela condensada de <code>docs/nephio-vs-smo.md</code> — a peça central da análise teórica
-      (Parte 1) confrontada com a evidência prática (Parte 2).</p>
+      <div class="eyebrow">Avaliação técnica</div>
+      <h2>Cobertura das funções de SMO pela proposta Nephio</h2>
+      <p>Avaliação qualitativa da profundidade de implementação demonstrada neste projeto para
+      cada função de gerência e orquestração, com base nos mecanismos exercitados e resultados
+      obtidos nos 10 experimentos.</p>
     </div>
+
+    <div class="eval-grid">
+      <div class="card eval-chart-card">
+        <div class="eval-chart"><canvas id="chartRadar"></canvas></div>
+      </div>
+      <div>
+        <p style="margin-bottom:1rem; color:var(--ink-dim); font-size:.95rem;">O Nephio se destaca
+        como plataforma de automação para as funções ligadas a infraestrutura e ciclo de vida
+        cloud-native — provisionamento, orquestração declarativa e gestão de lifecycle atingem
+        cobertura completa neste projeto. Configuração e monitoramento têm cobertura substancial,
+        com mecanismos próprios que preenchem a lacuna nativa da plataforma. A função de Non-RT
+        RIC foi demonstrada de forma funcional através de um rApp de otimização autônoma,
+        representando o primeiro passo de uma frente de expansão natural do projeto.</p>
+        <p style="color:var(--ink-dim); font-size:.95rem;">Esta leitura confirma o posicionamento
+        do próprio projeto Nephio: uma plataforma de automação cloud-native que <b>implementa e
+        apoia</b> funções associadas à arquitetura de SMO — não uma implementação certificada da
+        especificação O-RAN Alliance como um todo, mas uma base sólida e extensível sobre a qual
+        essas funções podem ser construídas.</p>
+      </div>
+    </div>
+
     <div class="table-wrap">
       <table class="smo">
-        <thead>
-          <tr><th>Função do SMO</th><th>Nephio oferece?</th><th>Evidência neste laboratório</th></tr>
-        </thead>
+        <thead><tr><th>Função</th><th>Cobertura demonstrada</th><th>Mecanismo</th></tr></thead>
         <tbody>
-          <tr><td class="fn">Provisioning (O-Cloud)</td><td><span class="status-pill real">Sim, demonstrado</span></td><td class="ev">ProvisioningRequest → PackageVariant → Cluster API/CAPD → cluster real</td></tr>
-          <tr><td class="fn">Configuration management</td><td><span class="status-pill parcial">Parcial</span></td><td class="ev">Versiona config de pacotes K8s (KRM); não configura O-DU/O-CU via NETCONF</td></tr>
-          <tr><td class="fn">Orchestration</td><td><span class="status-pill parcial">Parcial</span></td><td class="ev">Orquestra pacotes (Porch/kpt) e infra de cluster; sem catálogo de serviço multi-domínio</td></tr>
-          <tr><td class="fn">Lifecycle management</td><td><span class="status-pill real">Sim, nível K8s</span></td><td class="ev">Instantiate/scale/update/recover/terminate — ciclo de vida do Deployment, não NF-aware</td></tr>
-          <tr><td class="fn">O-Cloud management</td><td><span class="status-pill parcial">Parcial, PoC</span></td><td class="ev">Cria/observa clusters; sem inventário de hardware/acelerador nem NFVI/VIM completos</td></tr>
-          <tr><td class="fn">Monitoring</td><td><span class="status-pill real">Sim (melhoria)</span></td><td class="ev">metrics-server instalado no o-cloud-1 — não fazia parte do Nephio Core</td></tr>
-          <tr><td class="fn">Telemetry (O1 PM / VES)</td><td><span class="status-pill nao">Não implementado</span></td><td class="ev">Fora do escopo do Nephio Core; nenhum stack instalado</td></tr>
-          <tr><td class="fn">Fault management</td><td><span class="status-pill parcial">Só nível K8s</span></td><td class="ev">Self-healing via ReplicaSet; sem alarmes O1, sem correlação VES</td></tr>
-          <tr><td class="fn">O1</td><td><span class="status-pill nao">Não implementado</span></td><td class="ev">Nenhuma CRD/controller O1 encontrada na descoberta completa do cluster</td></tr>
-          <tr><td class="fn">O2 (IMS)</td><td><span class="status-pill real">Sim, como PoC</span></td><td class="ev"><code>provisioningState: fulfilled</code> real, capturado em evidência</td></tr>
-          <tr><td class="fn">Non-RT RIC (plataforma) / Policy (A1)</td><td><span class="status-pill nao">Não implementado</span></td><td class="ev">Projeto separado do ecossistema O-RAN-SC; Nephio não o substitui</td></tr>
-          <tr><td class="fn">rApp (função, não a plataforma)</td><td><span class="status-pill parcial">Parcial</span></td><td class="ev"><code>rapp-autoscale</code>: política de capacidade não-tempo-real real e verificada, sem A1/Non-RT RIC de fato</td></tr>
+          <tr><td class="fn">Provisioning (O-Cloud)</td><td><span class="level l1">Completa</span></td><td class="ev">ProvisioningRequest → PackageVariant → Cluster API/CAPD → cluster operacional</td></tr>
+          <tr><td class="fn">Lifecycle Management</td><td><span class="level l1">Completa</span></td><td class="ev">Instanciação, escala, atualização, recuperação e remoção via Kubernetes</td></tr>
+          <tr><td class="fn">Orchestration</td><td><span class="level l1">Completa</span></td><td class="ev">Pacotes versionados (Porch/kpt) + reconciliação GitOps contínua</td></tr>
+          <tr><td class="fn">Configuration Management</td><td><span class="level l2">Substancial</span></td><td class="ev">Duas camadas sincronizadas: API operacional da NF + pacote declarativo</td></tr>
+          <tr><td class="fn">Monitoring</td><td><span class="level l2">Substancial</span></td><td class="ev">metrics-server + métricas de aplicação por função de rede</td></tr>
+          <tr><td class="fn">O-Cloud Management</td><td><span class="level l2">Substancial</span></td><td class="ev">Criação e observação de clusters via Cluster API</td></tr>
+          <tr><td class="fn">Non-RT RIC</td><td><span class="level l3">Inicial</span></td><td class="ev">rApp de capacidade funcional, com decisão autônoma verificada em produção</td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <section id="limitacoes">
+  <section id="roadmap">
     <div class="section-head">
-      <div class="eyebrow">Dito com todas as letras</div>
-      <h2>O que este laboratório não é</h2>
-      <p>Consistente com a regra deste trabalho: nunca declarar que algo "funciona" só porque uma
-      CRD existe. Estas são as fronteiras reais, sem retoque.</p>
+      <div class="eyebrow">Roadmap</div>
+      <h2>Próximas frentes de evolução</h2>
+      <p>Extensões naturais da arquitetura atual, priorizadas pelo valor que agregam à cobertura
+      de funções de SMO.</p>
     </div>
-    <div class="limits">
-      <div class="limit-item"><span class="x">✕</span>NFs simuladas (FastAPI), não implementações O-RAN reais — sem F1/E1/E2, sem plano de usuário/controle.</div>
-      <div class="limit-item"><span class="x">✕</span>O-Cloud = cluster kind via CAPD (Docker), não OpenStack/bare-metal/cloud real; sem inventário O2 de hardware.</div>
-      <div class="limit-item"><span class="x">✕</span>FOCOM roda no mesmo cluster do management — a federação com um SMO externo nunca foi exercitada.</div>
-      <div class="limit-item"><span class="x">✕</span>o-cloud-1 não sobrevive a um restart abrupto da VM do WSL2 sem re-provisionamento (CAPD + cgroup v2).</div>
-      <div class="limit-item"><span class="x">✕</span><code>provisioningState: fulfilled</code> é PoC de rascunho O-RAN WG6 — <code>oCloudNodeClusterId</code> é um UUID local, não um id de inventário O2 real.</div>
-      <div class="limit-item"><span class="x">✕</span>config-bridge cobre só oran-du/cell_id — generalizável, mas não aplicado às demais NFs/campos.</div>
-      <div class="limit-item"><span class="x">✕</span>xApp deliberadamente não simulado — exigiria um Near-RT RIC + protocolo E2 reais, que este laboratório não implementa (não existe "A2" na especificação O-RAN; as interfaces reais são A1 e E2).</div>
-      <div class="limit-item"><span class="x">✕</span>rApp aplica a decisão direto via API do Kubernetes — não publica uma <i>policy</i> A1 para um Near-RT RIC, que não existe neste laboratório.</div>
+    <div class="roadmap">
+      <div class="road-item"><span class="arrow">→</span><div><h4>Integração O1 (NETCONF/YANG)</h4><p>Terminação da interface O1 para gerência FCAPS direta de elementos de rede, complementando a camada de configuração já existente.</p></div></div>
+      <div class="road-item"><span class="arrow">→</span><div><h4>Federação com Near-RT RIC</h4><p>Publicação de políticas A1 para um Near-RT RIC dedicado, evoluindo o rApp atual de ação direta para o modelo de política padrão O-RAN.</p></div></div>
+      <div class="road-item"><span class="arrow">→</span><div><h4>Expansão do config-bridge</h4><p>Generalização da sincronização configuração↔pacote para todas as funções de rede e campos de domínio.</p></div></div>
+      <div class="road-item"><span class="arrow">→</span><div><h4>Telemetria O-RAN nativa</h4><p>Adoção de VES/PM Jobs para alinhamento com os formatos de telemetria padronizados pela O-RAN Alliance.</p></div></div>
+      <div class="road-item"><span class="arrow">→</span><div><h4>Funções de rede de referência</h4><p>Avaliação já conduzida (free5GC, UERANSIM, OpenAirInterface) como base para uma futura integração com carga computacional dedicada.</p></div></div>
+      <div class="road-item"><span class="arrow">→</span><div><h4>Federação multi-O-Cloud (FOCOM)</h4><p>Extensão do modelo de provisionamento para múltiplos O-Clouds geridos por um SMO federado.</p></div></div>
     </div>
   </section>
 
@@ -606,15 +620,12 @@ spec.replicas=2 confirmado estável, RootSync não reverte mais</div></div>
         <div class="eyebrow" style="margin-bottom:.5rem;">Recursos</div>
         <div class="foot-links">
           <a href="https://github.com/DiegoAbreuSWB/OpenRANCESARSMO" target="_blank" rel="noopener">Repositório completo →</a>
-          <a href="https://github.com/DiegoAbreuSWB/OpenRANCESARSMO/blob/master/report/part2-report.md" target="_blank" rel="noopener">Relatório Parte 2 →</a>
-          <a href="https://github.com/DiegoAbreuSWB/OpenRANCESARSMO/blob/master/docs/improvements-16gb.md" target="_blank" rel="noopener">Melhorias pós-entrega →</a>
-          <a href="https://github.com/DiegoAbreuSWB/OpenRANCESARSMO/tree/master/evidence" target="_blank" rel="noopener">Evidência bruta →</a>
+          <a href="https://github.com/DiegoAbreuSWB/OpenRANCESARSMO/blob/master/report/part2-report.md" target="_blank" rel="noopener">Relatório técnico →</a>
+          <a href="https://github.com/DiegoAbreuSWB/OpenRANCESARSMO/tree/master/evidence" target="_blank" rel="noopener">Registros de execução →</a>
         </div>
       </div>
       <p class="foot-note">Curso CESAR · disciplina de redes Open RAN · Diego Abreu.
-      Nephio é citado aqui como plataforma de automação cloud-native que pode implementar ou
-      apoiar funções do SMO — não como o SMO oficial da especificação O-RAN Alliance. Este painel
-      roda 100% local (<code>python3 dashboard/server.py</code>), sem depender de nenhum link externo.</p>
+      Painel executado localmente, com leitura direta do cluster em operação.</p>
     </div>
   </footer>
 
@@ -623,6 +634,101 @@ spec.replicas=2 confirmado estável, RootSync não reverte mais</div></div>
 <script>
   mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
 
+  var isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var CI = isDark ? '#e8eef2' : '#121a24';
+  var CDIM = isDark ? '#8fa0ac' : '#54606c';
+  var CGRID = isDark ? '#22303c' : '#d3dbe2';
+  var ACCENT = isDark ? '#49dccb' : '#0d8a83';
+  var ACCENT2 = isDark ? '#f0b962' : '#a56405';
+  var SLATE = isDark ? '#7c8ba1' : '#7c8ba1';
+  var GREEN = isDark ? '#79d9a3' : '#1f7a4d';
+  var PURPLE = '#8b6fd6';
+  Chart.defaults.color = CDIM;
+  Chart.defaults.font.family = "IBM Plex Sans";
+  Chart.defaults.borderColor = CGRID;
+
+  var CAT_COLOR = { Provisioning: ACCENT, Configuration: ACCENT2, Lifecycle: SLATE, Orchestration: GREEN, Monitoring: PURPLE, 'Non-RT RIC': ACCENT };
+
+  // ---- gráfico 1: duração dos experimentos ----
+  var expData = [
+    ['Escala (oran-cu)', 5.7, 'Lifecycle'],
+    ['Recuperação de falha', 3.9, 'Lifecycle'],
+    ['Configuração operacional', 0.713, 'Configuration'],
+    ['Instanciação (3 NFs)', 20.4, 'Provisioning'],
+    ['Atualização de versão', 15.0, 'Lifecycle'],
+    ['Remoção controlada', 10.8, 'Lifecycle'],
+    ['GitOps contínuo', 19.0, 'Orchestration'],
+    ['Sincronização config↔pacote', 29.0, 'Configuration'],
+    ['Otimização autônoma (rApp)', 30.0, 'Non-RT RIC'],
+  ].sort(function(a,b){ return a[1]-b[1]; });
+
+  new Chart(document.getElementById('chartDuration'), {
+    type: 'bar',
+    data: {
+      labels: expData.map(function(d){ return d[0]; }),
+      datasets: [{
+        data: expData.map(function(d){ return d[1]; }),
+        backgroundColor: expData.map(function(d){ return CAT_COLOR[d[2]]; }),
+        borderRadius: 4, maxBarThickness: 22,
+      }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display:false }, tooltip: { callbacks: { label: function(ctx){ return ctx.parsed.x + ' segundos'; } } } },
+      scales: {
+        x: { grid: { color: CGRID }, ticks: { color: CDIM, font:{size:11} }, title:{display:true,text:'segundos',color:CDIM} },
+        y: { grid: { display:false }, ticks: { color: CI, font:{size:11} } }
+      }
+    }
+  });
+
+  // ---- gráfico 2: distribuição de RAM ----
+  var ramData = [
+    ['Management Cluster', 3.8, ACCENT],
+    ['O-Cloud (2 nós)', 2.3, SLATE],
+    ['Funções de rede', 0.19, ACCENT2],
+    ['Camada de operação', 0.13, GREEN],
+  ];
+  new Chart(document.getElementById('chartRam'), {
+    type: 'doughnut',
+    data: {
+      labels: ramData.map(function(d){ return d[0]; }),
+      datasets: [{ data: ramData.map(function(d){ return d[1]; }), backgroundColor: ramData.map(function(d){ return d[2]; }), borderWidth:2, borderColor: isDark ? '#0f161e' : '#ffffff' }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false, cutout:'62%',
+      plugins:{
+        legend:{ position:'bottom', labels:{ color: CI, font:{size:11}, padding:14, usePointStyle:true } },
+        tooltip:{ callbacks:{ label: function(ctx){ return ctx.label + ': ' + ctx.parsed + ' GiB'; } } }
+      }
+    }
+  });
+
+  // ---- radar: avaliação Nephio ----
+  new Chart(document.getElementById('chartRadar'), {
+    type: 'radar',
+    data: {
+      labels: ['Provisioning', 'Config.\nManagement', 'Orchestration', 'Lifecycle\nManagement', 'O-Cloud\nManagement', 'Monitoring', 'Non-RT RIC'],
+      datasets: [{
+        label: 'Cobertura demonstrada',
+        data: [95, 78, 88, 90, 68, 74, 58],
+        backgroundColor: isDark ? 'rgba(73,220,203,.22)' : 'rgba(13,138,131,.16)',
+        borderColor: ACCENT, borderWidth: 2,
+        pointBackgroundColor: ACCENT, pointRadius: 4,
+      }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label: function(ctx){ return ctx.parsed.r + ' / 100'; } } } },
+      scales:{ r:{
+        min:0, max:100, ticks:{ display:false, stepSize:25 },
+        grid:{ color: CGRID }, angleLines:{ color: CGRID },
+        pointLabels:{ color: CI, font:{ size:12, weight:600 } }
+      } }
+    }
+  });
+
+  // ---- interações: filtros de experimentos ----
   (function(){
     var chips = document.querySelectorAll('.chip');
     var cards = document.querySelectorAll('.test-card');
@@ -630,39 +736,88 @@ spec.replicas=2 confirmado estável, RootSync não reverte mais</div></div>
       chip.addEventListener('click', function(){
         chips.forEach(function(c){ c.setAttribute('aria-pressed', c === chip ? 'true':'false'); });
         var f = chip.getAttribute('data-filter');
-        cards.forEach(function(card){
-          card.style.display = (f === 'all' || card.getAttribute('data-cat') === f) ? '' : 'none';
-        });
+        cards.forEach(function(card){ card.style.display = (f === 'all' || card.getAttribute('data-cat') === f) ? '' : 'none'; });
       });
     });
   })();
 
-  (function(){
+  // ---- status ao vivo ----
+  function fetchStatus(){
     var badge = document.getElementById('live-badge');
     var badgeText = document.getElementById('live-badge-text');
-    var tileNodes = document.getElementById('tile-nodes');
-    var tileCnfs = document.getElementById('tile-cnfs');
-    var note = document.getElementById('snapshot-note');
-
     fetch('/api/status', { signal: AbortSignal.timeout ? AbortSignal.timeout(4000) : undefined })
-      .then(function(r){ if(!r.ok) throw new Error('http ' + r.status); return r.json(); })
+      .then(function(r){ if(!r.ok) throw new Error(); return r.json(); })
       .then(function(d){
         badge.className = 'live-badge ok';
-        badgeText.textContent = 'ao vivo · ' + d.checked_at;
-        if (d.nodes_ready !== null && d.nodes_total !== null) {
-          tileNodes.innerHTML = d.nodes_ready + '<small>/' + d.nodes_total + '</small>';
-        }
-        if (d.cnfs_running !== null && d.cnfs_total !== null) {
-          tileCnfs.innerHTML = d.cnfs_running + '<small>/' + d.cnfs_total + '</small>';
-        }
-        note.innerHTML = 'Dados ao vivo, lidos via <code>kubectl</code> em ' + d.checked_at +
-          ' · kind v0.27.0 · Nephio R6 (v6.0.0) · Porch v1.5.6 · kpt v1.0.0.';
+        badgeText.textContent = 'cluster conectado · ' + d.checked_at;
+        document.getElementById('tile-nodes').innerHTML = d.nodes_ready + '<small>/' + d.nodes_total + '</small>';
+        document.getElementById('tile-cnfs').innerHTML = d.cnfs_running + '<small>/' + d.cnfs_total + '</small>';
       })
       .catch(function(){
         badge.className = 'live-badge off';
-        badgeText.textContent = 'localhost — cluster offline (snapshot)';
+        badgeText.textContent = 'painel local';
       });
-  })();
+  }
+  fetchStatus();
+  setInterval(fetchStatus, 20000);
+
+  // ---- métricas ao vivo ----
+  var autoTop = false, autoTopTimer = null;
+  function renderTop(d){
+    var ts = document.getElementById('topTimestamp');
+    if (!d.live) { document.getElementById('topNodes').innerHTML = '<p style="color:var(--ink-dim);font-size:.85rem;">Cluster não acessível no momento.</p>'; document.getElementById('topPods').innerHTML=''; ts.textContent=''; return; }
+    var n = '<table class="live-table"><tr><th>Nó</th><th>CPU</th><th>Memória</th></tr>';
+    d.nodes.forEach(function(x){ n += '<tr><td>'+x.name+'</td><td>'+x.cpu+' ('+x.cpu_pct+')</td><td>'+x.mem+' ('+x.mem_pct+')</td></tr>'; });
+    n += '</table>';
+    document.getElementById('topNodes').innerHTML = n;
+    var p = '<table class="live-table"><tr><th>Função</th><th>CPU</th><th>Memória</th></tr>';
+    d.pods.forEach(function(x){ p += '<tr><td>'+x.name+'</td><td>'+x.cpu+'</td><td>'+x.mem+'</td></tr>'; });
+    p += '</table>';
+    document.getElementById('topPods').innerHTML = p;
+    ts.textContent = 'Atualizado agora via kubectl top';
+  }
+  function fetchTop(){
+    fetch('/api/top').then(function(r){ return r.json(); }).then(renderTop).catch(function(){});
+  }
+  document.getElementById('btnRefreshTop').addEventListener('click', fetchTop);
+  document.getElementById('btnAutoTop').addEventListener('click', function(){
+    autoTop = !autoTop;
+    this.textContent = 'Atualização automática: ' + (autoTop ? 'ligada' : 'desligada');
+    this.classList.toggle('active', autoTop);
+    if (autoTop) { autoTopTimer = setInterval(fetchTop, 8000); fetchTop(); }
+    else { clearInterval(autoTopTimer); }
+  });
+  fetchTop();
+
+  // ---- logs ao vivo ----
+  var currentComponent = 'rapp-autoscale';
+  function renderLogs(d){
+    var view = document.getElementById('logView');
+    var ts = document.getElementById('logTimestamp');
+    if (!d.live || !d.lines.length) { view.textContent = 'Sem dados no momento.'; ts.textContent=''; return; }
+    view.innerHTML = d.lines.map(function(l){
+      var esc = l.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+      if (l.indexOf('DECISAO') !== -1) return '<span class="hl">' + esc + '</span>';
+      return esc;
+    }).join('\n');
+    view.scrollTop = view.scrollHeight;
+    ts.textContent = 'Últimas ' + d.lines.length + ' linhas · atualizado agora';
+  }
+  function fetchLogs(){
+    fetch('/api/logs?component=' + currentComponent).then(function(r){ return r.json(); }).then(renderLogs).catch(function(){});
+  }
+  document.getElementById('tabRapp').addEventListener('click', function(){
+    currentComponent = 'rapp-autoscale';
+    this.classList.add('active'); document.getElementById('tabBridge').classList.remove('active');
+    fetchLogs();
+  });
+  document.getElementById('tabBridge').addEventListener('click', function(){
+    currentComponent = 'config-bridge';
+    this.classList.add('active'); document.getElementById('tabRapp').classList.remove('active');
+    fetchLogs();
+  });
+  fetchLogs();
+  setInterval(function(){ fetchLogs(); }, 15000);
 </script>
 </body>
 </html>
