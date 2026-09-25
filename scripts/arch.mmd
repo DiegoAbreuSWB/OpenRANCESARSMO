@@ -1,0 +1,31 @@
+flowchart TD
+    OP["Operador / SMO"]
+    subgraph MGMT["Management Cluster - nephio-mgmt"]
+        PR["ProvisioningRequest (O2 IMS)"]
+        O2OP["o2ims-operator"]
+        PORCH["Porch + repo mgmt"]
+        RSM["RootSync mgmt"]
+        CAPI["Cluster API + CAPD"]
+        REPO["repo openran-cnfs (Porch/Gitea)"]
+    end
+    subgraph OC["Workload Cluster - o-cloud-1 (O-Cloud academico)"]
+        RSC["RootSync openran-cnfs (continuo)"]
+        CU["oran-cu"]
+        DU["oran-du"]
+        CORE["oran-core"]
+        MS["metrics-server"]
+        CB["config-bridge"]
+        RAPP["rapp-autoscale (rApp)"]
+    end
+    OP -->|kubectl apply| PR --> O2OP --> PORCH --> RSM --> CAPI -->|cria| OC
+    OP -->|porchctl / kpt| REPO
+    REPO -->|watch continuo| RSC
+    RSC --> CU
+    RSC --> DU
+    RSC --> CORE
+    CU -.->|GET /metrics| RAPP
+    RAPP -->|PATCH /scale| CU
+    DU -.->|GET/PUT /config| CB
+    CB -->|commit se houver drift| REPO
+    classDef novo fill:#0d8a83,color:#fff,stroke:#0a6b66
+    class RAPP,CB,MS novo

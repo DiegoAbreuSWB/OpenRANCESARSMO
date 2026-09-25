@@ -110,7 +110,7 @@ nav.toc a { color: inherit; text-decoration: none; }
   </div>
   <div class="metabox">
     <div><b>Autor:</b> Diego Abreu</div>
-    <div><b>Data:</b> 2026-09-11</div>
+    <div><b>Data:</b> 2026-09-11 (atualizado em 2026-09-25 com melhorias pós-entrega)</div>
     <div><b>Evidência completa:</b> diretórios evidence/ e results/experiments.csv do repositório do laboratório</div>
   </div>
 </div>
@@ -131,8 +131,9 @@ nav.toc a { color: inherit; text-decoration: none; }
   <tr><td class="tt"><a href="#s11">11. Falhas e recuperação</a></td><td class="pg">14</td></tr>
   <tr><td class="tt"><a href="#s12">12. Resultados</a></td><td class="pg">15</td></tr>
   <tr><td class="tt"><a href="#s13">13. Uso de CPU e memória</a></td><td class="pg">16</td></tr>
-  <tr><td class="tt"><a href="#s14">14. Limitações</a></td><td class="pg">17</td></tr>
-  <tr><td class="tt"><a href="#s15">15. Conclusão</a></td><td class="pg">18</td></tr>
+  <tr><td class="tt"><a href="#s16">16. Melhorias pós-entrega (SMO / Non-RT RIC)</a></td><td class="pg">17</td></tr>
+  <tr><td class="tt"><a href="#s14">17. Limitações</a></td><td class="pg">21</td></tr>
+  <tr><td class="tt"><a href="#s15">18. Conclusão</a></td><td class="pg">22</td></tr>
 </table>
 </nav>
 
@@ -176,6 +177,10 @@ via um pacote kpt publicado no Porch (repositório dedicado <code>openran-cnfs</
 <figure>
   <img src="assets/o2ims-sequence.png" alt="Sequência real de provisionamento O2 IMS">
   <figcaption>Fig. 2 — Sequência observada na Parte 1 para a Camada 1 (infraestrutura): ProvisioningRequest → o2ims-operator → Porch/PackageVariant → Config Sync → Cluster API/CAPD → o-cloud-1.</figcaption>
+</figure>
+<figure>
+  <img src="assets/term-o2ims-fulfilled.png" alt="Status real do ProvisioningRequest, provisioningState fulfilled">
+  <figcaption>Fig. 2b — Resultado real do <code>ProvisioningRequest</code> após a Camada 1: <code>provisioningState: fulfilled</code>, com os IDs de recurso gerados pelo o2ims-operator.</figcaption>
 </figure>
 </section>
 
@@ -311,6 +316,11 @@ ReplicaSet (ver YAML abaixo, §9).</div>
 <tr><td>Terminate</td><td>6</td><td>10,8 s</td><td>oran-core removido via prune do kpt live apply (não kubectl delete manual)</td></tr>
 </table>
 <p>Todos os 6 experimentos: <b>SUCCESS</b> (<code>results/experiments.csv</code>).</p>
+
+<figure>
+  <img src="assets/experiments-duration.png" alt="Duração real dos experimentos e melhorias">
+  <figcaption>Fig. 3b — Duração medida de todos os experimentos e melhorias deste laboratório (os 6 originais + as 3 melhorias pós-entrega de §16), coloridos por categoria de orquestração/SMO.</figcaption>
+</figure>
 
 <div class="evidence-box">
 <span class="evidence-label">TERMINAL REAL — Experimento 5 (upgrade v1→v2, rollout forçado)</span>
@@ -450,6 +460,10 @@ simuladas de propósito, mas genuínas):
 
 <section class="chapter" id="s12">
 <h1>12. Resultados</h1>
+<figure>
+  <img src="assets/term-validate-lab.png" alt="validate-lab.sh: 10/10 PASS">
+  <figcaption>Fig. 3c — Validação automática completa (scripts/validate-lab.sh): 10/10 checagens PASS.</figcaption>
+</figure>
 <div class="evidence-box">
 <span class="evidence-label">DADOS REAIS — results/experiments.csv</span>
 <table>
@@ -485,6 +499,10 @@ simuladas de propósito, mas genuínas):
 
 <section class="chapter" id="s13">
 <h1>13. Uso de CPU e memória</h1>
+<figure>
+  <img src="assets/ram-usage.png" alt="Uso real de RAM por componente">
+  <figcaption>Fig. 4 — Uso real de RAM medido (docker stats + kubectl top), incluindo os componentes adicionados em §16 (metrics-server, config-bridge, rApp) — todos dentro do orçamento do WSL2.</figcaption>
+</figure>
 <table>
 <tr><th>Componente</th><th>RAM medida</th></tr>
 <tr><td>nephio-mgmt (Nephio R6 completo)</td><td>~3,7–3,9 GiB</td></tr>
@@ -513,41 +531,128 @@ nephio-mgmt-control-plane          100.92%   3.003GiB / 9.713GiB   30.92%</pre>
 <b>bem abaixo</b> da meta de 10–12&nbsp;GB do enunciado, com folga para os experimentos.</p>
 </section>
 
+<section class="chapter" id="s16">
+<h1>16. Melhorias pós-entrega (SMO / Non-RT RIC)</h1>
+<p>Após a entrega original desta Parte 2, foram levantadas as lacunas restantes junto ao
+avaliador e implementadas quatro melhorias reais dentro do mesmo orçamento de 16&nbsp;GB —
+cada uma com evidência capturada, não apenas o CRD/serviço instalado. Detalhes completos e
+achados de engenharia em <code>docs/improvements-16gb.md</code>.</p>
+
+<figure>
+  <img src="assets/architecture-final.png" alt="Arquitetura final com as 4 melhorias">
+  <figcaption>Fig. 5 — Arquitetura final do laboratório: as três novas peças (metrics-server, config-bridge, rapp-autoscale) em destaque, sobre o fluxo original de O2 IMS + entrega de CNFs via Porch/RootSync.</figcaption>
+</figure>
+
+<h3>16.1 — metrics-server (Monitoring)</h3>
+<p>Instalado no <code>o-cloud-1</code> com o manifesto oficial + patch
+<code>--kubelet-insecure-tls</code> (padrão em qualquer cluster kind). Fecha a lacuna
+"Monitoring: não incluído nativamente" da tabela SMO×Nephio — custo de ~15&nbsp;MiB.</p>
+<div class="evidence-box">
+<span class="evidence-label">TERMINAL REAL — kubectl top (metrics-server)</span>
+<pre class="term">NAME                     CPU(cores)  CPU%   MEMORY(bytes)  MEMORY%
+o-cloud-1-...-cbjjq      333m        5%     971Mi          9%
+o-cloud-1-md-0-...       148m        2%     576Mi          5%
+metrics-server-...       7m          14Mi</pre>
+<div class="evidence-src">Fonte: evidence/improvements/20260913-034639_metrics-server.txt</div>
+</div>
+
+<h3>16.2 — RootSync contínuo (Orchestration)</h3>
+<p>Config Sync instalado no <b>próprio</b> <code>o-cloud-1</code> (mesmo pacote kpt oficial do
+management cluster), com um <code>RootSync</code> apontando para o repositório
+<code>openran-cnfs</code>. Fecha a lacuna "sem GitOps contínuo no o-cloud-1" — a entrega deixa
+de depender de rodar <code>deploy-cnfs-via-porch.sh</code> manualmente.</p>
+<div class="finding"><b>Prova de continuidade real:</b> publicou-se uma nova revisão no Porch
+(<code>nf-version: v2→v3</code>) <b>sem</b> rodar nenhum <code>kpt live apply</code> manual — o
+RootSync detectou e aplicou sozinho em <b>19&nbsp;s</b> (commit <code>1bdae53d</code> →
+<code>oran-cu.nf-version=v3</code>).</div>
+
+<h3>16.3 — config-bridge (Configuration)</h3>
+<p>Poller que fecha o loop <code>/config</code> (NF) → pacote Porch/Gitea: compara o
+<code>/config</code> ao vivo de <code>oran-du</code> com o ConfigMap publicado e comita a
+correção quando há drift — o RootSync (§16.2) reconcilia o resto sozinho.</p>
+<figure>
+  <img src="assets/term-configbridge-drift.png" alt="config-bridge detectando e corrigindo drift">
+  <figcaption>Fig. 6 — Round-trip completo: PUT /config contornando o GitOps → drift detectado → commit → RootSync reconcilia (29&nbsp;s), confirmado no ConfigMap real do cluster.</figcaption>
+</figure>
+<div class="finding"><b>Bug real encontrado e corrigido:</b> a primeira versão serializava o
+YAML sem forçar aspas; o PyYAML emitiu <code>CFG_PLMN_ID: 00101</code> sem aspas — um padrão
+que o resolvedor de tipos do YAML&nbsp;1.1 reconhece como número, e que na releitura virou o
+inteiro <code>101</code> (perdendo o zero à esquerda). Isso causava um <b>loop de
+auto-correção a cada 15&nbsp;s</b>. Corrigido forçando <code>default_style="'"</code> no
+<code>yaml.dump</code> — igual ao que o Kubernetes já faz implicitamente (todo valor de
+<code>ConfigMap.data</code> é string).</div>
+
+<h3>16.4 — rapp-autoscale (Non-RT RIC / SMO)</h3>
+<p>Ao revisar as lacunas de O1/O2/A1 com o avaliador, a decisão registrada foi: simular um
+<b>rApp</b> faz sentido (roda no Non-RT RIC, parte do próprio SMO); simular um <b>xApp</b> não
+(exigiria Near-RT RIC + protocolo E2 real, que as CNFs simuladas não implementam — seria
+inventar uma interface inexistente no laboratório). O <code>rapp-autoscale</code> lê a taxa de
+requisições de <code>/metrics</code> a cada 30&nbsp;s (deliberadamente não-tempo-real — O-RAN
+define rApp como &gt;1&nbsp;s, xApp como 10&nbsp;ms–1&nbsp;s) e aplica uma política de
+capacidade via PATCH no subrecurso <code>/scale</code>.</p>
+<figure>
+  <img src="assets/term-rapp-decision.png" alt="rApp calculando e aplicando uma decisão de escala">
+  <figcaption>Fig. 7 — Decisão real do rApp: 300 requisições de carga (5,99s) elevam a taxa a 10,27 req/s, disparando o scale-up 1→2 réplicas via PATCH na API do Kubernetes.</figcaption>
+</figure>
+<div class="finding"><b>Achado real — conflito de autoridade entre GitOps e controle
+imperativo:</b> o PATCH aplicava <code>replicas:2</code> com sucesso (200), mas o RootSync
+contínuo (§16.2) revertia a réplica de volta a 1 segundos depois, porque o pacote ainda
+declarava <code>replicas: 1</code> no Git. Corrigido removendo o campo <code>replicas</code>
+do pacote — como <code>kpt live apply</code> e o reconciler do Config Sync usam
+<i>server-side apply</i>, nenhum dos dois reivindica posse do campo quando ausente, deixando o
+rApp como dono exclusivo (o mesmo padrão usado quando um HPA coexiste com GitOps na vida
+real — Argo&nbsp;CD chama isso de <code>ignoreDifferences</code>).</div>
+<p class="evidence-src"><b>Status honesto:</b> a reverificação final pós-correção (confirmar
+que o scale-up permanece estável ao longo de um ciclo completo) não foi concluída — o ambiente
+WSL2/Docker sofreu suspensões repetidas da máquina host durante os testes finais desta sessão
+(containers de ambos os clusters caindo simultaneamente, hiato de &gt;50&nbsp;min sem
+atividade). Registrado sem evidência forjada; reproduzível via
+<code>scripts/13-rapp-autoscale.sh</code> + <code>scripts/14-rapp-load-test.sh</code>. Ver
+<code>docs/improvements-16gb.md</code> §4/§6.</p>
+</section>
+
 <section class="chapter" id="s14">
-<h1>14. Limitações</h1>
+<h1>17. Limitações</h1>
 <ol>
 <li><b>CNFs simuladas, não NFs O-RAN reais</b> — sem protocolos de rádio, planos de
 usuário/controle, ou interfaces F1/E1/E2.</li>
-<li><b>Sem GitOps contínuo no o-cloud-1</b> — a entrega usa <code>kpt live apply</code> sob
-demanda, não um RootSync/Config Sync observando o repositório continuamente (decisão de escopo
-— ver <code>docs/provisioning-flow.md</code> §4).</li>
-<li><b>Sem O1</b> — configuração operacional via API REST própria da NF, não NETCONF/YANG.</li>
-<li><b>Sem monitoramento O-RAN</b> (VES, PM Jobs) — apenas <code>/metrics</code> Prometheus-like
-e <code>kubectl</code>.</li>
-<li><b>cell_id/config de domínio não propaga de volta ao pacote</b> — a mudança via
-<code>/config</code> (API da NF) e a mudança via pacote (Porch) são caminhos independentes; uma
-alteração feita por um não aparece automaticamente no outro.</li>
+<li><s><b>Sem GitOps contínuo no o-cloud-1</b></s> — <b>superado</b> por §16.2 (RootSync
+contínuo, com prova de auto-reconciliação real).</li>
+<li><b>Sem O1</b> — configuração operacional via API REST própria da NF, não NETCONF/YANG. Sem
+A1/Non-RT RIC como plataforma (§16.4 implementa a <i>forma</i> de um rApp, não a plataforma).
+Sem xApp/E2 — decisão deliberada, ver §16.4.</li>
+<li><s><b>Sem monitoramento</b> (métricas por pod/nó)</s> — <b>superado</b> por §16.1
+(<code>metrics-server</code>); ainda sem telemetria O-RAN (VES, PM Jobs).</li>
+<li><s><b>cell_id/config de domínio não propaga de volta ao pacote</b></s> — <b>superado para
+oran-du/cell_id</b> por §16.3 (<code>config-bridge</code>); continua valendo para os demais
+campos/NFs não cobertos.</li>
 <li>Ver também as limitações do O2 IMS/O-Cloud herdadas da Parte 1
 (<code>docs/05-experiment-report.md</code> §11) — o o-cloud-1 não sobrevive a um restart da VM
-do WSL2 sem re-provisionamento.</li>
+do WSL2 sem re-provisionamento (reafirmado com frequência maior nesta sessão — ver
+<code>docs/improvements-16gb.md</code> §6).</li>
+<li><b>rApp com reverificação final pendente</b> (§16.4) — devido à instabilidade do ambiente,
+não à lógica do rApp em si.</li>
 </ol>
 </section>
 
 <section class="chapter" id="s15">
-<h1>15. Conclusão</h1>
+<h1>18. Conclusão</h1>
 <p>O experimento demonstrou, com evidência mensurável e reprodutível, que o Nephio consegue
 <b>orquestrar o ciclo de vida completo de Network Functions cloud-native</b> —
 provisionamento, configuração, escala, atualização, recuperação e terminação — usando seus
 mecanismos nativos (kpt, Porch, reconciliação declarativa), não apenas <code>kubectl
-apply</code>. Dois bugs de engenharia reais foram encontrados e corrigidos ao longo do processo
-(rollout não disparado por mudança de ConfigMap; inventário do kpt não persistente entre
-chamadas), reforçando que este foi um experimento <b>prático de verdade</b>, não um roteiro
-follow-along. As limitações — ausência de O1, de NFs reais, de GitOps contínuo no workload
-cluster — são as mesmas fronteiras já mapeadas com rigor na Parte 1, agora confirmadas na
-prática.</p>
+apply</code>. Nas melhorias pós-entrega (§16), o laboratório evoluiu de GitOps sob demanda para
+GitOps contínuo, ganhou monitoramento real e uma primeira função de Non-RT RIC (rApp) — cada
+uma comprovada com evidência real, incluindo o achado do conflito de autoridade entre GitOps e
+controle imperativo, uma lição genuína sobre orquestração distribuída. Ao todo, <b>11 bugs de
+engenharia reais</b> foram encontrados e corrigidos ao longo de toda a Parte 2 (instalação,
+fluxo Porch/kpt, e as quatro melhorias), reforçando que este foi um experimento <b>prático de
+verdade</b>, não um roteiro follow-along. As limitações remanescentes — O1, NFs reais, xApp/E2,
+federação FOCOM — são as mesmas fronteiras já mapeadas com rigor na Parte 1, e a reverificação
+final do rApp é o único item pendente, por instabilidade de ambiente e não por lógica.</p>
 <div class="callout">Relatório completo com todas as fontes, scripts e evidências brutas:
 repositório do laboratório — <code>report/</code>, <code>docs/</code>, <code>evidence/</code>,
-<code>results/experiments.csv</code>.</div>
+<code>results/experiments.csv</code>, <code>docs/improvements-16gb.md</code>.</div>
 </section>
 
 </body>

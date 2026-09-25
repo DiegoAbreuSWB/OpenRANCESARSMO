@@ -18,6 +18,9 @@ echo "=== weasyprint ==="
 pip install weasyprint -q
 weasyprint --version
 
+echo "=== matplotlib + pillow (graficos e prints de terminal estilizados) ==="
+pip install matplotlib pillow -q
+
 echo "=== pandoc (binário standalone, ~/.local/bin) ==="
 mkdir -p "$HOME/.local/bin"
 PANDOC_VER="3.7.0.2"
